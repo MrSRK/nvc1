@@ -1,6 +1,7 @@
 
 const dotenv=require('dotenv')
 const chalk=require('chalk')
+const path=require('path')
 const express=require('express')
 const errorhandler=require('./errorhandler')
 const logger=require('./logger')
@@ -11,6 +12,7 @@ const security=require('./security')
 const database=require('./database')
 const storage=require('./storage')
 const sass=require('./sass')
+const view=require('./view')
 /**
  * Set's Environment Variables From .env File 
  */
@@ -22,6 +24,7 @@ exports.run=async(next)=>
 {
     try
     {
+        console.group(chalk.yellow('# Loading Express [Core] Modules'))
         const app=new express();
         /**
          * Set Error Handler
@@ -31,7 +34,7 @@ exports.run=async(next)=>
             if(error)
                 throw error
             app.use(handler)
-            console.log('%s Module [%s] successfully set...',chalk.green('✓'),chalk.red('Errorhandler'))
+            console.log('%s Module [%s]\tLoad: %s',chalk.green('✓'),chalk.red('Errorhandler'),chalk.green('Successful'))
         })
         /**
          * Set Looger
@@ -41,7 +44,7 @@ exports.run=async(next)=>
             if(error)
                 throw error
             app.use(morgan)
-            console.log('%s Module [%s] successfully set...',chalk.green('✓'),chalk.red('Logger'))
+            console.log('%s Module [%s]\t\tLoad: %s',chalk.green('✓'),chalk.red('Logger'),chalk.green('Successful'))
         })
         /**
          * 
@@ -51,14 +54,14 @@ exports.run=async(next)=>
             if(error)
                 throw error
             app.use(parser)
-            console.log('%s Module [%s] successfully set...',chalk.green('✓'),chalk.red('parser (json)'))
+            console.log('%s Module [%s]\tLoad: %s',chalk.green('✓'),chalk.red('parser (json)'),chalk.green('Successful'))
         })
         await bodyParser.setUrlEncoded((error,parser)=>
         {
             if(error)
                 throw error
             app.use(parser)
-            console.log('%s Module [%s] successfully set...',chalk.green('✓'),chalk.red('parser (url)'))
+            console.log('%s Module [%s]\tLoad: %s',chalk.green('✓'),chalk.red('parser (url)'),chalk.green('Successful'))
         })
         /**
          * Session Load
@@ -67,7 +70,7 @@ exports.run=async(next)=>
         {
             if(error)
                 throw(error)
-            console.log('%s Module [%s] successfully set...',chalk.green('✓'),chalk.red('Session'))
+            console.log('%s Module [%s]\t\tLoad: %s',chalk.green('✓'),chalk.red('Session'),chalk.green('Successful'))
             return app.use(s)
         })
         /**
@@ -77,7 +80,7 @@ exports.run=async(next)=>
         {
             if(error)
                 throw(error)
-            console.log('%s Module [%s] successfully set...',chalk.green('✓'),chalk.red('Cookie'))
+            console.log('%s Module [%s]\t\tLoad: %s',chalk.green('✓'),chalk.red('Cookie'),chalk.green('Successful'))
             return app.use(s)
         })
         /**
@@ -93,7 +96,7 @@ exports.run=async(next)=>
         app.use(security.xframe('SAMEORIGIN'))
         app.use(security.xssProtection(true))
         app.disable('x-powered-by')
-        console.log('%s Module [%s] successfully set...',chalk.green('✓'),chalk.red('Security'))
+        console.log('%s Module [%s]\t\tLoad: %s',chalk.green('✓'),chalk.red('Security'),chalk.green('Successful'))
         /**
          * Connect to MongoDB
         */
@@ -101,13 +104,13 @@ exports.run=async(next)=>
         {
             if(error)
                 throw(error)
-            console.log('%s Module [%s] successfully set...',chalk.green('✓'),chalk.red('Database'))
+            console.log('%s Module [%s]\t\tLoad: %s',chalk.green('✓'),chalk.red('Database'),chalk.green('Successful'))
         })
         /*await storage.create('images','image',(error,upload)=>
         {
             if(error)
                 throw(error)
-            console.log('%s Module [%s] successfully set...',chalk.green('✓'),chalk.red('Storage'))
+            console.log('%s Module [%s] Load: %s',chalk.green('✓'),chalk.red('Storage'),chalk.green('Successful'))
             return upload(req,res,error=>
             {
                 console.log('test')
@@ -121,8 +124,25 @@ exports.run=async(next)=>
             if(error)
                 throw(error)
             app.use(s)
-            console.log('%s Module [%s] successfully set...',chalk.green('✓'),chalk.red('Sass'))
+            console.log('%s Module [%s]\t\tLoad: %s',chalk.green('✓'),chalk.red('Sass'),chalk.green('Successful'))
         })
+        console.groupEnd()
+        /**
+         * Initialize Pug (jade)
+         */
+        view(error=>
+        {
+            
+        })
+
+        app.use('/',express.static(path.join(__dirname,'public')))
+        app.use('/favicon.ico',express.static(path.join(__dirname,'public/images/favicon.ico')))
+        app.use('/js/lib',express.static(path.join(__dirname,'node_modules/angular')))
+        app.use('/js/lib',express.static(path.join(__dirname,'node_modules/popper.js/dist/umd')))
+        app.use('/js/lib',express.static(path.join(__dirname,'node_modules/bootstrap/dist/js')))
+        app.use('/js/lib',express.static(path.join(__dirname,'node_modules/jquery/dist')))
+        app.use('/webfonts',express.static(path.join(__dirname,'node_modules/@fortawesome/fontawesome-free/webfonts')))
+
         /**
          * Return app
          */
