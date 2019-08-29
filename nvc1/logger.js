@@ -19,7 +19,7 @@ exports.setLoger=async(next)=>
         fs.exists(logDirectory,exists=>
         {
             if(!exists)
-                fs.mkdir(logDirectory,error=>
+                fs.mkdir(logDirectory,{recursive:true},error=>
                 {
                     if(error)
                         throw(error)
