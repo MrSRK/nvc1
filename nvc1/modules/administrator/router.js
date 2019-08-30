@@ -1,7 +1,7 @@
 const express=require('express')
 const router=express.Router()
 const routerName=__filename.split('\\').reverse()[1]
-//Administrator
+//Administrator Routs
 router.get('/administrator/'+routerName,(req,res,next)=>
 {
     return res.status(200).render('administrator/table',{
@@ -38,7 +38,7 @@ router.all('/administrator/'+routerName+'/*',(req,res,next)=>
         title:'404'
     })
 })
-//Guest
+//Guest Routs
 router.get('/'+routerName+'/',(req,res,next)=>
 {
     return res.status(200).render('guest/list',{
@@ -57,29 +57,29 @@ router.all('/'+routerName+'/*',(req,res,next)=>
         title:'404'
     })
 })
-//Api
+//Api Routs
 router.get('/api/'+routerName,(req,res,next)=>
 {
-    res.status(200).json({root:'list'})
+    return res.status(200).json({root:'list'})
 })
 router.get('/api/'+routerName+'/:_id',(req,res,next)=>
 {
-    res.status(200).json({root:'get'})
+    return res.status(200).json({root:'get'})
 })
 router.post('/api/'+routerName+'/',(req,res,next)=>
 {
-    res.status(200).json({root:'post'})
+    return res.status(200).json({root:'post'})
 })
 router.patch('/api/'+routerName+'/:_id',(req,res,next)=>
 {
-    res.status(200).json({root:'patch'})
+    return res.status(200).json({root:'patch'})
 })
 router.delete('/api/'+routerName+'/:_id',(req,res,next)=>
 {
-    res.status(200).json({root:'delete'})
+    return res.status(200).json({root:'delete'})
 })
 router.all('/api/'+routerName+'/*',(req,res,next)=>
 {
-    res.status(404).json({root:'404'})
+    return res.status(404).json({root:'404'})
 })
 module.exports=router

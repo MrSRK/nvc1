@@ -1,21 +1,35 @@
-const mongoose=require('mongoose')
+const mysql=require('mysql')
+let connection=null
 /**
- * Connect to MongoDB.
+ * Connect to Mysql.
 */
 exports.connect=next=>
 {
     try
     {
-        const options={
-            useFindAndModify:false,
-            useCreateIndex:true,
-            useNewUrlParser:true
-        }
-        mongoose.connect(process.env.MONGODB_URI,options)
-        return next(null,mongoose)
+        connection=mysql.createConnection({
+            host:process.env.MYSQL_HOST,
+            user:process.env.MYSQL_USER,
+            password:MYSQL_PWD,
+            database:MYSQL_DATABASE
+        })
+        connection.connect(error=>
+        {
+            if(error)
+                throw(error)
+            next(null,connection)
+        })
     }
     catch(error)
     {
-        return next(error,null)
+        next(error,null)
     }
 }
+exports.desconnect=next=>
+{
+    connection.end(error=>
+    {
+        next(error)
+    })
+}
+exports.con=connection

@@ -136,24 +136,23 @@ exports.run=next=>
                 throw(error)
             app.use(routs)   
         })
-
         /**
          * Initialize Pug (jade)
          */
-        console.group(chalk.yellow('# Loaading (pug) views direcroties'))
         view((error,views)=>
         {
+            console.group(chalk.yellow('# Loaading (pug) views direcroties'))
             if(error)
                 throw(error)
-            app.set('views','views')
+                
+            app.set('views',views)
             app.set('view engine','pug')
             views.forEach(p=>
             {
                 console.log('%s Views load \t\t\tLoad: %s\t\tFrom: %s',chalk.green('✓'),chalk.green('Successful'),chalk.gray(p))
             })
+            console.groupEnd()
         })
-
-        console.groupEnd()
         /**
          * Set Static files path
          */
