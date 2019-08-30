@@ -2,47 +2,67 @@ const fs=require('fs')
 const path=require('path')
 module.exports=async(next)=>
 {
-    views=[]
+    let views=[]
     try
     {
-        const modulesDir=path.join(__dirname, '../modules')
-        fs.exists(modulesDir,exists=>
+        getNvc1Views((error,nvcv)=>
         {
-            if(!exists)
-                fs.mkdir(modulesDir,{recursive:true},error=>
-                {
-                    if(error)
-                        throw(error)
-                    return next(null)
-                })
-            else
+            if(error)
+                throw(error)
+            views=views.concat(nvcv)
+            getModulesViews((error,mv)=>
             {
-                fs.readdir(modulesDir,(error,files)=>
-                {
-                    if(error)
-                        throw(error)
-                    files.forEach(file=>
-                    {
-                        if(fs.lstatSync(modulesDir+'/'+file).isDirectory())
-                        {
-                            if(fs.existsSync(modulesDir+'/'+file+'/views'))
-                            {}
-                        }
-                    })
-                })
-                //asdasdasdad
-            }
+                if(error)
+                    throw(error)
+                views=views.concat(mv)
+                next(null,views)
+            })
         })
     }
     catch(error)
     {
-        next(error)
-    }
-    finally
-    {
-        console.log(views)
-    }
+        next(error,views)
+    }    
 }
-
-//app.set('views',[path.join(__dirname, 'views'),path.join(__dirname, 'views2')])
-//app.set('view engine','pug')
+const getModulesViews=next=>
+{
+    try
+    {
+        let nvc1ModulesPath=path.join(__dirname, '../modules')
+        fs.exists(nvc1ModulesPath,exists=>
+        {
+            let views=[]
+            if(exists)
+                fs.readdir(nvc1ModulesPath,(error,files)=>
+                {
+                    if(error)
+                        throw(error)
+                    for(let i=0;i<files.length;i++)
+                        if(fs.existsSync(nvc1ModulesPath+'\\'+files[i]+'\\views'))
+                            views[views.length]=nvc1ModulesPath+'\\'+files[i]+'\\views'
+                    next(null,views)                 
+                })
+        })
+    }
+    catch(error)
+    {
+        next(error,null)
+    }
+    
+}
+const getNvc1Views=next=>
+{
+    try
+    {
+        let nvc1ViewsPath=path.join(__dirname, '../views')
+        fs.exists(nvc1ViewsPath,exists=>
+        {
+            if(exists)
+                next(null,[nvc1ViewsPath]) 
+        })
+    }
+    catch(error)
+    {
+        next(error,[])
+    } 
+}

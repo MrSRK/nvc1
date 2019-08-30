@@ -130,9 +130,13 @@ exports.run=async(next)=>
         /**
          * Initialize Pug (jade)
          */
-        view(error=>
+        await view((error,views)=>
         {
-            
+            if(error)
+                throw(error)
+            console.log(views)
+            app.set('views',views)
+            app.set('view engine','pug')
         })
 
         app.use('/',express.static(path.join(__dirname,'public')))
