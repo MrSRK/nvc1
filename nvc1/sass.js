@@ -1,6 +1,6 @@
 const sass=require('node-sass-middleware')
 const path=require('path')
-module.exports=async(next)=>
+module.exports=next=>
 {
     try
     {

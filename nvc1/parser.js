@@ -1,5 +1,5 @@
 const bodyParser=require('body-parser')
-exports.setJson=async(next)=>
+exports.setJson=next=>
 {
     try
     {

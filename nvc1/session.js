@@ -1,6 +1,6 @@
 const session=require('express-session')
 const MongoStore=require('connect-mongo')(session)
-module.exports=async(next)=>
+module.exports=next=>
 {
     try
     {

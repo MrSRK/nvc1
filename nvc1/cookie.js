@@ -1,5 +1,5 @@
 const cookieParser=require('cookie-parser')
-module.exports=async(next)=>
+module.exports=next=>
 {
     try
     {

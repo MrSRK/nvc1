@@ -20,7 +20,7 @@ dotenv.config()
 /**
  * Initialize all the core function and use them at app
  */
-exports.run=async(next)=>
+exports.run=next=>
 {
     try
     {
@@ -28,18 +28,21 @@ exports.run=async(next)=>
         const app=new express();
         /**
          * Set Error Handler
-         */
-        await errorhandler.handle((error,handler)=>
+        */ 
+        errorhandler.handler((error,handler)=>
         {
             if(error)
                 throw error
-            app.use(handler)
-            console.log('%s Module [%s]\tLoad: %s',chalk.green('✓'),chalk.red('Errorhandler'),chalk.green('Successful'))
+            if(handler)
+            {
+                app.use(handler())
+                console.log('%s Module [%s]\tLoad: %s',chalk.green('✓'),chalk.red('Errorhandler'),chalk.green('Successful'))
+            }
         })
         /**
          * Set Looger
-         */
-        await logger.setLoger((error,morgan)=>
+        */ 
+        logger.setLoger((error,morgan)=>
         {
             if(error)
                 throw error
@@ -48,15 +51,15 @@ exports.run=async(next)=>
         })
         /**
          * 
-         */
-        await bodyParser.setJson((error,parser)=>
+        */ 
+        bodyParser.setJson((error,parser)=>
         {
             if(error)
                 throw error
             app.use(parser)
             console.log('%s Module [%s]\tLoad: %s',chalk.green('✓'),chalk.red('parser (json)'),chalk.green('Successful'))
         })
-        await bodyParser.setUrlEncoded((error,parser)=>
+        bodyParser.setUrlEncoded((error,parser)=>
         {
             if(error)
                 throw error
@@ -65,8 +68,8 @@ exports.run=async(next)=>
         })
         /**
          * Session Load
-         */
-        await session((error,s)=>
+        */ 
+        session((error,s)=>
         {
             if(error)
                 throw(error)
@@ -75,8 +78,8 @@ exports.run=async(next)=>
         })
         /**
          * Cokkie Load
-         */
-        await cookie((error,s)=>
+        */ 
+        cookie((error,s)=>
         {
             if(error)
                 throw(error)
@@ -85,7 +88,7 @@ exports.run=async(next)=>
         })
         /**
          * Security Loader CSRF XSS
-         */
+        */ 
         app.use((req,res,next)=>
         {
             if(req.path==='/public/images')
@@ -100,13 +103,13 @@ exports.run=async(next)=>
         /**
          * Connect to MongoDB
         */
-        await database.connect(error=>
+        database.connect(error=>
         {
             if(error)
                 throw(error)
             console.log('%s Module [%s]\t\tLoad: %s',chalk.green('✓'),chalk.red('Database'),chalk.green('Successful'))
         })
-        /*await storage.create('images','image',(error,upload)=>
+        /*storage.create('images','image',(error,upload)=>
         {
             if(error)
                 throw(error)
@@ -119,7 +122,7 @@ exports.run=async(next)=>
         /**
          * Use Sass Module
          */
-        await sass((error,s)=>
+        sass((error,s)=>
         {
             if(error)
                 throw(error)
@@ -130,15 +133,22 @@ exports.run=async(next)=>
         /**
          * Initialize Pug (jade)
          */
-        await view((error,views)=>
+        console.group(chalk.yellow('# Loaading (pug) views direcroties'))
+        view((error,views)=>
         {
             if(error)
                 throw(error)
-            console.log(views)
             app.set('views',views)
             app.set('view engine','pug')
+            views.forEach(p=>
+            {
+                console.log('%s Views load \t\t\tLoad: %s\t\tFrom: %s',chalk.green('✓'),chalk.green('Successful'),chalk.gray(p))
+            })
         })
-
+        console.groupEnd()
+        /**
+         * Set Static files path
+         */
         app.use('/',express.static(path.join(__dirname,'public')))
         app.use('/favicon.ico',express.static(path.join(__dirname,'public/images/favicon.ico')))
         app.use('/js/lib',express.static(path.join(__dirname,'node_modules/angular')))
@@ -146,7 +156,15 @@ exports.run=async(next)=>
         app.use('/js/lib',express.static(path.join(__dirname,'node_modules/bootstrap/dist/js')))
         app.use('/js/lib',express.static(path.join(__dirname,'node_modules/jquery/dist')))
         app.use('/webfonts',express.static(path.join(__dirname,'node_modules/@fortawesome/fontawesome-free/webfonts')))
-
+        /**
+         * 
+         */
+        app.listen(process.env.APP_PORT||80)
+        app.get('',(req,res,next)=>
+        {
+            console.log('try')
+            res.status(200).json({status:200})
+        })
         /**
          * Return app
          */

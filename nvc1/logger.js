@@ -5,7 +5,7 @@ const path = require('path')
 /**
  * Set loget to console if mode is development or else to access log file at log directory
  */
-exports.setLoger=async(next)=>
+exports.setLoger=next=>
 {
     try
     {
