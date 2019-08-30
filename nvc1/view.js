@@ -5,17 +5,23 @@ module.exports=next=>
     let views=[]
     try
     {
-        getNvc1Views((error,nvcv)=>
+        getNvc1GlobalViews((error,nvcgv)=>
         {
             if(error)
                 throw(error)
-            views=views.concat(nvcv)
-            getModulesViews((error,mv)=>
+            views=views.concat(nvcgv)
+            getNvc1Views((error,nvcv)=>
             {
                 if(error)
                     throw(error)
-                views=views.concat(mv)
-                next(null,views)
+                views=views.concat(nvcv)
+                getModulesViews((error,mv)=>
+                {
+                    if(error)
+                        throw(error)
+                    views=views.concat(mv)
+                    next(null,views)
+                })
             })
         })
     }
@@ -51,6 +57,32 @@ const getModulesViews=next=>
     
 }
 const getNvc1Views=next=>
+{
+    try
+    {
+        let nvc1ModulesPath=path.join(__dirname, '../nvc1/modules')
+        fs.exists(nvc1ModulesPath,exists=>
+        {
+            let views=[]
+            if(exists)
+                fs.readdir(nvc1ModulesPath,(error,files)=>
+                {
+                    if(error)
+                        throw(error)
+                    for(let i=0;i<files.length;i++)
+                        if(fs.existsSync(nvc1ModulesPath+'\\'+files[i]+'\\views'))
+                            views[views.length]=nvc1ModulesPath+'\\'+files[i]+'\\views'
+                    next(null,views)                 
+                })
+        })
+    }
+    catch(error)
+    {
+        next(error,null)
+    }
+    
+}
+const getNvc1GlobalViews=next=>
 {
     try
     {

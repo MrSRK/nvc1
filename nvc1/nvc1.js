@@ -3,6 +3,7 @@ const dotenv=require('dotenv')
 const chalk=require('chalk')
 const path=require('path')
 const express=require('express')
+const pug=require('pug')
 const errorhandler=require('./errorhandler')
 const logger=require('./logger')
 const bodyParser=require('./parser')
@@ -12,6 +13,7 @@ const security=require('./security')
 const database=require('./database')
 const storage=require('./storage')
 const sass=require('./sass')
+const router=require('./router')
 const view=require('./view')
 /**
  * Set's Environment Variables From .env File 
@@ -88,13 +90,11 @@ exports.run=next=>
         })
         /**
          * Security Loader CSRF XSS
-        */ 
-        app.use((req,res,next)=>
+        */
+        app.use((req,res,n)=>
         {
-            if(req.path==='/public/images')
-              next()
-            else
-                security.csrf()(req,res,next)
+            if(req.path!=='/public/images')
+                security.csrf()(req,res,n)
         })
         app.use(security.xframe('SAMEORIGIN'))
         app.use(security.xssProtection(true))
@@ -130,6 +130,13 @@ exports.run=next=>
             console.log('%s Module [%s]\t\tLoad: %s',chalk.green('✓'),chalk.red('Sass'),chalk.green('Successful'))
         })
         console.groupEnd()
+        router((error,routs)=>
+        {
+            if(error)
+                throw(error)
+            app.use(routs)   
+        })
+
         /**
          * Initialize Pug (jade)
          */
@@ -138,13 +145,14 @@ exports.run=next=>
         {
             if(error)
                 throw(error)
-            app.set('views',views)
+            app.set('views','views')
             app.set('view engine','pug')
             views.forEach(p=>
             {
                 console.log('%s Views load \t\t\tLoad: %s\t\tFrom: %s',chalk.green('✓'),chalk.green('Successful'),chalk.gray(p))
             })
         })
+
         console.groupEnd()
         /**
          * Set Static files path
@@ -160,10 +168,11 @@ exports.run=next=>
          * 
          */
         app.listen(process.env.APP_PORT||80)
-        app.get('',(req,res,next)=>
+        app.get('',(req,res,n)=>
         {
-            console.log('try')
-            res.status(200).json({status:200})
+            return res.status(404).render('404',{
+                title:'404'
+            })
         })
         /**
          * Return app
