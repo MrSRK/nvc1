@@ -10,8 +10,8 @@ exports.connect=next=>
         connection=mysql.createConnection({
             host:process.env.MYSQL_HOST,
             user:process.env.MYSQL_USER,
-            password:MYSQL_PWD,
-            database:MYSQL_DATABASE
+            password:process.env.MYSQL_PWD,
+            database:process.env.MYSQL_DATABASE
         })
         connection.connect(error=>
         {
