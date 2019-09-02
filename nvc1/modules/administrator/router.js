@@ -1,9 +1,11 @@
 const express=require('express')
+const controller=require('./controller')
 const router=express.Router()
 const routerName=__filename.split('\\').reverse()[1]
 //Administrator Routs
 router.get('/administrator/'+routerName,(req,res,next)=>
 {
+    controller.selectOne()
     return res.status(200).render('administrator/table',{
         title:'Table'
     })

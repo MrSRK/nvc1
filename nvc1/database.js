@@ -1,5 +1,5 @@
 const mysql=require('mysql')
-let connection=null
+var connection=null
 /**
  * Connect to Mysql.
 */
@@ -17,12 +17,12 @@ exports.connect=next=>
         {
             if(error)
                 throw(error)
-            next(null,connection)
+            return next(null,connection)
         })
     }
     catch(error)
     {
-        next(error,null)
+        return next(error,null)
     }
 }
 exports.desconnect=next=>
@@ -32,4 +32,7 @@ exports.desconnect=next=>
         next(error)
     })
 }
-exports.con=connection
+exports.con=_=>
+{
+    return connection
+}
