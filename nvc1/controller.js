@@ -1,11 +1,22 @@
 
-const database=require('./database').con()
+const db=require('./database')
 module.exports.selectOne=next=>
 {
-    database.query('SELECT 1', function (error,results,fields)
+    db.select('test',['test.id','test.test1','test.test2'],{id:1})
+
+   // db.createTables('administrator')
+
+
+    /*db.addColumns('administrator',
+    [
+        'test VARCHAR(254) NULL',
+        'test2 VARCHAR(254) NULL',
+        'test3 VARCHAR(254) NULL',
+        'test4 VARCHAR(254) NULL',
+        'test5 VARCHAR(254) NULL'
+    ],
+    error=>
     {
-        if(error) 
-            throw error;
-        console.log(results)
-    })
+        console.log(error)
+    })*/
 }

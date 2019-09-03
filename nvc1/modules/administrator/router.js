@@ -13,13 +13,13 @@ router.get('/administrator/'+routerName,(req,res,next)=>
 router.get('/administrator/'+routerName+'/new',(req,res,next)=>
 {
     return res.status(200).render('administrator/new',{
-        title:'Table'
+        title:'New'
     })
 })
 router.get('/administrator/'+routerName+'/edit/:_id',(req,res,next)=>
 {
     return res.status(200).render('administrator/edit',{
-        title:'Table'
+        title:'Edit'
     })
 })
 router.get('/administrator/'+routerName+'/signUp',(req,res,next)=>
