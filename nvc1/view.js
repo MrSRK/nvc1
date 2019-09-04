@@ -3,31 +3,35 @@ const path=require('path')
 module.exports=next=>
 {
     let views=[]
+    
     try
     {
         getNvc1GlobalViews((error,nvcgv)=>
         {
             if(error)
                 throw(error)
-            views=views.concat(nvcgv)
+            if(nvcgv)
+                views=views.concat(nvcgv)
             getNvc1Views((error,nvcv)=>
             {
                 if(error)
                     throw(error)
-                views=views.concat(nvcv)
+                if(nvcv)
+                    views=views.concat(nvcv)
                 getModulesViews((error,mv)=>
                 {
                     if(error)
                         throw(error)
-                    views=views.concat(mv)
-                    next(null,views)
+                    if(mv)
+                        views=views.concat(mv)
+                    return next(null,views)
                 })
             })
         })
     }
     catch(error)
     {
-        next(error,views)
+        return next(error,views)
     }    
 }
 const getModulesViews=next=>
@@ -46,7 +50,7 @@ const getModulesViews=next=>
                     for(let i=0;i<files.length;i++)
                         if(fs.existsSync(nvc1ModulesPath+'\\'+files[i]+'\\views'))
                             views[views.length]=nvc1ModulesPath+'\\'+files[i]+'\\views'
-                    next(null,views)                 
+                    next(null,views)  
                 })
         })
     }

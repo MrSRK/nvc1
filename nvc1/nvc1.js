@@ -4,6 +4,7 @@ const chalk=require('chalk')
 const path=require('path')
 const express=require('express')
 const pug=require('pug')
+var favicon=require('serve-favicon')
 const errorhandler=require('./errorhandler')
 const logger=require('./logger')
 const bodyParser=require('./parser')
@@ -161,7 +162,10 @@ exports.run=next=>
          * Set Static files path
          */
         app.use('/',express.static(path.join(__dirname,'public')))
-        app.use('/favicon.ico',express.static(path.join(__dirname,'public/images/favicon.ico')))
+
+        //app.use('/favicon.ico',express.static(path.join(__dirname,'../public/images/favicon.ico')))
+        app.use(favicon(path.join(__dirname, '../public/images/', 'favicon.ico')))
+
         app.use('/js/lib',express.static(path.join(__dirname,'node_modules/angular')))
         app.use('/js/lib',express.static(path.join(__dirname,'node_modules/popper.js/dist/umd')))
         app.use('/js/lib',express.static(path.join(__dirname,'node_modules/bootstrap/dist/js')))
