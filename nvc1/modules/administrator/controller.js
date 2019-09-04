@@ -1,8 +1,8 @@
 const Model=require('./model')
 const controller=require('../../controller')
-module.exports.find=(id,next)=>
+module.exports.find=next=>
 {
-    return controller.find(Model,id,(error,data)=>
+    return controller.find(Model,(error,data)=>
     {
         if(error)
             return next(error,data)

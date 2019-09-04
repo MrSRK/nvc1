@@ -1,8 +1,8 @@
 
 const db=require('./database')
-module.exports.find=(Model,_id,next)=>
+module.exports.find=(Model,next)=>
 {
-    Model.find(_id,(error,data)=>
+    Model.find((error,data)=>
     {
         return next(error,data)
     })

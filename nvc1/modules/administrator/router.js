@@ -5,8 +5,17 @@ const routerName=__filename.split('\\').reverse()[1]
 //Administrator Routs
 router.get('/administrator/'+routerName,(req,res,next)=>
 {
-    return res.status(200).render('administrator/table',{
-        title:'Table'
+    return controller.find((error,data)=>
+    {
+        if(error)
+            return res.status(500).render('500',{
+                title:'Error',
+                error:error
+            })
+        return res.status(200).render('administrator/table',{
+            title:'Table',
+            data:data
+        })
     })
 })
 router.get('/administrator/'+routerName+'/new',(req,res,next)=>
@@ -15,11 +24,21 @@ router.get('/administrator/'+routerName+'/new',(req,res,next)=>
         title:'New'
     })
 })
-router.get('/administrator/'+routerName+'/edit/:_id',(req,res,next)=>
+router.get('/administrator/'+routerName+'/:_id',(req,res,next)=>
 {
-    return res.status(200).render('administrator/edit',{
-        title:'Edit'
+    return controller.findById(req.param._id,(error,data)=>
+    {
+        if(error)
+            return res.status(500).render('500',{
+                title:'Edit',
+                error:error
+            })
+        return res.status(200).render('administrator/edit',{
+            title:'Edit',
+            data:data
+        })
     })
+    
 })
 router.get('/administrator/'+routerName+'/signUp',(req,res,next)=>
 {
@@ -39,17 +58,39 @@ router.all('/administrator/'+routerName+'/*',(req,res,next)=>
         title:'404'
     })
 })
-//Guest Routs
+/**
+ * Guest Routs
+ */
 router.get('/'+routerName+'/',(req,res,next)=>
 {
-    return res.status(200).render('guest/list',{
-        title:'List'
+    return controller.find((error,data)=>
+    {
+        if(error)
+            return res.status(500).render('500',{
+                title:'List',
+                error:error
+            })
+        return res.status(200).render('guest/list',{
+            title:'List',
+            data:data
+        })
+
     })
+    
 })
-router.get('/'+routerName+'/show',(req,res,next)=>
+router.get('/'+routerName+'/:_id',(req,res,next)=>
 {
-    return res.status(200).render('guest/show',{
-        title:'Show'
+    return controller.findById(req.param._id,(error,data)=>
+    {
+        if(error)
+            return res.status(500).render('500',{
+                title:'Error',
+                error:error
+            })
+        return res.status(200).render('guest/show',{
+            title:'Show',
+            data:data
+        })
     })
 })
 router.all('/'+routerName+'/*',(req,res,next)=>
@@ -61,7 +102,7 @@ router.all('/'+routerName+'/*',(req,res,next)=>
 //Api Routs
 router.get('/api/'+routerName,(req,res,next)=>
 {
-    return controller.find(req.param._id,(error,data)=>
+    return controller.find((error,data)=>
     {
         if(error)
             return res.status(500).json({status:false,data:data,error:error})

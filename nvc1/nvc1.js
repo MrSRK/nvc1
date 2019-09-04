@@ -136,6 +136,12 @@ exports.run=next=>
             console.log('%s Module [%s]\t\tLoad: %s',chalk.green('✓'),chalk.red('Sass'),chalk.green('Successful'))
         })
         console.groupEnd()
+        app.get('/administrator/',(req,res,next)=>
+        {
+            return res.status(200).render('administrator/home',{
+                title:'Dashboard'
+            })
+        })
         router((error,routs)=>
         {
             if(error)
@@ -175,7 +181,13 @@ exports.run=next=>
          * 
          */
         app.listen(process.env.APP_PORT||80)
-        app.get('',(req,res,n)=>
+        app.get('',(req,res,next)=>
+        {
+            return res.status(404).render('home',{
+                title:'Home Page'
+            })
+        })
+        app.get('*',(req,res,n)=>
         {
             return res.status(404).render('404',{
                 title:'404'
