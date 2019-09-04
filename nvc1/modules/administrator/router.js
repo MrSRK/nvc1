@@ -5,7 +5,6 @@ const routerName=__filename.split('\\').reverse()[1]
 //Administrator Routs
 router.get('/administrator/'+routerName,(req,res,next)=>
 {
-    controller.selectOne()
     return res.status(200).render('administrator/table',{
         title:'Table'
     })
@@ -62,26 +61,54 @@ router.all('/'+routerName+'/*',(req,res,next)=>
 //Api Routs
 router.get('/api/'+routerName,(req,res,next)=>
 {
-    return res.status(200).json({root:'list'})
+    return controller.find(req.param._id,(error,data)=>
+    {
+        if(error)
+            return res.status(500).json({status:false,data:data,error:error})
+        return res.status(200).json({status:true,data:data,error:error})
+
+    })
 })
 router.get('/api/'+routerName+'/:_id',(req,res,next)=>
 {
-    return res.status(200).json({root:'get'})
+    return controller.findById(req.param._id,(error,data)=>
+    {
+        if(error)
+            return res.status(500).json({status:false,data:data,error:error})
+        return res.status(200).json({status:true,data:data,error:error})
+    })
 })
-router.post('/api/'+routerName+'/',(req,res,next)=>
+router.put('/api/'+routerName+'/',(req,res,next)=>
 {
-    return res.status(200).json({root:'post'})
+    let data=req.body.data
+    return controller.saveOne(data,(error,data)=>
+    {
+        if(error)
+            return res.status(500).json({status:false,data:data,error:error})
+        return res.status(200).json({status:true,data:data,error:error})
+    })
 })
 router.patch('/api/'+routerName+'/:_id',(req,res,next)=>
 {
-    return res.status(200).json({root:'patch'})
+    let data=req.body.data
+    return controller.findByIdAndUpdate(req.param._id,data,(error,data)=>
+    {
+        if(error)
+            return res.status(500).json({status:false,data:data,error:error})
+        return res.status(200).json({status:true,data:data,error:error})
+    })
 })
 router.delete('/api/'+routerName+'/:_id',(req,res,next)=>
 {
-    return res.status(200).json({root:'delete'})
+    return controller.findOneAndDelete(req.param._id,(error,data)=>
+    {
+        if(error)
+            return res.status(500).json({status:false,data:data,error:error})
+        return res.status(200).json({status:true,data:data,error:error})
+    })
 })
 router.all('/api/'+routerName+'/*',(req,res,next)=>
 {
-    return res.status(404).json({root:'404'})
+    return res.status(404).json({status:false,data:null,error:{name:404,message:"Page not Found"}})
 })
 module.exports=router

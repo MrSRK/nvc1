@@ -93,8 +93,13 @@ exports.run=next=>
         */
         app.use((req,res,n)=>
         {
-            if(req.path!=='/public/images')
-                security.csrf()(req,res,n)
+            if(process.env.NODE_ENV!=='development')
+                if(req.path!=='/public/images')
+                    security.csrf()(req,res,n)
+                else
+                    n()
+            else
+                n()
         })
         app.use(security.xframe('SAMEORIGIN'))
         app.use(security.xssProtection(true))
