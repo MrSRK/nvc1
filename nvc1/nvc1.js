@@ -38,8 +38,8 @@ exports.run=next=>
                 throw error
             if(handler)
             {
-                app.use(handler())
                 console.log('%s Module [%s]\tLoad: %s',chalk.green('✓'),chalk.red('Errorhandler'),chalk.green('Successful'))
+                return app.use(handler())
             }
         })
         /**
@@ -49,8 +49,8 @@ exports.run=next=>
         {
             if(error)
                 throw error
-            app.use(morgan)
             console.log('%s Module [%s]\t\tLoad: %s',chalk.green('✓'),chalk.red('Logger'),chalk.green('Successful'))
+            return app.use(morgan)
         })
         /**
          * 
@@ -59,15 +59,15 @@ exports.run=next=>
         {
             if(error)
                 throw error
-            app.use(parser)
             console.log('%s Module [%s]\tLoad: %s',chalk.green('✓'),chalk.red('parser (json)'),chalk.green('Successful'))
+            return app.use(parser)
         })
         bodyParser.setUrlEncoded((error,parser)=>
         {
             if(error)
                 throw error
-            app.use(parser)
             console.log('%s Module [%s]\tLoad: %s',chalk.green('✓'),chalk.red('parser (url)'),chalk.green('Successful'))
+            return app.use(parser)
         })
         /**
          * Session Load
@@ -98,9 +98,9 @@ exports.run=next=>
                 if(req.path!=='/public/images')
                     security.csrf()(req,res,n)
                 else
-                    n()
+                    return n()
             else
-                n()
+                return n()
         })
         app.use(security.xframe('SAMEORIGIN'))
         app.use(security.xssProtection(true))
@@ -132,21 +132,27 @@ exports.run=next=>
         {
             if(error)
                 throw(error)
-            app.use(s)
             console.log('%s Module [%s]\t\tLoad: %s',chalk.green('✓'),chalk.red('Sass'),chalk.green('Successful'))
+            return app.use(s)
         })
         console.groupEnd()
+        /**
+         * Administrator Dashboard Route
+         */
         app.get('/administrator/',(req,res,next)=>
         {
             return res.status(200).render('administrator/home',{
                 title:'Dashboard'
             })
         })
+        /**
+         * Routs
+         */
         router((error,routs)=>
         {
             if(error)
                 throw(error)
-            app.use(routs)   
+            return app.use(routs)   
         })
         /**
          * Initialize Pug (jade)
@@ -157,30 +163,26 @@ exports.run=next=>
             if(error)
                 throw(error)
             app.set('views',views)
-            app.set('view engine','pug')
             views.forEach(p=>
             {
                 console.log('%s Views \t\t\tLoad: %s\t\tFrom: %s',chalk.green('✓'),chalk.green('Successful'),chalk.gray(p))
             })
             console.groupEnd()
+            return app.set('view engine','pug')
         })
         /**
          * Set Static files path
          */
-        app.use('/',express.static(path.join(__dirname,'public')))
-
-        //app.use('/favicon.ico',express.static(path.join(__dirname,'../public/images/favicon.ico')))
         app.use(favicon(path.join(__dirname, '../public/images/', 'favicon.ico')))
-
+        app.use('/',express.static(path.join(__dirname,'public')))
         app.use('/js/lib',express.static(path.join(__dirname,'node_modules/angular')))
         app.use('/js/lib',express.static(path.join(__dirname,'node_modules/popper.js/dist/umd')))
         app.use('/js/lib',express.static(path.join(__dirname,'node_modules/bootstrap/dist/js')))
         app.use('/js/lib',express.static(path.join(__dirname,'node_modules/jquery/dist')))
         app.use('/webfonts',express.static(path.join(__dirname,'node_modules/@fortawesome/fontawesome-free/webfonts')))
         /**
-         * 
+         * Default Pages
          */
-        app.listen(process.env.APP_PORT||80)
         app.get('',(req,res,next)=>
         {
             return res.status(404).render('home',{
@@ -193,6 +195,10 @@ exports.run=next=>
                 title:'404'
             })
         })
+        /**
+         * Listening Port
+         */
+        app.listen(process.env.APP_PORT||80)
         /**
          * Return app
          */

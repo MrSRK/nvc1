@@ -4,17 +4,13 @@ module.exports.find=next=>
 {
     return controller.find(Model,(error,data)=>
     {
-        if(error)
-            return next(error,data)
         return next(error,data)
     })
 }
-module.exports.findById=(id,next)=>
+module.exports.findById=(_id,next)=>
 {
-    return controller.findById(Model,id,(error,data)=>
+    return controller.findById(Model,_id,(error,data)=>
     {
-        if(error)
-            return next(error,data)
         return next(error,data)
     })
 }
@@ -22,26 +18,20 @@ module.exports.saveOne=(data,next)=>
 {
     return controller.saveOne(Model,data,(error,data)=>
     {
-        if(error)
-            return next(error,data)
         return next(error,data)
     })
 }
-module.exports.findByIdAndUpdate=(id,data,next)=>
+module.exports.findByIdAndUpdate=(_id,data,next)=>
 {
-    return controller.findById(Model,id,data,(error,data)=>
+    return controller.findById(Model,_id,data,(error,data)=>
     {
-        if(error)
-            return next(error,data)
         return next(error,data)
     })
 }
-module.exports.findOneAndDelete=(id,data,next)=>
+module.exports.findOneAndDelete=(_id,data,next)=>
 {
-    return controller.findOneAndDelete(Model,id,data,(error,data)=>
+    return controller.findOneAndDelete(Model,_id,data,(error,data)=>
     {
-        if(error)
-            return next(error,data)
         return next(error,data)
     })
 }

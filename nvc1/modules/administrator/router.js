@@ -38,7 +38,6 @@ router.get('/administrator/'+routerName+'/:_id',(req,res,next)=>
             data:data
         })
     })
-    
 })
 router.get('/administrator/'+routerName+'/signUp',(req,res,next)=>
 {
@@ -74,14 +73,13 @@ router.get('/'+routerName+'/',(req,res,next)=>
             title:'List',
             data:data
         })
-
     })
-    
 })
 router.get('/'+routerName+'/:_id',(req,res,next)=>
 {
-    return controller.findById(req.param._id,(error,data)=>
+    return controller.findById(req.params._id,(error,data)=>
     {
+        console.log(error)
         if(error)
             return res.status(500).render('500',{
                 title:'Error',
@@ -107,12 +105,11 @@ router.get('/api/'+routerName,(req,res,next)=>
         if(error)
             return res.status(500).json({status:false,data:data,error:error})
         return res.status(200).json({status:true,data:data,error:error})
-
     })
 })
 router.get('/api/'+routerName+'/:_id',(req,res,next)=>
 {
-    return controller.findById(req.param._id,(error,data)=>
+    return controller.findById(req.params._id,(error,data)=>
     {
         if(error)
             return res.status(500).json({status:false,data:data,error:error})
