@@ -26,7 +26,7 @@ router.get('/administrator/'+routerName+'/new',(req,res,next)=>
 })
 router.get('/administrator/'+routerName+'/:_id',(req,res,next)=>
 {
-    return controller.findById(req.param._id,(error,data)=>
+    return controller.findById(req.params._id,(error,data)=>
     {
         if(error)
             return res.status(500).render('500',{
@@ -98,13 +98,35 @@ router.all('/'+routerName+'/*',(req,res,next)=>
     })
 })
 //Api Routs
-router.get('/api/'+routerName,(req,res,next)=>
+router.get('/api/'+routerName,controller.authentication,(req,res,next)=>
 {
     return controller.find((error,data)=>
     {
         if(error)
             return res.status(500).json({status:false,data:data,error:error})
         return res.status(200).json({status:true,data:data,error:error})
+    })
+})
+router.post('/api/'+routerName+'/signIn',(req,res,next)=>
+{
+    let data=req.body.data
+    return controller.signIn(data,routerName,(status,error,data)=>
+    {
+        if(status==401)
+            return res.status(401).json({status:false,data:data,error:error}) 
+        if(error)
+            return res.status(500).json({status:false,data:data,error:error})
+        if(!req.session.user)
+            req.session.user={}
+        //No need session info to confirm jwt
+        req.session.user[routerName]={
+            _id:data.user._id,
+            root:routerName,
+            email:data.user.email,
+            token:data.token,
+            root:routerName
+        }
+        return res.status(200).json({status:true,data:{token:data.token},error:error})
     })
 })
 router.get('/api/'+routerName+'/:_id',(req,res,next)=>
@@ -129,7 +151,7 @@ router.put('/api/'+routerName+'/',(req,res,next)=>
 router.patch('/api/'+routerName+'/:_id',(req,res,next)=>
 {
     let data=req.body.data
-    return controller.findByIdAndUpdate(req.param._id,data,(error,data)=>
+    return controller.findByIdAndUpdate(req.params._id,data,(error,data)=>
     {
         if(error)
             return res.status(500).json({status:false,data:data,error:error})
@@ -138,7 +160,7 @@ router.patch('/api/'+routerName+'/:_id',(req,res,next)=>
 })
 router.delete('/api/'+routerName+'/:_id',(req,res,next)=>
 {
-    return controller.findOneAndDelete(req.param._id,(error,data)=>
+    return controller.findOneAndDelete(req.params._id,(error,data)=>
     {
         if(error)
             return res.status(500).json({status:false,data:data,error:error})

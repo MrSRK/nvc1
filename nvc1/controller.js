@@ -1,3 +1,5 @@
+const bcrypt = require('bcrypt-nodejs')
+const jwt = require("jsonwebtoken")
 const ObjectId=require('mongoose').Types.ObjectId;
 module.exports.find=(Model,next)=>
 {
@@ -27,14 +29,24 @@ module.exports.findByIdAndUpdate=(Model,_id,data,next)=>
 {
     if(!ObjectId.isValid(_id))
         return next({name:'Error',message:'Invalid ID'})
-    const options=
+    if(data.password)
+    bcrypt.genSalt(10,(error,salt)=>
     {
-        new:true,
-        select:'-password'
-    }
-    return Model.findByIdAndUpdate(_id,data,options,(error,data)=>
-    {
-        return next(error,data)
+        if(error)
+            return next(error)
+        bcrypt.hash(data.password,salt,null,(error,hash)=>
+        {
+            data.password=hash
+            const options=
+            {
+                new:true,
+                select:'-password'
+            }
+            return Model.findByIdAndUpdate(_id,data,options,(error,data)=>
+            {
+                return next(error,data)
+            })
+        })
     })
 }
 module.exports.findOneAndDelete=(Model,_id,data,next)=>
@@ -45,4 +57,46 @@ module.exports.findOneAndDelete=(Model,_id,data,next)=>
     {
         return next(error,data)
     })
+}
+module.exports.signIn=(Model,JWT_KEY,data,next)=>
+{
+    try
+    {
+        if(!data||!data.email)
+            return next(401,{name:"Error",message:"Email or Password not set"},null)
+         if(!data||!data.password)
+            return next(401,{name:"Error",message:"Email or Password not set"},null)
+        const email=data.email
+        const password=data.password
+        return Model.findOne({email:email},(error,data)=>
+        {
+            if(error)
+                return next(500,error,null)
+            if(!data)
+                return next(401,{name:"Error",message:"Incorrect Email or Password"},null)
+            bcrypt.compare(password,data.password,(error,match)=>
+            {
+                if(error)
+                    return next(500,error,null)
+                if(!match)
+                    return next(401,{name:"Error",message:"Incorrect Email or Password"},null)
+                const privateKey=(process.env.JWT_KEY||'10')+JWT_KEY
+                const expires=process.env.JWT_EXPIRES||"1h"
+                const token=jwt.sign(
+                {
+                    userId:data._id,
+                    root:JWT_KEY
+                },
+                privateKey,
+                {
+                    expiresIn:expires
+                })
+                return next(200,null,{user:data,token:token})
+            })
+        })
+    }
+    catch(error)
+    {
+        return next(500,error,null)
+    }
 }
