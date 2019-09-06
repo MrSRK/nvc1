@@ -1,0 +1,12 @@
+.text-right
+    .btn-group(role='group', aria-label='Basic example')
+        a.btn.btn-outline-primary(href='/administrator/'+root+'/new')
+            i.fas.fa-plus.mr-2
+            span New
+        a.btn.btn-outline-primary(href='/administrator/'+root+'')
+            i.fas.fa-th.mr-2
+            span Table
+        if root!='administrator'
+            a.btn.btn-outline-primary(href='/'+root+'/',target="_blank")
+                i.fas.fa-eye.mr-2
+                span Preview

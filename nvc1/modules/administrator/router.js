@@ -7,26 +7,18 @@ exports.route=(menu)=>
     //Administrator Routs
     router.get('/administrator/'+routerName,(req,res,next)=>
     {
-        return controller.find((error,data)=>
-        {
-            if(error)
-                return res.status(500).render('500',{
-                    title:'Error',
-                    error:error,
-                    menu:menu
-                })
-            return res.status(200).render('administrator/table',{
-                title:'Table',
-                data:data,
-                menu:menu
-            })
+        return res.status(200).render('administrator/table',{
+            title:'Table',
+            menu:menu,
+            root:routerName
         })
     })
     router.get('/administrator/'+routerName+'/new',(req,res,next)=>
     {
         return res.status(200).render('administrator/new',{
             title:'New',
-            menu:menu
+            menu:menu,
+            root:routerName
         })
     })
     router.get('/administrator/'+routerName+'/:_id',(req,res,next)=>
@@ -37,12 +29,14 @@ exports.route=(menu)=>
                 return res.status(500).render('500',{
                     title:'Edit',
                     error:error,
-                    menu:menu
+                    menu:menu,
+                    root:routerName
                 })
             return res.status(200).render('administrator/edit',{
                 title:'Edit',
                 data:data,
-                menu:menu
+                menu:menu,
+                root:routerName
             })
         })
     })
@@ -50,21 +44,24 @@ exports.route=(menu)=>
     {
         return res.status(200).render('administrator/signUp',{
             title:'sign Up',
-            menu:menu
+            menu:menu,
+            root:routerName
         })
     })
     router.get('/administrator/'+routerName+'/signIn',(req,res,next)=>
     {
         return res.status(200).render('administrator/signIn',{
             title:'sign In',
-            menu:menu
+            menu:menu,
+            root:routerName
         })
     })
     router.all('/administrator/'+routerName+'/*',(req,res,next)=>
     {
         return res.status(404).render('404',{
             title:'404',
-            menu:menu
+            menu:menu,
+            root:routerName
         })
     })
     /**
@@ -108,7 +105,7 @@ exports.route=(menu)=>
         })
     })
     //Api Routs
-    router.get('/api/'+routerName,controller.authentication,(req,res,next)=>
+    router.get('/api/'+routerName,(req,res,next)=>
     {
         return controller.find((error,data)=>
         {
