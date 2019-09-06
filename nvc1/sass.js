@@ -6,8 +6,8 @@ module.exports=next=>
     {
         const s=sass({
             outputStyle: 'compressed',
-            src:path.join(__dirname,'public'),
-            dest: path.join(__dirname,'public')
+            src:path.join(__dirname,'../public'),
+            dest: path.join(__dirname,'../public')
         })
         return next(null,s)
     }

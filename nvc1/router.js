@@ -3,18 +3,39 @@ const path=require('path')
 const fs=require('fs')
 const chalk=require('chalk')
 const router=express.Router()
-module.exports=n=>
+
+
+const routes=[]
+exports.route=n=>
 {
     try
     {
+        /**
+         * Administrator Dashboard Route
+         */
         loadNvc1Routers(error=>
         {
             if(error)
                 throw(error,null)
             loadRouters(error=>
             {
+                let menu=[]
+                routes.forEach(r=>{
+                    menu[menu.length]=r.name
+                })
                 if(error)
                     throw(error,null)
+                router.get('/administrator/',(req,res,next)=>
+                {
+                    return res.status(200).render('administrator/home',{
+                        title:'Dashboard',
+                        menu:menu
+                    })
+                })
+                routes.forEach(r=>
+                {
+                    router.use(require(r.path).route(menu))
+                })
             })
         })
         return n(null,router)
@@ -43,7 +64,8 @@ const loadRouters=(next)=>
                     {
                         if(fs.existsSync(nvc1ModulesPath+'\\'+file+'\\router.js'))
                         {
-                            router.use(require(nvc1ModulesPath+'\\'+file+'\\router.js'))
+                            //router.use(require(nvc1ModulesPath+'\\'+file+'\\router.js'))
+                            routes[routes.length]={name:file,path:nvc1ModulesPath+'\\'+file+'\\router.js'}
                             console.log('%s Router [%s]\tAdd: %s',chalk.green('✓'),chalk.red(file),chalk.green('Successful'))
                         } 
                     })  
@@ -78,7 +100,8 @@ const loadNvc1Routers=(next)=>
                     {
                         if(fs.existsSync(nvc1ModulesPath+'\\'+file+'\\router.js'))
                         {
-                            router.use(require(nvc1ModulesPath+'\\'+file+'\\router.js'))
+                            //router.use(require(nvc1ModulesPath+'\\'+file+'\\router.js'))
+                            routes[routes.length]={name:file,path:nvc1ModulesPath+'\\'+file+'\\router.js'}
                             console.log('%s Router [%s]\tAdd: %s',chalk.green('✓'),chalk.red(file),chalk.green('Successful'))
                         }
                     })

@@ -28,6 +28,13 @@ module.exports.findByIdAndUpdate=(_id,data,next)=>
         return next(error,data)
     })
 }
+module.exports.findByIdAndUpdatePassword=(_id,data,next)=>
+{
+    return controller.findByIdAndUpdatePassword(Model,_id,data,(error,data)=>
+    {
+        return next(error,data)
+    })
+}
 module.exports.findOneAndDelete=(_id,data,next)=>
 {
     return controller.findOneAndDelete(Model,_id,data,(error,data)=>

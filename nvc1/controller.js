@@ -30,6 +30,7 @@ module.exports.findByIdAndUpdate=(Model,_id,data,next)=>
     if(!ObjectId.isValid(_id))
         return next({name:'Error',message:'Invalid ID'})
     if(data.password)
+        delete data.password
     bcrypt.genSalt(10,(error,salt)=>
     {
         if(error)
@@ -43,6 +44,32 @@ module.exports.findByIdAndUpdate=(Model,_id,data,next)=>
                 select:'-password'
             }
             return Model.findByIdAndUpdate(_id,data,options,(error,data)=>
+            {
+                return next(error,data)
+            })
+        })
+    })
+}
+module.exports.findByIdAndUpdatePassword=(Model,_id,data,next)=>
+{
+    if(!ObjectId.isValid(_id))
+        return next({name:'Error',message:'Invalid ID'})
+    if(!data.password)
+        return next({name:"Error",message:"Password not set"})
+
+    bcrypt.genSalt(10,(error,salt)=>
+    {
+        if(error)
+            return next(error)
+        bcrypt.hash(data.password,salt,null,(error,hash)=>
+        {
+            data.password=hash
+            const options=
+            {
+                new:true,
+                select:'-password'
+            }
+            return Model.findByIdAndUpdate(_id,{password:data.password},options,(error,data)=>
             {
                 return next(error,data)
             })

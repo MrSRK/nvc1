@@ -137,18 +137,22 @@ exports.run=next=>
         })
         console.groupEnd()
         /**
-         * Administrator Dashboard Route
+         * Set Static files path
          */
-        app.get('/administrator/',(req,res,next)=>
-        {
-            return res.status(200).render('administrator/home',{
-                title:'Dashboard'
-            })
-        })
+        app.use('/',express.static(path.join(__dirname,'../public')))
+        app.use('/js/lib',express.static(path.join(__dirname,'../node_modules/angular')))
+        app.use('/js/lib',express.static(path.join(__dirname,'../node_modules/popper.js/dist/umd')))
+        app.use('/js/lib',express.static(path.join(__dirname,'../node_modules/bootstrap/dist/js')))
+        app.use('/js/lib',express.static(path.join(__dirname,'../node_modules/jquery/dist')))
+        app.use('/webfonts',express.static(path.join(__dirname,'../node_modules/@fortawesome/fontawesome-free/webfonts')))
+
+        app.use(favicon(path.join(__dirname, '../public/images/', 'favicon.ico')))
+
+        
         /**
          * Routs
          */
-        router((error,routs)=>
+        router.route((error,routs)=>
         {
             if(error)
                 throw(error)
@@ -171,21 +175,11 @@ exports.run=next=>
             return app.set('view engine','pug')
         })
         /**
-         * Set Static files path
-         */
-        app.use(favicon(path.join(__dirname, '../public/images/', 'favicon.ico')))
-        app.use('/',express.static(path.join(__dirname,'public')))
-        app.use('/js/lib',express.static(path.join(__dirname,'node_modules/angular')))
-        app.use('/js/lib',express.static(path.join(__dirname,'node_modules/popper.js/dist/umd')))
-        app.use('/js/lib',express.static(path.join(__dirname,'node_modules/bootstrap/dist/js')))
-        app.use('/js/lib',express.static(path.join(__dirname,'node_modules/jquery/dist')))
-        app.use('/webfonts',express.static(path.join(__dirname,'node_modules/@fortawesome/fontawesome-free/webfonts')))
-        /**
          * Default Pages
          */
         app.get('',(req,res,next)=>
         {
-            return res.status(404).render('home',{
+            return res.status(200).render('home',{
                 title:'Home Page'
             })
         })
