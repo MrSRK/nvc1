@@ -12,7 +12,7 @@ block content
                 .col.col-2
             .row(data-ng-if="data" data-ng-repeat="rec in data")
                 .col.col-1.d-none.d-lg-block
-                    button.btn.btn-link.btn-sm(data-ng-click="setActive($index)")
+                    button.btn.btn-link.btn-sm(data-ng-click="setActiveTable($index)",ng-disabled="rec.disabled")
                         i.far.fa-check-circle.text-success(data-ng-if="rec.active")
                         i.far.fa-times-circle.text-danger(data-ng-if="!rec.active")
                 .col.col-2.small.text-muted.text-left.d-none.d-lg-block
@@ -22,12 +22,12 @@ block content
                 .col.col-1.text-right.small.d-none.d-lg-block(data-ng-bind="rec.createdAt | date:'dd-MM-yyyy'")
                 .col.col-1.text-right.small.d-none.d-lg-block(data-ng-bind="rec.updatedAt | date:'dd-MM-yyyy'")
                 .col.col-md-3.col-lg-2.text-right.small
-                    button.btn.btn-link.btn-sm.d-lg-none(data-ng-click="setActive($index)")
+                    button.btn.btn-link.btn-sm.d-lg-none(data-ng-click="setActiveTable($index)",ng-disabled="rec.disabled")
                         i.far.fa-check-circle.text-success(data-ng-if="rec.active")
                         i.far.fa-times-circle.text-danger(data-ng-if="!rec.active")
-                    a.btn.btn-link.btn-sm(href="/"+router+"/{{rec._id}}")
+                    a.btn.btn-link.btn-sm(href="/"+root+"/{{rec._id}}")
                         i.fas.fa-eye
-                    a.btn.btn-link.btn-sm(href="/"+router+"/edit/{{rec._id}}")
+                    a.btn.btn-link.btn-sm(href="/administrator/"+root+"/{{rec._id}}")
                         i.fas.fa-edit
-                    button.btn.btn-link.btn-sm(type="button",data-ng-click="removeSigle($index,rec._id)")
+                    button.btn.btn-link.btn-sm(type="button",data-ng-click="removeSingleTable($index)",ng-disabled="rec.disabled")
                         i.fas.fa-trash-alt.text-danger

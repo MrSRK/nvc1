@@ -76,11 +76,15 @@ module.exports.findByIdAndUpdatePassword=(Model,_id,data,next)=>
         })
     })
 }
-module.exports.findOneAndDelete=(Model,_id,data,next)=>
+module.exports.findOneAndDelete=(Model,_id,next)=>
 {
     if(!ObjectId.isValid(_id))
         return next({name:'Error',message:'Invalid ID'})
-    return Model.findOneAndDelete(_id,data,options,(error,data)=>
+    const options=
+    {
+        select:'-password'
+    }
+    return Model.findByIdAndRemove(_id,options,(error,data)=>
     {
         return next(error,data)
     })

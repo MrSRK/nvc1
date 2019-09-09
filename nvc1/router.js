@@ -3,7 +3,6 @@ const path=require('path')
 const fs=require('fs')
 const chalk=require('chalk')
 const router=express.Router()
-
 const routes=[]
 exports.route=n=>
 {
