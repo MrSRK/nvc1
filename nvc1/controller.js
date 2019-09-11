@@ -3,6 +3,7 @@ const jwt = require("jsonwebtoken")
 const ObjectId=require('mongoose').Types.ObjectId;
 const fs = require("fs")
 const storage=require('./storage')
+const path=require('path')
 
 exports.imageUpload=(Model,_id,root,req,res,next)=>
 {
@@ -56,7 +57,7 @@ exports.imageRemove=(Model,_imgId,next)=>
 					{
 						if(error)
 							console.log(error)
-				   }); 
+				   });
 				}
 			})
 		let _id=data._id
@@ -156,7 +157,7 @@ module.exports.findByIdAndUpdatePassword=(Model,_id,data,next)=>
 		})
 	})
 }
-module.exports.findOneAndDelete=(Model,_id,next)=>
+module.exports.findOneAndDelete=(Model,_id,root,next)=>
 {
 	if(!ObjectId.isValid(_id))
 		return next({name:'Error',message:'Invalid ID'})
@@ -166,6 +167,12 @@ module.exports.findOneAndDelete=(Model,_id,next)=>
 	}
 	return Model.findByIdAndRemove(_id,options,(error,data)=>
 	{
+		p=path.join(__dirname,'../uploads/images/'+root+'/'+_id)
+		fs.rmdir(p,error=>
+		{
+			if(error)
+				console.log(error)
+		}); 
 		return next(error,data)
 	})
 }

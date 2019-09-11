@@ -56,9 +56,9 @@ exports.findByIdAndUpdatePassword=(_id,data,next)=>
         return next(error,data)
     })
 }
-exports.findOneAndDelete=(_id,data,next)=>
+exports.findOneAndDelete=(_id,root,data,next)=>
 {
-    return controller.findOneAndDelete(Model,_id,data,(error,data)=>
+    return controller.findOneAndDelete(Model,_id,root,data,(error,data)=>
     {
         return next(error,data)
     })

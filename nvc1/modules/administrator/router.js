@@ -192,7 +192,7 @@ exports.route=(menu)=>
 	})
 	router.delete('/api/'+routerName+'/:_id',(req,res,next)=>
 	{
-		return controller.findOneAndDelete(req.params._id,(error,data)=>
+		return controller.findOneAndDelete(req.params._id,routerName,(error,data)=>
 		{
 			if(error)
 				return res.status(500).json({status:false,data:data,error:error})
