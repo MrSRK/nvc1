@@ -12,7 +12,6 @@ const session=require('./session')
 const cookie=require('./cookie')
 const security=require('./security')
 const database=require('./database')
-const storage=require('./storage')
 const sass=require('./sass')
 const router=require('./router')
 const view=require('./view')
@@ -115,16 +114,6 @@ exports.run=next=>
                 throw(error)
             console.log('%s Module [%s]\t\tLoad: %s',chalk.green('✓'),chalk.red('Database'),chalk.green('Successful'))
         })
-        /*storage.create('images','image',(error,upload)=>
-        {
-            if(error)
-                throw(error)
-            console.log('%s Module [%s] Load: %s',chalk.green('✓'),chalk.red('Storage'),chalk.green('Successful'))
-            return upload(req,res,error=>
-            {
-                console.log('test')
-            })
-        })*/
         /**
          * Use Sass Module
          */
@@ -140,6 +129,7 @@ exports.run=next=>
          * Set Static files path
          */
         app.use('/',express.static(path.join(__dirname,'../public')))
+        app.use('/images',express.static(path.join(__dirname,'../uploads/images')))
         app.use('/js/lib',express.static(path.join(__dirname,'../node_modules/angular')))
         app.use('/js/lib',express.static(path.join(__dirname,'../node_modules/popper.js/dist/umd')))
         app.use('/js/lib',express.static(path.join(__dirname,'../node_modules/bootstrap/dist/js')))

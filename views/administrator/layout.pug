@@ -7,7 +7,7 @@ html
     title #{title} - Administrator Dashboard - MrSRK
     //link(rel='shortcut icon', href='/favicon.png')
     link(rel='stylesheet', href='/css/main.css')
-  body(data-ng-app="app",data-ng-controller="page-handler")
+  body.ng-cloak(data-ng-app="app",data-ng-controller="page-handler",data-ng-cloak)
     include partials/header
     .container.pt-5
       block content

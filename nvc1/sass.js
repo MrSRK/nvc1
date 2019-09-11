@@ -5,7 +5,7 @@ module.exports=next=>
     try
     {
         const s=sass({
-            outputStyle: 'compressed',
+           // outputStyle: 'compressed',
             src:path.join(__dirname,'../public'),
             dest: path.join(__dirname,'../public')
         })

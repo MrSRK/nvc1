@@ -1,4 +1,5 @@
 const mongoose=require('mongoose')
+require('mongoose-schema-jsonschema')(mongoose);
 /**
  * Connect to MongoDB.
 */

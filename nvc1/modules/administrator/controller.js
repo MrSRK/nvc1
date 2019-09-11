@@ -1,48 +1,69 @@
 const Model=require('./model')
 const controller=require('../../controller')
-module.exports.find=next=>
+exports.getSchema=next=>
+{
+    return controller.getSchema(Model,schema=>
+    {
+        return next(schema)
+    })
+}
+exports.imageUpload=(_id,root,req,res,next)=>
+{
+    return controller.imageUpload(Model,_id,root,req,res,(error,data)=>
+    {
+        return next(error,data)
+    })
+}
+exports.imageRemove=(_imgId,next)=>
+{
+    return controller.imageRemove(Model,_imgId,(error,data)=>
+    {
+        return next(error,data)
+    })
+}
+exports.find=next=>
 {
     return controller.find(Model,(error,data)=>
     {
         return next(error,data)
     })
 }
-module.exports.findById=(_id,next)=>
+exports.findById=(_id,next)=>
 {
     return controller.findById(Model,_id,(error,data)=>
     {
         return next(error,data)
     })
 }
-module.exports.saveOne=(data,next)=>
+exports.saveOne=(data,next)=>
 {
     return controller.saveOne(Model,data,(error,data)=>
     {
         return next(error,data)
     })
 }
-module.exports.findByIdAndUpdate=(_id,data,next)=>
+exports.findByIdAndUpdate=(_id,data,next)=>
 {
     return controller.findByIdAndUpdate(Model,_id,data,(error,data)=>
     {
         return next(error,data)
     })
 }
-module.exports.findByIdAndUpdatePassword=(_id,data,next)=>
+exports.findByIdAndUpdatePassword=(_id,data,next)=>
 {
     return controller.findByIdAndUpdatePassword(Model,_id,data,(error,data)=>
     {
         return next(error,data)
     })
 }
-module.exports.findOneAndDelete=(_id,data,next)=>
+exports.findOneAndDelete=(_id,data,next)=>
 {
     return controller.findOneAndDelete(Model,_id,data,(error,data)=>
     {
         return next(error,data)
     })
 }
-module.exports.signIn=(data,routerName,next)=>
+exports.signIn=(data,routerName,next)=>
 {
     JWT_KEY=routerName
     return controller.signIn(Model,JWT_KEY,data,(status,error,data)=>
@@ -50,7 +71,7 @@ module.exports.signIn=(data,routerName,next)=>
         return next(status,error,data)
     })
 }
-module.exports.authentication=(req,res,next)=>
+exports.authentication=(req,res,next)=>
 {
     const jwt = require("jsonwebtoken")
     try
@@ -67,6 +88,4 @@ module.exports.authentication=(req,res,next)=>
     {
         console.log(error)
     }
-   
-    
 }
