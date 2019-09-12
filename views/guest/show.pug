@@ -1,1 +1,5 @@
-h1 GUEST SHOW
+extends ../layout
+block content
+	.mt-5(data-ng-init="setRoute('"+root+"')")
+		div(data-ng-init="getList()")
+			p {{data}}

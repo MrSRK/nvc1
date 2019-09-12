@@ -122,6 +122,24 @@ exports.route=(menu)=>
 			return res.status(200).json({status:true,data:data,error:error})
 		})
 	})
+	router.patch('/api/'+routerName+'/upload-image/:_id',authenticationApi,(req,res,next)=>
+	{
+		return controller.imageUpload(req.params._id,'/'+routerName,req,res,(error,data)=>
+		{
+			if(error)
+				return res.status(500).json({status:false,data:data,error:error})
+			return res.status(200).json({status:true,data:data,error:error})
+		})
+	})
+	router.patch('/api/'+routerName+'/remove-image/:_imgId',authenticationApi,(req,res,next)=>
+	{
+		return controller.imageRemove(req.params._imgId,(error,data)=>
+		{
+			if(error)
+				return res.status(500).json({status:false,data:data,error:error})
+			return res.status(200).json({status:true,data:data,error:error})
+		})
+	})
 	router.delete('/api/'+routerName+'/:_id',authenticationApi,(req,res,next)=>
 	{
 		return controller.findOneAndDelete(req.params._id,routerName,(error,data)=>

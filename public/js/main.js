@@ -56,6 +56,33 @@ app.controller("page-handler",['$scope','$http','$interval',($scope,$http,$inter
 		})
 	}
 	/**
+	 * GET Table
+	 */
+	$scope.getList=_=>
+	{
+		$scope.message.info="Working..."
+		delete $scope.message.success
+		delete $scope.message.danger
+		const url='/api/'+$scope.root+'/'
+		$http.get(url)
+		.then(response=>
+		{
+			$scope.data=response.data.data
+			$scope.message.info="Operation complete"
+			delete $scope.message.danger
+			delete $scope.message.success
+		},
+		error=>
+		{
+			$scope.message.danger="Operation cannot complete"
+			delete $scope.message.info
+			delete $scope.message.success
+			console.log(error)
+			if(error.status==401)
+				window.location.href="/administrator/administrator/signIn"
+		})
+	}
+	/**
 	 * Get Single Record
 	 */
 	$scope.getSingle=_id=>

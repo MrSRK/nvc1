@@ -15,7 +15,6 @@ exports.authentication=(req,res,next)=>
 		next(error)
 	})
 }
-
 exports.getSchema=next=>
 {
 	return controller.getSchema(Model,schema=>
@@ -61,6 +60,13 @@ exports.saveOne=(data,next)=>
 exports.findByIdAndUpdate=(_id,data,next)=>
 {
 	return controller.findByIdAndUpdate(Model,_id,data,(error,data)=>
+	{
+		return next(error,data)
+	})
+}
+exports.findByIdAndUpdatePassword=(_id,data,next)=>
+{
+	return controller.findByIdAndUpdatePassword(Model,_id,data,(error,data)=>
 	{
 		return next(error,data)
 	})
