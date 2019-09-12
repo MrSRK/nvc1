@@ -73,7 +73,8 @@ exports.route=(menu)=>
 				title:'Show',
 				menu:menu,
 				root:routerName,
-				schema:schema
+				schema:schema,
+				_id:req.params._id
 			})
 		})
 	})

@@ -32,8 +32,8 @@ block content
 					small(data-ng-bind="rec.company")
 				.col.col-md-7.col-lg-5.text-info(data-ng-if="!rec.company")
 					small(data-ng-bind="rec.name")
-				.col.col-1.text-right.small.d-none.d-lg-block(data-ng-bind="rec.createdAt | date:'dd-MM-yyyy'")
-				.col.col-1.text-right.small.d-none.d-lg-block(data-ng-bind="rec.updatedAt | date:'dd-MM-yyyy'")
+				.col.col-1.text-right.small.d-none.d-lg-block(data-ng-bind="rec.createdAt | date:'dd-MM-yy'")
+				.col.col-1.text-right.small.d-none.d-lg-block(data-ng-bind="rec.updatedAt | date:'dd-MM-yy'")
 				.col.col-md-3.col-lg-2.text-right.small
 					button.btn.btn-link.btn-sm.d-lg-none(data-ng-click="setActiveTable($index)",ng-disabled="rec.disabled")
 						i.far.fa-check-circle.text-success(data-ng-if="rec.active")

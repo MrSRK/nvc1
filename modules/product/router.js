@@ -69,11 +69,12 @@ exports.route=(menu)=>
 	{
 		return controller.getSchema(schema=>
 		{
-			return res.status(200).render('guest/show',{
+			return res.status(200).render('guest/showProduct',{
 				title:'Show',
 				menu:menu,
 				root:routerName,
-				schema:schema
+				schema:schema,
+				_id:req.params._id
 			})
 		})
 	})

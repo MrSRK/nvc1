@@ -14,7 +14,9 @@ const image=mongoose.Schema({
 const schema=new mongoose.Schema({
 	active:{type:Boolean,default:true},
 	name:{type:String},
+	code:{type:String},
 	price:{type:Number},
+	description:{type:String},
 	images:[image]
 },
 {

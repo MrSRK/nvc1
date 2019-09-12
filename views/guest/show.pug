@@ -1,5 +1,9 @@
 extends ../layout
 block content
 	.mt-5(data-ng-init="setRoute('"+root+"')")
-		div(data-ng-init="getList()")
-			p {{data}}
+		div(data-ng-init="getSingle('"+_id+"')")
+			.row
+				.col-4.col-sm-12.col-lg-4
+					img.img-fluid(data-ng-if="data.images&&data.images.length>0",data-ng-src="/images/"+root+"/{{data._id}}/{{data.images[0].filename}}")
+				.col-8.col-sm-12.col-lg-8
+					h5(data-ng-bind="data.name")
