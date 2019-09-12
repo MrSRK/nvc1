@@ -72,45 +72,6 @@ exports.route=(menu)=>
 			root:routerName
 		})
 	})
-	/**
-	 * Guest Routs
-	 */
-	router.get('/'+routerName+'/',(req,res,next)=>
-	{
-		return controller.find((error,data)=>
-		{
-			if(error)
-				return res.status(500).render('500',{
-					title:'List',
-					error:error
-				})
-			return res.status(200).render('guest/list',{
-				title:'List',
-				data:data
-			})
-		})
-	})
-	router.get('/'+routerName+'/:_id',(req,res,next)=>
-	{
-		return controller.findById(req.params._id,(error,data)=>
-		{
-			if(error)
-				return res.status(500).render('500',{
-					title:'Error',
-					error:error
-				})
-			return res.status(200).render('guest/show',{
-				title:'Show',
-				data:data
-			})
-		})
-	})
-	router.all('/'+routerName+'/*',(req,res,next)=>
-	{
-		return res.status(404).render('404',{
-			title:'404'
-		})
-	})
 	//Api Routs
 	router.get('/api/'+routerName,authenticationApi,(req,res,next)=>
 	{

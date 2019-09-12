@@ -26,7 +26,11 @@ block content
                         i.far.fa-times-circle.text-danger(data-ng-if="!rec.active")
                 .col.col-2.small.text-muted.text-left.d-none.d-lg-block
                     small(data-ng-bind="rec._id")
-                .col.col-md-7.col-lg-5.text-info
+                .col.col-md-4.col-lg-3.text-info(data-ng-if="rec.company")
+                    small(data-ng-bind="rec.name")
+                .col.col-md-3.col-lg-2.text-info(data-ng-if="rec.company")
+                    small(data-ng-bind="rec.company")
+                .col.col-md-7.col-lg-5.text-info(data-ng-if="!rec.company")
                     small(data-ng-bind="rec.name")
                 .col.col-1.text-right.small.d-none.d-lg-block(data-ng-bind="rec.createdAt | date:'dd-MM-yyyy'")
                 .col.col-1.text-right.small.d-none.d-lg-block(data-ng-bind="rec.updatedAt | date:'dd-MM-yyyy'")

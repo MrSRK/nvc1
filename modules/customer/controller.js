@@ -1,5 +1,5 @@
 const Model=require('./model')
-const controller=require('../../controller')
+const controller=require('../../nvc1/controller')
 
 exports.authenticationApi=(req,res,next)=>
 {
