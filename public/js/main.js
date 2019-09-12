@@ -15,7 +15,6 @@ app.config(['$qProvider','$httpProvider','$compileProvider',($qProvider,$httpPro
 {
     $qProvider.errorOnUnhandledRejections(false)
 	$httpProvider.interceptors.push('httpRequestInterceptor')
-	$compileProvider.debugInfoEnabled(false)
 }])
 app.controller("page-handler",['$scope','$http','$interval',($scope,$http,$interval)=>
 {

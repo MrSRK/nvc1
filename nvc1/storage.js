@@ -2,7 +2,7 @@ const multer=require('multer')
 const fs = require('fs')
 const path = require('path')
 let config={
-    root:process.env.STORAGE_ROOT,
+    root:process.env.STORAGE_ROOT||'uploads/',
     subroot:'',
     name:'file'
 }
@@ -35,6 +35,8 @@ exports.create=(subroot,name,next)=>
     try
     {
         const filepath=path.join(__dirname, '../'+config.root+config.subroot)
+        console.log(filepath)
+
         fs.exists(filepath,exists=>
         {
             if(!exists)

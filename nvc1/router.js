@@ -3,6 +3,8 @@ const path=require('path')
 const fs=require('fs')
 const chalk=require('chalk')
 const router=express.Router()
+const controller=require('./controller')
+const statusMonitor = require('express-status-monitor')();
 const routes=[]
 exports.route=n=>
 {
@@ -23,13 +25,15 @@ exports.route=n=>
                 })
                 if(error)
                     throw(error,null)
-                router.get('/administrator/',(req,res,next)=>
+                router.get('/administrator/',controller.authentication,(req,res,next)=>
                 {
                     return res.status(200).render('administrator/home',{
                         title:'Dashboard',
                         menu:menu
                     })
                 })
+                router.use(statusMonitor)
+                router.get('/administrator/status',controller.authentication,statusMonitor.pageRoute)
                 routes.forEach(r=>
                 {
                     router.use(require(r.path).route(menu))

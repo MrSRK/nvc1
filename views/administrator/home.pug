@@ -1,3 +1,14 @@
 extends layout
 block content
-  h1 Administrator Dashboard
+  h1 Welcome to Administrator Dashboard
+  .row.mt-5
+    .col-12.small.pb-2 Administrator's Options
+    each item in menu
+      .col-6.col-sm-6.col-lg-3
+        .card
+          a.btn.btn-primary.card-body.text-center.py-3(href="/administrator/"+item)
+            i.fas.fa-cog.fa-spin.fa-5x
+            h3.card-title.mt-2.text-capitalize
+              span.mr-1=item
+              small (s)
+      
