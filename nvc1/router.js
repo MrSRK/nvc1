@@ -72,7 +72,7 @@ exports.route=n=>
 						protocol: 'http',
   						host: 'localhost',
 						port: '80',
-						path: '/administrator',
+						path: '/administrator'
 					}]
 				}
 				const statusMonitor=expressStatusMonitorrequire(config)
