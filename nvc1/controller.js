@@ -5,13 +5,41 @@ const fs = require("fs")
 const storage=require('./storage')
 const path=require('path')
 
+exports.authenticationApi=(req,res,next)=>
+{
+	if(req.headers&&req.headers.authorization)
+	{
+		try
+		{
+			const token=req.headers.authorization.split(" ")[1]
+			//This works only for administrator
+			const privateKey=(process.env.JWT_KEY||'10')+'administrator'
+			const decoded=jwt.verify(token,privateKey)
+			//console.log(decoded)
+			return next()
+		}
+		catch(error)
+		{
+			return res.status(401).json({status:false,error:{name:"Error",message:"Unauthorized"}})
+		}	
+	}
+	else
+		return res.status(401).json({status:false,error:{name:"Error",message:"Unauthorized"}})
+	//
+}
+exports.authentication=(req,res,next)=>
+{
+	if(req.session&&req.session.user&&req.session.user.administrator)
+		return next()
+	return res.redirect(302,'/administrator/administrator/signIn')
+}
+
 exports.imageUpload=(Model,_id,root,req,res,next)=>
 {
 	storage.create('images'+root+'/'+_id,'image',(error,upload)=>
 	{
 		if(error)
 			throw(error)
-		//console.log('%s Module [%s] Load: %s',chalk.green('✓'),chalk.red('Storage'),chalk.green('Successful'))
 		return upload(req,res,error=>
 		{
 			if(error)
@@ -137,7 +165,6 @@ module.exports.findByIdAndUpdatePassword=(Model,_id,data,next)=>
 		return next({name:'Error',message:'Invalid ID'})
 	if(!data.password)
 		return next({name:"Error",message:"Password not set"})
-
 	bcrypt.genSalt(10,(error,salt)=>
 	{
 		if(error)

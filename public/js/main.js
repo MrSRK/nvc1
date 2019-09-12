@@ -1,8 +1,30 @@
 const app=angular.module("app",[])
-
+app.factory('httpRequestInterceptor',()=>
+{
+    return {
+        request:config=>
+        {
+            const token=localStorage.getItem('token')
+            if(token)
+                config.headers['Authorization']='Bearer '+token
+            return config
+        }
+    }
+})
+app.config(['$qProvider','$httpProvider','$compileProvider',($qProvider,$httpProvider,$compileProvider)=>
+{
+    $qProvider.errorOnUnhandledRejections(false)
+	$httpProvider.interceptors.push('httpRequestInterceptor')
+	$compileProvider.debugInfoEnabled(false)
+}])
 app.controller("page-handler",['$scope','$http','$interval',($scope,$http,$interval)=>
 {
+	$scope.token=localStorage.getItem('token')
 	$scope.message={}
+	$scope.signOut=_=>
+	{
+		localStorage.removeItem('token')
+	}
 	$scope.setRoute=root=>
 	{
 		$scope.root=root
@@ -30,6 +52,8 @@ app.controller("page-handler",['$scope','$http','$interval',($scope,$http,$inter
 			delete $scope.message.info
 			delete $scope.message.success
 			console.log(error)
+			if(error.status==401)
+				window.location.href="/administrator/administrator/signIn"
 		})
 	}
 	/**
@@ -55,6 +79,8 @@ app.controller("page-handler",['$scope','$http','$interval',($scope,$http,$inter
 			delete $scope.message.info
 			delete $scope.message.success
 			console.log(error)
+			if(error.status==401)
+				window.location.href="/administrator/administrator/signIn"
 		})
 	}
 	/**
@@ -87,6 +113,8 @@ app.controller("page-handler",['$scope','$http','$interval',($scope,$http,$inter
 			delete $scope.message.success
 			$scope.disabled=false
 			console.log(error)
+			if(error.status==401)
+				window.location.href="/administrator/administrator/signIn"
 		})
 	}
 	/**
@@ -120,6 +148,8 @@ app.controller("page-handler",['$scope','$http','$interval',($scope,$http,$inter
 			delete $scope.message.success
 			$scope.disabled=false
 			console.log(error)
+			if(error.status==401)
+				window.location.href="/administrator/administrator/signIn"
 		})
 	}
 	/**
@@ -149,6 +179,8 @@ app.controller("page-handler",['$scope','$http','$interval',($scope,$http,$inter
 			delete $scope.message.success
 			delete $scope.data[index].disabled
 			console.log(error)
+			if(error.status==401)
+				window.location.href="/administrator/administrator/signIn"
 		})
 	}
 	/**
@@ -190,6 +222,8 @@ app.controller("page-handler",['$scope','$http','$interval',($scope,$http,$inter
 				delete $scope.message.success
 				delete $scope.data[index].disabled
 				console.log(error)
+				if(error.status==401)
+					window.location.href="/administrator/administrator/signIn"
 			})
 		}
 	}
@@ -207,6 +241,8 @@ app.controller("page-handler",['$scope','$http','$interval',($scope,$http,$inter
 		error=>
 		{
 			console.log(error)
+			if(error.status==401)
+				window.location.href="/administrator/administrator/signIn"
 		})
 	}
 	$scope.insertImage=_id=>
@@ -249,6 +285,37 @@ app.controller("page-handler",['$scope','$http','$interval',($scope,$http,$inter
 			$scope.message.danger="Operation cannot complete"
 			delete $scope.message.info
 			delete $scope.message.success
+			if(error.status==401)
+				window.location.href="/administrator/administrator/signIn"
+		})
+	}
+	$scope.administratorLogin=_=>
+	{
+		let url='/api/administrator/signIn'
+		$http.post(url,{data:{email:$scope.data.email,password:$scope.data.password}})
+		.then(response=>
+		{
+			if(response.data.error)
+			{
+				console.log(response.data.error)
+				$scope.message.danger=response.data.error.message
+				delete $scope.message.info
+				delete $scope.message.success
+			}
+			else
+			{
+				localStorage.setItem('token',response.data.data.token)
+				window.location="/administrator"
+			}
+		},
+		response=>
+		{
+			console.log(response)
+			$scope.message.danger=response.data.error.message
+			delete $scope.message.info
+			delete $scope.message.success
+			if(response.status==401)
+				window.location.href="/administrator/administrator/signIn"
 		})
 	}
 }])

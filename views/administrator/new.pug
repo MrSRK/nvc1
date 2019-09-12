@@ -27,7 +27,7 @@ block content
             else if name=='password'
                 .form-group
                     label.text-capitalize(for='form-'+name)=name
-                    input.form-control(type='password',id='form-'+name,data-ng-model="data."+name,placeholder="Set New Password")
+                    input.form-control(type='password',id='form-'+name,data-ng-model="data."+name)
             else if name=="_id"
 
             else if name=="updatedAt"||name=="createdAt"

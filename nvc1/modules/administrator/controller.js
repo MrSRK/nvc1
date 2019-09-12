@@ -1,5 +1,15 @@
 const Model=require('./model')
 const controller=require('../../controller')
+
+exports.authenticationApi=(req,res,next)=>
+{
+    return controller.authenticationApi(req,res,error=>
+    {
+        next(error)
+    })
+}
+exports.authentication=controller.authentication
+
 exports.getSchema=next=>
 {
     return controller.getSchema(Model,schema=>
@@ -70,22 +80,4 @@ exports.signIn=(data,routerName,next)=>
     {
         return next(status,error,data)
     })
-}
-exports.authentication=(req,res,next)=>
-{
-    const jwt = require("jsonwebtoken")
-    try
-    {
-        if(!req.headers.authorization)
-            throw(error)
-        const token=req.headers.authorization.split(" ")[1]
-        const privateKey=(process.env.JWT_KEY||'10')
-        const decoded=jwt.verify(token,privateKey)
-        console.log(decoded)
-        return next()
-    }
-    catch(error)
-    {
-        console.log(error)
-    }
 }
