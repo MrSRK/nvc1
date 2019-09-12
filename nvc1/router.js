@@ -26,6 +26,16 @@ exports.route=n=>
 				})
 				if(error)
 					throw(error,null)
+				/**
+				 * Default Pages
+				 */
+				router.get('/',(req,res,next)=>
+				{
+					return res.status(200).render('home',{
+						title:'Home Page',
+						menu:menu
+					})
+				})
 				router.get('/administrator',controller.authentication,(req,res,next)=>
 				{
 					return res.status(200).render('administrator/home',{
@@ -81,6 +91,12 @@ exports.route=n=>
 				routes.forEach(r=>
 				{
 					router.use(require(r.path).route(menu))
+				})
+				router.get('*',(req,res,n)=>
+				{
+					return res.status(404).render('404',{
+						title:'404'
+					})
 				})
 			})
 		})

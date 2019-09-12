@@ -1,46 +1,46 @@
 extends layout
 block content
-    include partials/buttonGroup
-    .mt-5(data-ng-init="setRoute('"+root+"')")
-        div(data-ng-init="getTable()")
-            .alert.alert-info(role="alert",data-ng-show="message.info")
-                strong Info: 
-                span(data-ng-bind="message.info")
-            .alert.alert-success(role="alert",data-ng-show="message.success")
-                strong Success: 
-                span(data-ng-bind="message.success") 
-            .alert.alert-danger(role="alert",data-ng-show="message.danger")
-                strong Danger: 
-                span(data-ng-bind="message.danger")
-            .row.mb-4
-                .col.col-1.d-none.d-lg-block
-                .col.col-2.d-none.d-lg-block.font-weight-bold ID
-                .col.col-md-7.col-lg-5.text-left.small.text-dark.font-weight-bold Name
-                .col.col-1.d-none.d-lg-block.small.text-dark.font-weight-bold Date Add
-                .col.col-1.d-lg-block.small.text-dark.font-weight-bold Date Mod
-                .col.col-2
-            .row(data-ng-if="data" data-ng-repeat="rec in data")
-                .col.col-1.d-none.d-lg-block
-                    button.btn.btn-link.btn-sm(data-ng-click="setActiveTable($index)",ng-disabled="rec.disabled")
-                        i.far.fa-check-circle.text-success(data-ng-if="rec.active")
-                        i.far.fa-times-circle.text-danger(data-ng-if="!rec.active")
-                .col.col-2.small.text-muted.text-left.d-none.d-lg-block
-                    small(data-ng-bind="rec._id")
-                .col.col-md-4.col-lg-3.text-info(data-ng-if="rec.company")
-                    small(data-ng-bind="rec.name")
-                .col.col-md-3.col-lg-2.text-info(data-ng-if="rec.company")
-                    small(data-ng-bind="rec.company")
-                .col.col-md-7.col-lg-5.text-info(data-ng-if="!rec.company")
-                    small(data-ng-bind="rec.name")
-                .col.col-1.text-right.small.d-none.d-lg-block(data-ng-bind="rec.createdAt | date:'dd-MM-yyyy'")
-                .col.col-1.text-right.small.d-none.d-lg-block(data-ng-bind="rec.updatedAt | date:'dd-MM-yyyy'")
-                .col.col-md-3.col-lg-2.text-right.small
-                    button.btn.btn-link.btn-sm.d-lg-none(data-ng-click="setActiveTable($index)",ng-disabled="rec.disabled")
-                        i.far.fa-check-circle.text-success(data-ng-if="rec.active")
-                        i.far.fa-times-circle.text-danger(data-ng-if="!rec.active")
-                    a.btn.btn-link.btn-sm(href="/"+root+"/{{rec._id}}",target="_blank")
-                        i.fas.fa-eye
-                    a.btn.btn-link.btn-sm(href="/administrator/"+root+"/{{rec._id}}")
-                        i.fas.fa-edit
-                    button.btn.btn-link.btn-sm(type="button",data-ng-click="removeSingleTable($index)",ng-disabled="rec.disabled")
-                        i.fas.fa-trash-alt.text-danger
+	include partials/buttonGroup
+	.mt-5(data-ng-init="setRoute('"+root+"')")
+		div(data-ng-init="getTable()")
+			.alert.alert-info(role="alert",data-ng-show="message.info")
+				strong Info: 
+				span(data-ng-bind="message.info")
+			.alert.alert-success(role="alert",data-ng-show="message.success")
+				strong Success: 
+				span(data-ng-bind="message.success") 
+			.alert.alert-danger(role="alert",data-ng-show="message.danger")
+				strong Danger: 
+				span(data-ng-bind="message.danger")
+			.row.mb-4
+				.col.col-1.d-none.d-lg-block
+				.col.col-2.d-none.d-lg-block.font-weight-bold ID
+				.col.col-md-7.col-lg-5.text-left.small.text-dark.font-weight-bold Name
+				.col.col-1.d-none.d-lg-block.small.text-dark.font-weight-bold Date Add
+				.col.col-1.d-lg-block.small.text-dark.font-weight-bold Date Mod
+				.col.col-2
+			.row(data-ng-if="data" data-ng-repeat="rec in data")
+				.col.col-1.d-none.d-lg-block
+					button.btn.btn-link.btn-sm(data-ng-click="setActiveTable($index)",ng-disabled="rec.disabled")
+						i.far.fa-check-circle.text-success(data-ng-if="rec.active")
+						i.far.fa-times-circle.text-danger(data-ng-if="!rec.active")
+				.col.col-2.small.text-muted.text-left.d-none.d-lg-block
+					small(data-ng-bind="rec._id")
+				.col.col-md-4.col-lg-3.text-info(data-ng-if="rec.company")
+					small(data-ng-bind="rec.name")
+				.col.col-md-3.col-lg-2.text-info(data-ng-if="rec.company")
+					small(data-ng-bind="rec.company")
+				.col.col-md-7.col-lg-5.text-info(data-ng-if="!rec.company")
+					small(data-ng-bind="rec.name")
+				.col.col-1.text-right.small.d-none.d-lg-block(data-ng-bind="rec.createdAt | date:'dd-MM-yyyy'")
+				.col.col-1.text-right.small.d-none.d-lg-block(data-ng-bind="rec.updatedAt | date:'dd-MM-yyyy'")
+				.col.col-md-3.col-lg-2.text-right.small
+					button.btn.btn-link.btn-sm.d-lg-none(data-ng-click="setActiveTable($index)",ng-disabled="rec.disabled")
+						i.far.fa-check-circle.text-success(data-ng-if="rec.active")
+						i.far.fa-times-circle.text-danger(data-ng-if="!rec.active")
+					a.btn.btn-link.btn-sm(href="/"+root+"/{{rec._id}}",target="_blank")
+						i.fas.fa-eye
+					a.btn.btn-link.btn-sm(href="/administrator/"+root+"/{{rec._id}}")
+						i.fas.fa-edit
+					button.btn.btn-link.btn-sm(type="button",data-ng-click="removeSingleTable($index)",ng-disabled="rec.disabled")
+						i.fas.fa-trash-alt.text-danger

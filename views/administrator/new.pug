@@ -1,53 +1,53 @@
 extends layout
 block content
-    include partials/buttonGroup
-    .my-4(data-ng-init="setRoute('"+root+"')")
-        h1
-            span.text-capitalize=root+' '
-            span Insert Page
-    .alert.alert-info(role="alert",data-ng-show="message.info")
-        strong Info: 
-        span(data-ng-bind="message.info")
-    .alert.alert-success(role="alert",data-ng-show="message.success")
-        strong Success: 
-        span(data-ng-bind="message.success") 
-    .alert.alert-danger(role="alert",data-ng-show="message.danger")
-        strong Danger: 
-        span(data-ng-bind="message.danger")
-    form(data-ng-submit="insertSingle()")
-        each field,name in schema.properties
-            if field.type=='boolean'
-                .form-check.pb-2
-                    input.form-check-input(type='checkbox',id='form-'+name,data-ng-model="data."+name)
-                    label.form-check-label.text-capitalize(for='form-'+name)=name
-            else if name=='email'
-                .form-group
-                    label.text-capitalize(for='form-'+name)=name
-                    input.form-control(type='email',id='form-'+name,data-ng-model="data."+name)
-            else if name=='password'
-                .form-group
-                    label.text-capitalize(for='form-'+name)=name
-                    input.form-control(type='password',id='form-'+name,data-ng-model="data."+name)
-            else if name=="_id"
+	include partials/buttonGroup
+	.my-4(data-ng-init="setRoute('"+root+"')")
+		h1
+			span.text-capitalize=root+' '
+			span Insert Page
+	.alert.alert-info(role="alert",data-ng-show="message.info")
+		strong Info: 
+		span(data-ng-bind="message.info")
+	.alert.alert-success(role="alert",data-ng-show="message.success")
+		strong Success: 
+		span(data-ng-bind="message.success") 
+	.alert.alert-danger(role="alert",data-ng-show="message.danger")
+		strong Danger: 
+		span(data-ng-bind="message.danger")
+	form(data-ng-submit="insertSingle()")
+		each field,name in schema.properties
+			if field.type=='boolean'
+				.form-check.pb-2
+					input.form-check-input(type='checkbox',id='form-'+name,data-ng-model="data."+name)
+					label.form-check-label.text-capitalize(for='form-'+name)=name
+			else if name=='email'
+				.form-group
+					label.text-capitalize(for='form-'+name)=name
+					input.form-control(type='email',id='form-'+name,data-ng-model="data."+name)
+			else if name=='password'
+				.form-group
+					label.text-capitalize(for='form-'+name)=name
+					input.form-control(type='password',id='form-'+name,data-ng-model="data."+name)
+			else if name=="_id"
 
-            else if name=="updatedAt"||name=="createdAt"
+			else if name=="updatedAt"||name=="createdAt"
 
-            else if field.format=="date-time"
-                .form-group
-                    label.text-capitalize(for='form-'+name)=name
-                    input.form-control(type='date',id='form-'+name,data-ng-model="data."+name)
-            else if field.type=='array'
-                if(name=='images')
+			else if field.format=="date-time"
+				.form-group
+					label.text-capitalize(for='form-'+name)=name
+					input.form-control(type='date',id='form-'+name,data-ng-model="data."+name)
+			else if field.type=='array'
+				if(name=='images')
 
-                else
-                    .form-group
-                        label.text-capitalize(for='form-'+name)=name
-                        label.form-control.text-danger(id='form-'+name) Not Support
-            else
-                .form-group
-                    label.text-capitalize(for='form-'+name)=name
-                    input.form-control(type='text',id='form-'+name,data-ng-model="data."+name)
-        .text-right.pt-3
-            button.btn.btn-primary(type='submit',ng-disabled="disabled")
-                i.fas.fa-save.mr-2
-                span Save
+				else
+					.form-group
+						label.text-capitalize(for='form-'+name)=name
+						label.form-control.text-danger(id='form-'+name) Not Support
+			else
+				.form-group
+					label.text-capitalize(for='form-'+name)=name
+					input.form-control(type='text',id='form-'+name,data-ng-model="data."+name)
+		.text-right.pt-3
+			button.btn.btn-primary(type='submit',ng-disabled="disabled")
+				i.fas.fa-save.mr-2
+				span Save

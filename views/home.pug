@@ -1,3 +1,14 @@
 extends layout
 block content
-  h1 This is the home page
+	h1 Welcome to Vision Group Administration Area
+	.row.mt-5
+		.col-12.small.pb-2 Options
+		each item in menu
+			if item!='administrator'
+				.col-6.col-sm-6.col-lg-3
+					.card
+						a.btn.btn-primary.card-body.text-center.py-3(href="/"+item)
+							i.fas.fa-cog.fa-spin.fa-5x
+							h3.card-title.mt-2.text-capitalize
+								span.mr-1=item
+								small (s)

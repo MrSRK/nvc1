@@ -4,14 +4,14 @@ const errorhandler=require('errorhandler')
  */
 exports.handler=next=>
 {
-    try
-    {
-        if(process.env.NODE_ENV==='development')
-            return next(null,errorhandler)
-        return next(null,null)
-    }
-    catch(error)
-    {
-        return next(error,null)
-    }
+	try
+	{
+		if(process.env.NODE_ENV==='development')
+			return next(null,errorhandler)
+		return next(null,null)
+	}
+	catch(error)
+	{
+		return next(error,null)
+	}
 }
