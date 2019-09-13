@@ -1,6 +1,9 @@
 const Model=require('./model')
 const controller=require('../../nvc1/controller')
-
+exports.renewToken=(req)=>
+{
+	return controller.renewToken(req)
+}
 exports.authenticationApi=(req,res,next)=>
 {
 	return controller.authenticationApi(req,res,error=>

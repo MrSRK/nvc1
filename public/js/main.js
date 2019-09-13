@@ -18,7 +18,36 @@ app.config(['$qProvider','$httpProvider','$compileProvider',($qProvider,$httpPro
 }])
 app.controller("page-handler",['$scope','$http','$interval',($scope,$http,$interval)=>
 {
-	$scope.token=localStorage.getItem('token')
+	const parseToken=(data)=>
+	{
+		if(data&&data.token)
+			localStorage.setItem('token',data.token)
+		$scope.token=localStorage.getItem('token')
+		const dtoken=JSON.parse(window.atob(localStorage.getItem('token').split('.')[1]))
+		const extime=new Date(dtoken.exp*1000).getTime()
+		const time=new Date().getTime()
+		var exp=((extime-time)/1000).toFixed(0)
+		$scope.user={
+			name:decodeURIComponent(dtoken.userName),
+			exp:exp,
+			m:parseInt(exp/60,10),
+            s:exp%60
+		}
+	}
+	parseToken()
+	if($scope.token)
+	{
+		$interval(_=>
+		{
+			if($scope.user.exp--<=0)
+			{
+				this.stop()
+				$scope.signOut()
+			}   
+			$scope.user.m=parseInt($scope.user.exp/60,10)
+			$scope.user.s=$scope.user.exp%60
+		},1000)
+	}
 	$scope.message={}
 	$scope.signOut=_=>
 	{
@@ -44,6 +73,9 @@ app.controller("page-handler",['$scope','$http','$interval',($scope,$http,$inter
 			$scope.message.info="Operation complete"
 			delete $scope.message.danger
 			delete $scope.message.success
+			if(response.data.token)
+				parseToken(response.data)
+				
 		},
 		error=>
 		{
@@ -131,6 +163,9 @@ app.controller("page-handler",['$scope','$http','$interval',($scope,$http,$inter
 			delete $scope.message.danger
 			delete $scope.message.success
 			$scope.disabled=false
+			//Renew Token
+			if(response.data.token)
+				parseToken(response.data)
 		},
 		error=>
 		{
@@ -166,6 +201,9 @@ app.controller("page-handler",['$scope','$http','$interval',($scope,$http,$inter
 			delete $scope.message.success
 			$scope.disabled=false
 			window.location.href='/administrator/'+$scope.root
+			//Renew Token
+			if(response.data.token)
+				parseToken(response.data)
 		},
 		error=>
 		{
@@ -197,6 +235,9 @@ app.controller("page-handler",['$scope','$http','$interval',($scope,$http,$inter
 			$scope.message.success="Operation completed successfully"
 			delete $scope.message.info
 			delete $scope.message.danger
+			//Renew Token
+			if(response.data.token)
+				parseToken(response.data)
 		},
 		error=>
 		{
@@ -232,6 +273,9 @@ app.controller("page-handler",['$scope','$http','$interval',($scope,$http,$inter
 					$scope.message.success="Operation completed successfully"
 					delete $scope.message.info
 					delete $scope.message.danger
+					//Renew Token
+					if(response.data.token)
+						parseToken(response.data)
 				}
 				else
 				{
@@ -263,6 +307,9 @@ app.controller("page-handler",['$scope','$http','$interval',($scope,$http,$inter
 				$scope.data.images=response.data.data.images
 			else
 				$scope.data.images=[]
+			//Renew Token
+			if(response.data.token)
+				parseToken(response.data)
 		},
 		error=>
 		{
@@ -304,6 +351,9 @@ app.controller("page-handler",['$scope','$http','$interval',($scope,$http,$inter
 			delete $scope.message.info
 			delete $scope.message.danger
 			$scope.uploadImageVar={uploading:false,val:100,per:'100%'}
+			//Renew Token
+			if(response.data.token)
+				parseToken(response.data)
 		}, 
 		error=>
 		{

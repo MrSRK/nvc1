@@ -5,6 +5,33 @@ const fs = require("fs")
 const storage=require('./storage')
 const path=require('path')
 
+exports.renewToken=(req)=>
+{
+	try
+	{
+		const privateKey=(process.env.JWT_KEY||'10')+'administrator'
+		const expires=process.env.JWT_EXPIRES||"1h"
+
+		const oldToken=req.headers.authorization.split(" ")[1]
+		const decoded=jwt.verify(oldToken,privateKey)
+
+		const token=jwt.sign(
+		{
+			userId:decoded.userId,
+			root:decoded.root,
+			userName:decoded.userName
+		},
+		privateKey,
+		{
+			expiresIn:expires
+		})
+		return token
+	}
+	catch(error)
+	{
+		return null
+	}
+}
 exports.authenticationApi=(req,res,next)=>
 {
 	if(req.headers&&req.headers.authorization)
@@ -230,7 +257,8 @@ module.exports.signIn=(Model,JWT_KEY,data,next)=>
 				const token=jwt.sign(
 				{
 					userId:data._id,
-					root:JWT_KEY
+					root:JWT_KEY,
+					userName:encodeURIComponent(data.name)
 				},
 				privateKey,
 				{

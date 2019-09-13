@@ -79,7 +79,8 @@ exports.route=(menu)=>
 		{
 			if(error)
 				return res.status(500).json({status:false,data:data,error:error})
-			return res.status(200).json({status:true,data:data,error:error})
+			token=controller.renewToken(req)
+			return res.status(200).json({status:true,token:token,data:data,error:error})
 		})
 	})
 	router.post('/api/1/'+routerName+'/signIn',(req,res,next)=>
@@ -110,7 +111,8 @@ exports.route=(menu)=>
 		{
 			if(error)
 				return res.status(500).json({status:false,data:data,error:error})
-			return res.status(200).json({status:true,data:data,error:error})
+			token=controller.renewToken(req)	
+			return res.status(200).json({status:true,token:token,data:data,error:error})
 		})
 	})
 	router.put('/api/1/'+routerName+'/',authenticationApi,(req,res,next)=>
@@ -120,7 +122,8 @@ exports.route=(menu)=>
 		{
 			if(error)
 				return res.status(500).json({status:false,data:data,error:error})
-			return res.status(200).json({status:true,data:data,error:error})
+			token=controller.renewToken(req)
+			return res.status(200).json({status:true,token:token,data:data,error:error})
 		})
 	})
 	router.patch('/api/1/'+routerName+'/:_id',authenticationApi,(req,res,next)=>
@@ -130,7 +133,8 @@ exports.route=(menu)=>
 		{
 			if(error)
 				return res.status(500).json({status:false,data:data,error:error})
-			return res.status(200).json({status:true,data:data,error:error})
+			token=controller.renewToken(req)
+			return res.status(200).json({status:true,token:token,data:data,error:error})
 		})
 	})
 	router.patch('/api/1/'+routerName+'/upload-image/:_id',authenticationApi,(req,res,next)=>
@@ -139,7 +143,8 @@ exports.route=(menu)=>
 		{
 			if(error)
 				return res.status(500).json({status:false,data:data,error:error})
-			return res.status(200).json({status:true,data:data,error:error})
+			token=controller.renewToken(req)
+			return res.status(200).json({status:true,token:token,data:data,error:error})
 		})
 	})
 	router.patch('/api/1/'+routerName+'/remove-image/:_imgId',authenticationApi,(req,res,next)=>
@@ -148,7 +153,8 @@ exports.route=(menu)=>
 		{
 			if(error)
 				return res.status(500).json({status:false,data:data,error:error})
-			return res.status(200).json({status:true,data:data,error:error})
+			token=controller.renewToken(req)
+			return res.status(200).json({status:true,token:token,data:data,error:error})
 		})
 	})
 	router.patch('/api/1/'+routerName+'/reset-password/:_id',authenticationApi,(req,res,next)=>
@@ -158,7 +164,8 @@ exports.route=(menu)=>
 		{
 			if(error)
 				return res.status(500).json({status:false,data:data,error:error})
-			return res.status(200).json({status:true,data:data,error:error})
+			token=controller.renewToken(req)
+			return res.status(200).json({status:true,token:token,data:data,error:error})
 		})
 	})
 	router.delete('/api/1/'+routerName+'/:_id',authenticationApi,(req,res,next)=>
@@ -167,7 +174,8 @@ exports.route=(menu)=>
 		{
 			if(error)
 				return res.status(500).json({status:false,data:data,error:error})
-			return res.status(200).json({status:true,data:data,error:error})
+			token=controller.renewToken(req)
+			return res.status(200).json({status:true,token:token,data:data,error:error})
 		})
 	})
 	router.all('/api/1/'+routerName+'/*',(req,res,next)=>
