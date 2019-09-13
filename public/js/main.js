@@ -36,7 +36,7 @@ app.controller("page-handler",['$scope','$http','$interval',($scope,$http,$inter
 		$scope.message.info="Working..."
 		delete $scope.message.success
 		delete $scope.message.danger
-		const url='/api/'+$scope.root+'/'
+		const url='/api/1/'+$scope.root+'/'
 		$http.get(url)
 		.then(response=>
 		{
@@ -63,7 +63,7 @@ app.controller("page-handler",['$scope','$http','$interval',($scope,$http,$inter
 		$scope.message.info="Working..."
 		delete $scope.message.success
 		delete $scope.message.danger
-		const url='/api/'+$scope.root+'/'
+		const url='/api/2/'+$scope.root+'/'
 		$http.get(url)
 		.then(response=>
 		{
@@ -90,7 +90,7 @@ app.controller("page-handler",['$scope','$http','$interval',($scope,$http,$inter
 		$scope.message.info="Working..."
 		delete $scope.message.success
 		delete $scope.message.danger
-		const url='/api/'+$scope.root+'/'+_id
+		const url='/api/2/'+$scope.root+'/'+_id
 		$http.get(url)
 		.then(response=>
 		{
@@ -117,7 +117,7 @@ app.controller("page-handler",['$scope','$http','$interval',($scope,$http,$inter
 		$scope.message.info="Working..."
 		delete $scope.message.success
 		delete $scope.message.danger
-		const url='/api/'+$scope.root+'/'+_id
+		const url='/api/1/'+$scope.root+'/'+_id
 		let data=$scope.data
 		if(data.password=='')
 			delete data.password
@@ -151,7 +151,7 @@ app.controller("page-handler",['$scope','$http','$interval',($scope,$http,$inter
 		$scope.message.info="Working..."
 		delete $scope.message.success
 		delete $scope.message.danger
-		const url='/api/'+$scope.root
+		const url='/api/1/'+$scope.root
 		let data=$scope.data
 		if(data.password=='')
 			delete data.password
@@ -187,7 +187,7 @@ app.controller("page-handler",['$scope','$http','$interval',($scope,$http,$inter
 		delete $scope.message.success
 		delete $scope.message.danger
 		let _id=$scope.data[index]._id
-		let url='/api/'+ $scope.root+'/'+_id
+		let url='/api/1/'+ $scope.root+'/'+_id
 		$scope.data[index].disabled=true
 		$http.patch(url,{data:{active:!$scope.data[index].active}})
 		.then(response=>
@@ -221,7 +221,7 @@ app.controller("page-handler",['$scope','$http','$interval',($scope,$http,$inter
 			delete $scope.message.success
 			delete $scope.message.danger
 			let _id=$scope.data[index]._id
-			let url='/api/'+ $scope.root+'/'+_id
+			let url='/api/1/'+ $scope.root+'/'+_id
 			$scope.data[index].disabled=true
 			$http.delete(url)
 			.then(response=>
@@ -255,7 +255,7 @@ app.controller("page-handler",['$scope','$http','$interval',($scope,$http,$inter
 	}
 	$scope.removeImage=_id=>
 	{
-		let url='/api/'+ $scope.root+'/remove-image/'+_id
+		let url='/api/1/'+ $scope.root+'/remove-image/'+_id
 		$http.patch(url)
 		.then(response=>
 		{
@@ -276,7 +276,7 @@ app.controller("page-handler",['$scope','$http','$interval',($scope,$http,$inter
 		var fd=new FormData()
 		if($('#from-image').length>0)
 		   fd.append('image', $('#from-image')[0].files[0])
-		let url='/api/'+$scope.root+'/upload-image/'+_id
+		let url='/api/1/'+$scope.root+'/upload-image/'+_id
 		$scope.uploadImageVar={uploading:true,val:0,per:0+'%'}
 		$http({
                 url:url,
@@ -317,7 +317,7 @@ app.controller("page-handler",['$scope','$http','$interval',($scope,$http,$inter
 	}
 	$scope.administratorLogin=_=>
 	{
-		let url='/api/administrator/signIn'
+		let url='/api/1/administrator/signIn'
 		$http.post(url,{data:{email:$scope.data.email,password:$scope.data.password}})
 		.then(response=>
 		{
