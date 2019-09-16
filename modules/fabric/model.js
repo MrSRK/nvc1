@@ -17,21 +17,12 @@ const color=new mongoose.Schema({
 	description:{type:String},
 	images:[image]
 })
-const fabric=new mongoose.Schema({
+const schema=new mongoose.Schema({
 	active:{type:Boolean,default:true},
 	name:{type:String},
 	color:color,
 	code:{type:String},
 	supplier:{type:String},
-	description:{type:String},
-	images:[image]
-})
-const schema=new mongoose.Schema({
-	active:{type:Boolean,default:true},
-	name:{type:String},
-	fabric:fabric,
-	code:{type:String},
-	price:{type:Number},
 	description:{type:String},
 	images:[image]
 },

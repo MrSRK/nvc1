@@ -10,28 +10,10 @@ const image=mongoose.Schema({
 	path:{type:String},
 	size:{type:Number},
 })
-const color=new mongoose.Schema({
-	active:{type:Boolean,default:true},
-	name:{type:String},
-	code:{type:String},
-	description:{type:String},
-	images:[image]
-})
-const fabric=new mongoose.Schema({
-	active:{type:Boolean,default:true},
-	name:{type:String},
-	color:color,
-	code:{type:String},
-	supplier:{type:String},
-	description:{type:String},
-	images:[image]
-})
 const schema=new mongoose.Schema({
 	active:{type:Boolean,default:true},
 	name:{type:String},
-	fabric:fabric,
 	code:{type:String},
-	price:{type:Number},
 	description:{type:String},
 	images:[image]
 },

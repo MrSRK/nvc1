@@ -22,23 +22,32 @@ app.controller("page-handler",['$scope','$http','$interval',($scope,$http,$inter
 	{
 		if(data&&data.token)
 			localStorage.setItem('token',data.token)
-		$scope.token=localStorage.getItem('token')
-		const dtoken=JSON.parse(window.atob(localStorage.getItem('token').split('.')[1]))
-		const extime=new Date(dtoken.exp*1000).getTime()
-		const time=new Date().getTime()
-		var exp=((extime-time)/1000).toFixed(0)
-		$scope.user={
-			name:decodeURIComponent(dtoken.userName),
-			exp:exp,
-			m:parseInt(exp/60,10),
-            s:exp%60
+		$scope.token=localStorage.getItem('token')||null
+		if($scope.token)
+		{
+			const dtoken=JSON.parse(window.atob($scope.token.split('.')[1]))
+			const extime=new Date(dtoken.exp*1000).getTime()
+			const time=new Date().getTime()
+			var exp=((extime-time)/1000).toFixed(0)
+			$scope.user={
+				name:decodeURIComponent(dtoken.userName),
+				exp:exp,
+				m:parseInt(exp/60,10),
+				s:exp%60
+			}
+			localStorage.setItem('userTimer',JSON.stringify($scope.user))
 		}
 	}
+	$scope.data={}
+	$scope.asideData={}
 	parseToken()
 	if($scope.token)
 	{
 		$interval(_=>
 		{
+			let user=JSON.parse(localStorage.getItem('userTimer'))
+			if(JSON.stringify($scope.user)!=JSON.stringify(user))
+				$scope.user=user
 			if($scope.user.exp--<=0)
 			{
 				this.stop()
@@ -46,6 +55,7 @@ app.controller("page-handler",['$scope','$http','$interval',($scope,$http,$inter
 			}   
 			$scope.user.m=parseInt($scope.user.exp/60,10)
 			$scope.user.s=$scope.user.exp%60
+			localStorage.setItem('userTimer',JSON.stringify($scope.user))
 		},1000)
 	}
 	$scope.message={}
@@ -166,6 +176,7 @@ app.controller("page-handler",['$scope','$http','$interval',($scope,$http,$inter
 			//Renew Token
 			if(response.data.token)
 				parseToken(response.data)
+			window.location.href="/administrator/"+$scope.root+"/"
 		},
 		error=>
 		{
@@ -204,6 +215,7 @@ app.controller("page-handler",['$scope','$http','$interval',($scope,$http,$inter
 			//Renew Token
 			if(response.data.token)
 				parseToken(response.data)
+			window.location.href="/administrator/"+$scope.root+"/"+response.data.data._id
 		},
 		error=>
 		{
@@ -393,5 +405,45 @@ app.controller("page-handler",['$scope','$http','$interval',($scope,$http,$inter
 			if(response.status==401)
 				window.location.href="/administrator/administrator/signIn"
 		})
+	}
+	$scope.loadAside=model=>
+	{
+		if(!$scope.asideData[model])
+			$scope.asideData[model]=[]
+		$scope.message.info="Working..."
+		delete $scope.message.success
+		delete $scope.message.danger
+		const url='/api/1/'+model+'/'
+		$http.get(url)
+		.then(response=>
+		{
+			console.log(response.data.data)
+			$scope.asideData[model]=response.data.data
+			console.log($scope.asideData.color)
+			$scope.message.info="Operation complete"
+			delete $scope.message.danger
+			delete $scope.message.success
+			if(response.data.token)
+				parseToken(response.data)
+			
+				
+		},
+		error=>
+		{
+			$scope.message.danger="Operation cannot complete"
+			delete $scope.message.info
+			delete $scope.message.success
+			console.log(error)
+			if(error.status==401)
+				window.location.href="/administrator/administrator/signIn"
+		})
+	}
+	$scope.deleteAsideOnData=model=>
+	{
+		delete $scope.data[model]
+	}
+	$scope.permalink=_=>
+	{
+		return window.location.href
 	}
 }])
