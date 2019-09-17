@@ -2,8 +2,7 @@ language: node_js
 services:
   - mongodb
 node_js:
+  - "8"
+  - "9"
   - "10"
-
-before_install:
-  - npm i -g npm
 script: "node app && echo \"Success: Test Complete\" && exit 0"
