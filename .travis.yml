@@ -3,4 +3,7 @@ services:
   - mongodb
 node_js:
   - "10"
-script: "echo \"Success: Test Complete\" && exit 1"
+
+before_install:
+  - npm i -g npm
+script: "set NODE_ENV=test && node app && echo \"Success: Test Complete\" && exit 0"
