@@ -4,7 +4,7 @@
 	"description": "NodeJS Vision Core 1",
 	"main": "app.js",
 	"scripts": {
-		"start":"node app"
+		"test":"set NODE_ENV=test && node app && exit 1"
 	},
 	"repository": {
 		"type": "git",

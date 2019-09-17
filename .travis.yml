@@ -6,4 +6,4 @@ node_js:
 
 before_install:
   - npm i -g npm
-script: node app
+script: npm start
