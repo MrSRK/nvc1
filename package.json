@@ -4,7 +4,6 @@
 	"description": "NodeJS Vision Core 1",
 	"main": "app.js",
 	"scripts": {
-		"test": "node app",
 		"start":"node app"
 	},
 	"repository": {
