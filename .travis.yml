@@ -5,4 +5,4 @@ node_js:
   - "8"
   - "9"
   - "10"
-script: "node app && echo \"Success: Test Complete\" && exit 0"
+script: "npm test"
