@@ -4,7 +4,7 @@
 	"description": "NodeJS Vision Core 1",
 	"main": "app.js",
 	"scripts": {
-		"test":"set TEST=1 && node app && echo \"Success: Test Complete\""
+		"test":"node app"
 	},
 	"repository": {
 		"type": "git",

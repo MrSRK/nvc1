@@ -2,7 +2,7 @@ const chalk=require('chalk')
 
 const nvc1=require('./nvc1/nvc1')
 
-nvc1.run((error,app)=>
+nvc1.run(async(error,app)=>
 {
 	try
 	{
@@ -15,10 +15,5 @@ nvc1.run((error,app)=>
 		console.error(error)
 		console.log('%s Process Exit...',chalk.blue('X'))
 		process.exit()
-	}
-	finally
-	{
-		if(process.env.TEST==true)
-			return process.exit()
 	}
 })

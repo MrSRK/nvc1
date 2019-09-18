@@ -11,22 +11,21 @@ exports.route=n=>
 {
 	try
 	{
-		const auth=controller.authFunctionsObject('administrator')
 		/**
 		 * Administrator Dashboard Route
 		 */
 		loadNvc1Routers(error=>
 		{
 			if(error)
-				throw(error)
+				throw(error,null)
 			loadRouters(error=>
 			{
-				if(error)
-					throw(error,null)
 				let menu=[]
 				routes.forEach(r=>{
 					menu[menu.length]=r.name
 				})
+				if(error)
+					throw(error,null)
 				/**
 				 * Default Pages
 				 */
@@ -37,7 +36,7 @@ exports.route=n=>
 						menu:menu
 					})
 				})
-				router.get('/administrator',auth['administrator'],(req,res,next)=>
+				router.get('/administrator',controller.authentication,(req,res,next)=>
 				{
 					return res.status(200).render('administrator/home',{
 						title:'Dashboard',
@@ -88,10 +87,10 @@ exports.route=n=>
 				}
 				const statusMonitor=expressStatusMonitorrequire(config)
 				router.use(statusMonitor)
-				router.get('/administrator/status',auth['administrator'],statusMonitor.pageRoute)
+				router.get('/administrator/status',controller.authentication,statusMonitor.pageRoute)
 				routes.forEach(r=>
 				{
-					//router.use(require(r.path).route(menu))
+					router.use(require(r.path).route(menu))
 				})
 				router.get('*',(req,res,n)=>
 				{
@@ -125,10 +124,10 @@ const loadRouters=(next)=>
 						console.log('%s %s',chalk.gray('-'),chalk.gray('none'))
 					files.forEach(file=>
 					{
-						if(fs.existsSync(nvc1ModulesPath+'\\'+file+'\\index.js'))
+						if(fs.existsSync(nvc1ModulesPath+'\\'+file+'\\router.js'))
 						{
-							//////////router.use(require(nvc1ModulesPath+'\\'+file+'\\router.js'))
-							routes[routes.length]={name:file,path:nvc1ModulesPath+'\\'+file+'\\index.js'}
+							//router.use(require(nvc1ModulesPath+'\\'+file+'\\router.js'))
+							routes[routes.length]={name:file,path:nvc1ModulesPath+'\\'+file+'\\router.js'}
 							console.log('%s Router [%s]\tAdd: %s',chalk.green('✓'),chalk.red(file),chalk.green('Successful'))
 						} 
 					})  
@@ -161,10 +160,10 @@ const loadNvc1Routers=(next)=>
 						console.log('%s %s',chalk.gray('-'),chalk.gray('none'))
 					files.forEach(file=>
 					{
-						if(fs.existsSync(nvc1ModulesPath+'\\'+file+'\\inxex.js'))
+						if(fs.existsSync(nvc1ModulesPath+'\\'+file+'\\router.js'))
 						{
-							////////////router.use(require(nvc1ModulesPath+'\\'+file+'\\router.js'))
-							//routes[routes.length]={name:file,path:nvc1ModulesPath+'\\'+file+'\\router.js'}
+							//router.use(require(nvc1ModulesPath+'\\'+file+'\\router.js'))
+							routes[routes.length]={name:file,path:nvc1ModulesPath+'\\'+file+'\\router.js'}
 							console.log('%s Router [%s]\tAdd: %s',chalk.green('✓'),chalk.red(file),chalk.green('Successful'))
 						}
 					})

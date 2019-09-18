@@ -48,7 +48,7 @@ app.controller("page-handler",['$scope','$http','$interval',($scope,$http,$inter
 			let user=JSON.parse(localStorage.getItem('userTimer'))
 			if(JSON.stringify($scope.user)!=JSON.stringify(user))
 				$scope.user=user
-			if($scope.user.exp--<=0)
+			if($scope.user.exp--<=1)
 			{
 				this.stop()
 				$scope.signOut()
@@ -62,6 +62,7 @@ app.controller("page-handler",['$scope','$http','$interval',($scope,$http,$inter
 	$scope.signOut=_=>
 	{
 		localStorage.removeItem('token')
+		window.location.href="/administrator/administrator/signIn"
 	}
 	$scope.setRoute=root=>
 	{
