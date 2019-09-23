@@ -88,7 +88,7 @@ exports.route=n=>
 				const statusMonitor=expressStatusMonitorrequire(config)
 				router.use(statusMonitor)
 				router.get('/administrator/status',auth['administrator'],statusMonitor.pageRoute)
-				routes.forEach(r=>
+				routes.reverse().forEach(r=>
 				{
 					let ro=require(r.path)
 					ro.setCoreController(controller)

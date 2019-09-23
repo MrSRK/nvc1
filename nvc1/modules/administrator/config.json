@@ -61,22 +61,6 @@
         ],
         "guest":[
             {
-                "__comment":"Guest List (View)",
-                "method":"get",
-                "route":"/[name]",
-                "auth":"guest",
-                "pug":"guest/list",
-                "title":"List"
-            },
-            {
-                "__comment":"Guest Show (View)",
-                "method":"get",
-                "route":"/[name]/:_id",
-                "auth":"guest",
-                "pug":"guest/show",
-                "title":"Show"
-            },
-            {
                 "__comment":"Guest Default 404 (View)",
                 "method":"all",
                 "route":"/[name]/*",
@@ -109,14 +93,14 @@
             },
             {
                 "__comment":"Api Administrator signIn (JSON)",
-                "method":"get",
+                "method":"post",
                 "route":"/api/1/[name]/signIn",
                 "auth":"guest",
                 "function":"signIn"
             },
             {
                 "__comment":"Api Administrator signUp (JSON)",
-                "method":"get",
+                "method":"post",
                 "route":"/api/1/[name]/signUp",
                 "auth":"guest",
                 "function":"signUp"

@@ -30,11 +30,12 @@ exports.route=(menu)=>
 		{
 			config.routes[key].forEach(r=>
 			{
-				console.log("%s: %s",r.pug?chalk.red('PUG'):chalk.yellow('API'),chalk.gray(r.route.replace('[name]',name)))
+				console.log("%s: [%s] %s",r.pug?chalk.red('PUG'):chalk.yellow('API'),chalk.green(r.method),chalk.gray(r.route.replace('[name]',name)))
 				if(r.pug)
 				{
 					router[r.method](r.route.replace('[name]',name),r.pug?auth[r.auth]:auth[r.auth+'Api'],(req,res)=>
 					{
+						console.log("Load root "+r.route)
 						return controller.schema(schema=>
 						{
 							return res.status(200).render(r.pug,{

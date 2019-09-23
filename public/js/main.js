@@ -23,7 +23,7 @@ app.controller("page-handler",['$scope','$http','$interval',($scope,$http,$inter
 		if(data&&data.token)
 			localStorage.setItem('token',data.token)
 		$scope.token=localStorage.getItem('token')||null
-		if($scope.token)
+		if($scope.token&&$scope.token!='')
 		{
 			const dtoken=JSON.parse(window.atob($scope.token.split('.')[1]))
 			const extime=new Date(dtoken.exp*1000).getTime()
@@ -52,7 +52,7 @@ app.controller("page-handler",['$scope','$http','$interval',($scope,$http,$inter
 			{
 				this.stop()
 				$scope.signOut()
-			}   
+			}
 			$scope.user.m=parseInt($scope.user.exp/60,10)
 			$scope.user.s=$scope.user.exp%60
 			localStorage.setItem('userTimer',JSON.stringify($scope.user))
@@ -86,7 +86,6 @@ app.controller("page-handler",['$scope','$http','$interval',($scope,$http,$inter
 			delete $scope.message.success
 			if(response.data.token)
 				parseToken(response.data)
-				
 		},
 		error=>
 		{
@@ -99,7 +98,7 @@ app.controller("page-handler",['$scope','$http','$interval',($scope,$http,$inter
 		})
 	}
 	/**
-	 * GET Table
+	 * GET List
 	 */
 	$scope.getList=_=>
 	{
@@ -367,7 +366,7 @@ app.controller("page-handler",['$scope','$http','$interval',($scope,$http,$inter
 			//Renew Token
 			if(response.data.token)
 				parseToken(response.data)
-		}, 
+		},
 		error=>
 		{
 			console.log(error)
@@ -394,6 +393,7 @@ app.controller("page-handler",['$scope','$http','$interval',($scope,$http,$inter
 			else
 			{
 				localStorage.setItem('token',response.data.data.token)
+				console.log(response.data.data)
 				window.location="/administrator"
 			}
 		},
@@ -426,8 +426,6 @@ app.controller("page-handler",['$scope','$http','$interval',($scope,$http,$inter
 			delete $scope.message.success
 			if(response.data.token)
 				parseToken(response.data)
-			
-				
 		},
 		error=>
 		{

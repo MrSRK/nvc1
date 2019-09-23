@@ -12,6 +12,8 @@ const authGUI=(req,res,next)=>
 {
 	try
 	{
+		//console.log('SESSION')
+		//console.log(req.session)
 		if(req.session&&req.session.user&&req.session.user[coreAuthModelName])
 			return next()
 		return res.redirect(302,'/'+coreAuthModelName+'/'+coreAuthModelName+'/signIn')
@@ -136,7 +138,16 @@ exports.signIn=(Model,req,res,name,next)=>
 				{
 					expiresIn:expires
 				})
-				return next(null,{user:data,token:token})
+				req.session&&req.session.user&&req.session.user[coreAuthModelName]
+
+				if(!req.session.user)
+					req.session.user={}
+				req.session.user[name]=data
+				req.session.user[name].token=token
+
+				let r=data.toObject()
+				delete r.password
+				return next(null,{user:r,token:token})
 			})
 		})
 	}
@@ -270,7 +281,7 @@ exports.updateSingleImageAuth=(Model,req,res,name,next)=>
 		let _id=req.params._id
 		if(!ObjectId.isValid(_id))
 			return next({name:'Error',message:'Invalid ID'},null)
-		return  storage.create('images'+name+'/'+_id,'image',(error,upload)=>
+		return  storage.create('images/'+name+'/'+_id,'image',(error,upload)=>
 		{
 			if(error)
 				throw(error)
@@ -316,7 +327,7 @@ exports.deleteSingleImageAuth=(Model,req,res,name,next)=>
 {
 	try
 	{
-		let _imgId=req.params._id
+		let _imgId=req.params._imgId
 		if(!ObjectId.isValid(_imgId))
 			return next({name:'Error',message:'Invalid ID'},null)
 		return Model.findOne({'images._id':_imgId},(error,data)=>
@@ -353,6 +364,8 @@ exports.deleteSingleImageAuth=(Model,req,res,name,next)=>
 	}
 	catch(error)
 	{
+		console.log("Error")
+		console.log(error)
 		return next(error,null)
 	}
 }
@@ -378,7 +391,7 @@ exports.setSingleAuth=(Model,req,res,name,next)=>
 /**
  * Update existing Record (by _id)
  */
-exports.updateSingleAuth=(req,res,name,next)=>
+exports.updateSingleAuth=(Model,req,res,name,next)=>
 {
 	try
 	{
@@ -406,7 +419,7 @@ exports.updateSingleAuth=(req,res,name,next)=>
 /**
  * Update existing Record's Password
  */
-exports.updateSinglePasswordAuth=(req,res,name,next)=>
+exports.updateSinglePasswordAuth=(Model,req,res,name,next)=>
 {
 	try
 	{
@@ -445,7 +458,7 @@ exports.updateSinglePasswordAuth=(req,res,name,next)=>
 /**
  * Delete existing record (by _id)
  */
-exports.deleteSingleAuth=(req,res,name,next)=>
+exports.deleteSingleAuth=(Model,req,res,name,next)=>
 {
 	try
 	{

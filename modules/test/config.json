@@ -109,14 +109,14 @@
             },
             {
                 "__comment":"Api Administrator signIn (JSON)",
-                "method":"get",
+                "method":"post",
                 "route":"/api/1/[name]/signIn",
                 "auth":"guest",
                 "function":"signIn"
             },
             {
                 "__comment":"Api Administrator signUp (JSON)",
-                "method":"get",
+                "method":"post",
                 "route":"/api/1/[name]/signUp",
                 "auth":"guest",
                 "function":"signUp"
