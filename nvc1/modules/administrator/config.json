@@ -1,0 +1,175 @@
+{
+    "auth":"administrator",
+    "routes":
+    {
+        "administrator":[
+            {
+                "__comment":"Administrator Table (View)",
+                "method":"get",
+                "route":"/administrator/[name]",
+                "auth":"administrator",
+                "pug":"administrator/table",
+                "title":"Table"
+            },
+            {
+                "__comment":"Administrator signUp (View)",
+                "method":"get",
+                "route":"/administrator/[name]/signUp",
+                "auth":"guest",
+                "pug":"administrator/signUp",
+                "title":"signUp"
+            },
+            {
+                "__comment":"Administrator signIn (View)",
+                "method":"get",
+                "route":"/administrator/[name]/signIn",
+                "auth":"guest",
+                "pug":"administrator/signIn",
+                "title":"signIn"
+            },
+            {
+                "__comment":"Administrator signOut (View)",
+                "method":"get",
+                "route":"/administrator/[name]/signOut",
+                "auth":"guest",
+                "function":"signOut"
+            },
+            {
+                "__comment":"Administrator New (View)",
+                "method":"get",
+                "route":"/administrator/[name]/new",
+                "auth":"administrator",
+                "pug":"administrator/new",
+                "title":"New"
+            },
+            {
+                "__comment":"Administrator Edit (View)",
+                "method":"get",
+                "route":"/administrator/[name]/:_id",
+                "auth":"administrator",
+                "pug":"administrator/edit",
+                "title":"Edit"
+            },
+            {
+                "__comment":"Administrator Default 404 (View)",
+                "method":"all",
+                "route":"/administrator/[name]/*",
+                "auth":"guest",
+                "pug":"404",
+                "title":"Error 404"
+            }
+        ],
+        "guest":[
+            {
+                "__comment":"Guest List (View)",
+                "method":"get",
+                "route":"/[name]",
+                "auth":"guest",
+                "pug":"guest/list",
+                "title":"List"
+            },
+            {
+                "__comment":"Guest Show (View)",
+                "method":"get",
+                "route":"/[name]/:_id",
+                "auth":"guest",
+                "pug":"guest/show",
+                "title":"Show"
+            },
+            {
+                "__comment":"Guest Default 404 (View)",
+                "method":"all",
+                "route":"/[name]/*",
+                "auth":"guest",
+                "pug":"404",
+                "title":"Error 404"
+            }
+        ],
+        "api":[
+            {
+                "__comment":"Api Guest List (JSON)",
+                "method":"get",
+                "route":"/api/2/[name]",
+                "auth":"guest",
+                "function":"getList"
+            },
+            {
+                "__comment":"Api Guest SHOW (JSON)",
+                "method":"get",
+                "route":"/api/2/[name]/:_id",
+                "auth":"guest",
+                "function":"getSingle"
+            },
+            {
+                "__comment":"Api Administrator Table (JSON)",
+                "method":"get",
+                "route":"/api/1/[name]",
+                "auth":"administrator",
+                "function":"getListAuth"
+            },
+            {
+                "__comment":"Api Administrator signIn (JSON)",
+                "method":"get",
+                "route":"/api/1/[name]/signIn",
+                "auth":"guest",
+                "function":"signIn"
+            },
+            {
+                "__comment":"Api Administrator signUp (JSON)",
+                "method":"get",
+                "route":"/api/1/[name]/signUp",
+                "auth":"guest",
+                "function":"signUp"
+            },
+            {
+                "__comment":"Api Administrator SHOW (JSON)",
+                "method":"get",
+                "route":"/api/1/[name]/:_id",
+                "auth":"administrator",
+                "function":"getSingleAuth"
+            },
+            {
+                "__comment":"Api Administrator Insert (JSON)",
+                "method":"put",
+                "route":"/api/1/[name]",
+                "auth":"administrator",
+                "function":"setSingleAuth"
+            },
+            {
+                "__comment":"Api Administrator Update (JSON)",
+                "method":"patch",
+                "route":"/api/1/[name]/:_id",
+                "auth":"administrator",
+                "function":"updateSingleAuth"
+            },
+            {
+                "__comment":"Api Administrator Upload image (JSON)",
+                "method":"patch",
+                "route":"/api/1/[name]/upload-image/:_id",
+                "auth":"administrator",
+                "function":"updateSingleImageAuth"
+            },
+            {
+                "__comment":"Api Administrator remove Image (JSON)",
+                "method":"patch",
+                "route":"/api/1/[name]/remove-image/:_imgId",
+                "auth":"administrator",
+                "function":"deleteSingleImageAuth"
+            },
+            {
+                "__comment":"Api Administrator Remove (JSON)",
+                "method":"delete",
+                "route":"/api/1/[name]/:_id",
+                "auth":"administrator",
+                "function":"deleteSingleAuth"
+            },
+            {
+                "__comment":"Api Administrator Default 404 (JSON)",
+                "method":"all",
+                "route":"/api/*",
+                "auth":"guest",
+                "function":"api404"
+            }
+        ]
+    }
+}

@@ -4,7 +4,6 @@ const controller=require('./controller')
 const config=require('../config.json')
 const chalk=require('chalk')
 let auth=[];
-
 exports.getRouter=_=>
 {
 	try

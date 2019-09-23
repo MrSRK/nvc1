@@ -4,7 +4,7 @@
 	"description": "NodeJS Vision Core 1",
 	"main": "app.js",
 	"scripts": {
-		"test":"node app"
+		"test": "node app"
 	},
 	"repository": {
 		"type": "git",
@@ -50,5 +50,8 @@
 		"pug": "^2.0.4",
 		"rotating-file-stream": "^1.4.3",
 		"serve-favicon": "^2.5.0"
+	},
+	"devDependencies": {
+		"eslint": "^6.4.0"
 	}
 }

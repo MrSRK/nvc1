@@ -7,7 +7,7 @@ let config={
 	name:'file'
 }
 /**
- * 
+ *
  */
 exports.create=(subroot,name,next)=>
 {
@@ -28,7 +28,7 @@ exports.create=(subroot,name,next)=>
 	}
 }
 /**
- * 
+ *
  */
  const destination=(req,file,next)=>
  {
@@ -56,10 +56,10 @@ exports.create=(subroot,name,next)=>
 	}
  }
  /**
-  * 
-  * @param {*} req 
-  * @param {*} file 
-  * @param {*} next 
+  *
+  * @param {*} req
+  * @param {*} file
+  * @param {*} next
   */
  const filename=(req,file,next)=>
  {

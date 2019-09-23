@@ -39,7 +39,7 @@ const authAPI=(req,res,next)=>
 	catch(error)
 	{
 		return res.status(401).json({status:false,error:{name:"Error",message:"Unauthorized"}})
-	}	
+	}
 }
 const authGuest=(req,res,next)=>
 {
@@ -146,7 +146,7 @@ exports.signIn=(Model,req,res,name,next)=>
 	}
 }
 /**
- * 
+ *
  */
 exports.signUp=(Model,req,res,name,next)=>
 {
@@ -463,7 +463,7 @@ exports.deleteSingleAuth=(req,res,name,next)=>
 			{
 				if(error)
 					console.log(error,null)
-			}); 
+			});
 			return next(error,data)
 		})
 	}

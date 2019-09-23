@@ -5,7 +5,6 @@ const chalk=require('chalk')
 const router=express.Router()
 const controller=require('./controller')
 const expressStatusMonitorrequire=require('express-status-monitor')
-
 const routes=[]
 exports.route=n=>
 {
@@ -30,21 +29,21 @@ exports.route=n=>
 				/**
 				 * Default Pages
 				 */
-				router.get('/',(req,res,next)=>
+				router.get('/',(req,res)=>
 				{
 					return res.status(200).render('home',{
 						title:'Home Page',
 						menu:menu
 					})
 				})
-				router.get('/administrator',auth['administrator'],(req,res,next)=>
+				router.get('/administrator',auth['administrator'],(req,res)=>
 				{
 					return res.status(200).render('administrator/home',{
 						title:'Dashboard',
 						menu:menu
 					})
 				})
-				router.get('/api',(req,res,next)=>
+				router.get('/api',(req,res)=>
 				{
 					let r=[]
 					menu.forEach(m=>
@@ -69,19 +68,19 @@ exports.route=n=>
 					healthChecks:[
 					{
 						protocol: 'http',
-  						host: 'localhost',
+						host: 'localhost',
 						port: '80',
 						path: '/'
 					},
 					{
 						protocol: 'http',
-  						host: 'localhost',
+						host: 'localhost',
 						port: '80',
 						path: '/api'
 					},
 					{
 						protocol: 'http',
-  						host: 'localhost',
+						host: 'localhost',
 						port: '80',
 						path: '/administrator'
 					}]
@@ -91,9 +90,12 @@ exports.route=n=>
 				router.get('/administrator/status',auth['administrator'],statusMonitor.pageRoute)
 				routes.forEach(r=>
 				{
-					//router.use(require(r.path).route(menu))
+					let ro=require(r.path)
+					ro.setCoreController(controller)
+					ro.route(menu)
+					router.use(ro.router())
 				})
-				router.get('*',(req,res,n)=>
+				router.get('*',(req,res)=>
 				{
 					return res.status(404).render('404',{
 						title:'404'
@@ -127,13 +129,12 @@ const loadRouters=(next)=>
 					{
 						if(fs.existsSync(nvc1ModulesPath+'\\'+file+'\\index.js'))
 						{
-							//////////router.use(require(nvc1ModulesPath+'\\'+file+'\\router.js'))
-							routes[routes.length]={name:file,path:nvc1ModulesPath+'\\'+file+'\\index.js'}
 							console.log('%s Router [%s]\tAdd: %s',chalk.green('✓'),chalk.red(file),chalk.green('Successful'))
-						} 
-					})  
+							routes[routes.length]={name:file,path:nvc1ModulesPath+'\\'+file+'\\index.js'}
+						}
+					})
 					console.groupEnd()
-					return next(null)                 
+					return next(null)
 				})
 			else
 				return next(null)
@@ -161,11 +162,10 @@ const loadNvc1Routers=(next)=>
 						console.log('%s %s',chalk.gray('-'),chalk.gray('none'))
 					files.forEach(file=>
 					{
-						if(fs.existsSync(nvc1ModulesPath+'\\'+file+'\\inxex.js'))
+						if(fs.existsSync(nvc1ModulesPath+'\\'+file+'\\index.js'))
 						{
-							////////////router.use(require(nvc1ModulesPath+'\\'+file+'\\router.js'))
-							//routes[routes.length]={name:file,path:nvc1ModulesPath+'\\'+file+'\\router.js'}
 							console.log('%s Router [%s]\tAdd: %s',chalk.green('✓'),chalk.red(file),chalk.green('Successful'))
+							routes[routes.length]={name:file,path:nvc1ModulesPath+'\\'+file+'\\index.js'}
 						}
 					})
 					console.groupEnd()
@@ -177,6 +177,7 @@ const loadNvc1Routers=(next)=>
 	}
 	catch(error)
 	{
+		console.log(error)
 		return next(error)
 	}
 }
