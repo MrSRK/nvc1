@@ -9,7 +9,7 @@ block content
 				.col.col-sm-6.col-md-4.col-lg-3(data-ng-if="data",data-ng-repeat="rec in data")
 					.card.mb-3
 						picture(data-ng-if="rec.images&&rec.images.length>0")
-							source(type="image/webp",srcset="/images/"+root+"/{{rec._id+'/'+rec.images[0].webp}}")
+							source(type="image/webp",data-ng-srcset="/images/"+root+"/{{rec._id+'/'+rec.images[0].webp}}")
 							img.card-img-top.p-2(data-ng-src="/images/"+root+"/{{rec._id+'/'+rec.images[0].filename}}")
 						.text-center(data-ng-if="!rec.images||rec.images.length==0")
 							i.fas.fa-cubes.fa-3x.mt-4

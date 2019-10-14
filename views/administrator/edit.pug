@@ -69,7 +69,7 @@ block content
 									button.btn.btn-link.btn-sm.text-danger(type="button",data-ng-click="removeImage(image._id)")
 										i.fas.fa-trash-alt
 								picture
-									source(type="image/webp",srcset="/images/"+root+"/"+_id+"/{{image.webp}}")
+									source(type="image/webp",data-ng-srcset="/images/"+root+"/"+_id+"/{{image.webp}}")
 									img.img-fluid(data-ng-src="/images/"+root+"/"+_id+"/{{image.filename}}")
 				else
 					.form-group

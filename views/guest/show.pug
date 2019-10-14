@@ -5,7 +5,7 @@ block content
 			.row
 				.col-4.col-sm-12.col-lg-4
 					picture(data-ng-if="data.images&&data.images.length>0")
-						source(type="image/webp",srcset="/images/"+root+"/{{data._id+'/'+data.images[0].webp}}")
+						source(type="image/webp",data-ng-srcset="/images/"+root+"/{{data._id+'/'+data.images[0].webp}}")
 						img.img-fluid(data-ng-src="/images/"+root+"/{{data._id+'/'+data.images[0].filename}}")
 				.col-8.col-sm-12.col-lg-8
 					h2.text-primary(data-ng-bind="data.name")
