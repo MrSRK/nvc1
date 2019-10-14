@@ -49,7 +49,6 @@
 		"popper.js": "^1.15.0",
 		"pug": "^2.0.4",
 		"rotating-file-stream": "^1.4.3",
-		"serve-favicon": "^2.5.0",
 		"sharp": "^0.23.1",
 		"webp-converter": "^2.2.3"
 	},

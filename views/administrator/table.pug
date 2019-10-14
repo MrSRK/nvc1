@@ -15,11 +15,11 @@ block content
 			.row.mb-4.d-none.d-lg-flex
 				.col.col-1
 				.col.col-2.font-weight-bold ID
-				.col-2.text-left.small.text-dark.font-weight-bold Image
-				.col.text-left.small.text-dark.font-weight-bold Name
+				.col.col-1.text-left.small.text-dark.font-weight-bold Image
+				.col.col-3.col-lg-4.text-left.small.text-dark.font-weight-bold Name
 				.col.col-1.small.text-dark.font-weight-bold Date Add
 				.col.col-1.small.text-dark.font-weight-bold Date Mod
-				.col.col-2
+				.col.col-3.col-lg-2
 			.row(data-ng-if="data" data-ng-repeat="rec in data")
 				.col.col-1.align-self-center
 					button.btn.btn-link.btn-sm(data-ng-click="setActiveTable($index)",ng-disabled="rec.disabled")
@@ -27,17 +27,17 @@ block content
 						i.far.fa-times-circle.text-danger(data-ng-if="!rec.active")
 				.col.col-2.align-self-center.small.text-muted.text-left.d-none.d-lg-block
 					small(data-ng-bind="rec._id")
-				.col-2.d-none.d-lg-block.align-self-center.text-info.px-3
+				.col.col-1.d-none.d-lg-block.align-self-center.text-info.px-2
 					picture(data-ng-if="rec.images&&rec.images[0]")
 						source(type="image/webp",data-ng-srcset="/images/"+root+"/{{rec._id+'/'+rec.images[0].webp}}")
-						img.img-fluid.w-50(data-ng-src="/images/"+root+"/{{rec._id+'/'+rec.images[0].filename}}")
-				.col-7.col-md-7.col-lg-3.align-self-center.text-info
+						img.img-fluid(data-ng-src="/images/"+root+"/{{rec._id+'/'+rec.images[0].filename}}")
+				.col.col-md-3.col-lg-4.align-self-center.text-info
 					small(data-ng-bind="rec.name")
 					small(data-ng-if="rec.company",data-ng-bind="' ('+rec.company+')'")
 					small(data-ng-if="rec.color",data-ng-bind="' ('+rec.color.name+')'")
 				.col.col-1.align-self-center.text-right.small.d-none.d-lg-block(data-ng-bind="rec.createdAt | date:'dd-MM-yy'")
 				.col.col-1.align-self-center.text-right.small.d-none.d-lg-block(data-ng-bind="rec.updatedAt | date:'dd-MM-yy'")
-				.col-4.col-lg-2.align-self-center.text-right.small
+				.col.col-3.col-lg-2.align-self-center.text-right.small.pl-0
 					a.btn.btn-link.btn-sm.d-none.d-lg-inline-block(data-ng-if="root!='administrator'",href="/"+root+"/{{rec._id}}",target="_blank")
 						i.fas.fa-eye
 					a.btn.btn-link.btn-sm(href="/administrator/"+root+"/{{rec._id}}")

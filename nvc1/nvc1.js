@@ -4,7 +4,6 @@ const chalk=require('chalk')
 const path=require('path')
 const express=require('express')
 const pug=require('pug')
-var favicon=require('serve-favicon')
 const errorhandler=require('./errorhandler')
 const logger=require('./logger')
 const bodyParser=require('./parser')
@@ -135,8 +134,30 @@ exports.run=next=>
 		app.use('/js/lib',express.static(path.join(__dirname,'../node_modules/bootstrap/dist/js')))
 		app.use('/js/lib',express.static(path.join(__dirname,'../node_modules/jquery/dist')))
 		app.use('/webfonts',express.static(path.join(__dirname,'../node_modules/@fortawesome/fontawesome-free/webfonts')))
+		app.use('/favicon.ico',express.static(path.join(__dirname,'../public/images/favicon.ico')))
 
-		app.use(favicon(path.join(__dirname, '../public/images/', 'favicon.ico')))
+		app.get('/cache.manifest',(req,res)=>
+		{
+			res.append('Content-Type','text/cache-manifest')
+			res.write('CACHE MANIFEST\n\n')
+
+			res.write('CACHE:\n')
+			res.write('/css/main.css\n')
+			res.write('/js/lib/jquery.min.js\n')
+			res.write('/js/lib/popper.min.js\n')
+			res.write('/js/lib/bootstrap.min.js\n')
+			res.write('/js/lib/angular.min.js\n')
+			res.write('/js/main.js\n')
+			res.write('/favicon.ico\n')
+
+			res.write('/webfonts/fa-solid-900.woff2\n')
+
+			res.write('/\n')
+			res.write('/customer\n')
+			//res.write('/test\n')
+
+			res.end()
+		})
 
 		/**
 		 * Routs
