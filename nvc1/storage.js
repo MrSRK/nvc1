@@ -20,7 +20,8 @@ exports.create=(subroot,name,next)=>
 			destination:destination,
 			filename:filename
 		})
-		return next(null,multer({storage:storage}).single(config.name))
+		let image=multer({storage:storage}).single(config.name)
+		return next(null,image)
 	}
 	catch(error)
 	{
@@ -35,12 +36,10 @@ exports.create=(subroot,name,next)=>
 	try
 	{
 		const filepath=path.join(__dirname, '../'+config.root+config.subroot)
-		console.log(filepath)
-
-		fs.exists(filepath,exists=>
+		return fs.exists(filepath,exists=>
 		{
 			if(!exists)
-				fs.mkdir(filepath,{recursive:true},error=>
+				return fs.mkdir(filepath,{recursive:true},error=>
 				{
 					if(error)
 						throw(error)
@@ -52,7 +51,7 @@ exports.create=(subroot,name,next)=>
 	}
 	catch(error)
 	{
-		next(error,null)
+		return next(error,null)
 	}
  }
  /**
@@ -75,10 +74,10 @@ exports.create=(subroot,name,next)=>
 		file.filename=name
 		file.path=filepath+'/'+name
 		req.files[config.name]=file
-		next(null,name)
+		return next(null,name)
 	}
 	catch(error)
 	{
-		next(error,null)
+		return next(error,null)
 	}
  }

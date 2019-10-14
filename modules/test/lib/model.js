@@ -8,6 +8,8 @@ const image=mongoose.Schema({
 	destination:{type:String},
 	filename:{type:String},
 	path:{type:String},
+	webp:{type:String},
+	webpPath:{type:String},
 	size:{type:Number},
 })
 const schema=new mongoose.Schema({

@@ -1,5 +1,5 @@
 const router=require('express').Router()
-const name=__filename.split('\\').reverse()[2]
+const name=__dirname.split('\\').reverse()[1]
 const controller=require('./controller')
 const config=require('../config.json')
 const chalk=require('chalk')

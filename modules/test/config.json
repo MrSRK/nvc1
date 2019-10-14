@@ -166,7 +166,7 @@
             {
                 "__comment":"Api Administrator Default 404 (JSON)",
                 "method":"all",
-                "route":"/api/*",
+                "route":"/api/[name]/*",
                 "auth":"guest",
                 "function":"api404"
             }

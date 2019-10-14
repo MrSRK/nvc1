@@ -7,8 +7,10 @@ block content
 				small.ml-1 (s)
 			.row.mt-5
 				.col.col-sm-6.col-md-4.col-lg-3(data-ng-if="data",data-ng-repeat="rec in data")
-					.card
-						img.card-img-top.p-2(data-ng-if="rec.images&&rec.images.length>0",data-ng-src="images/"+root+"/{{rec._id}}/{{rec.images[0].filename}}")
+					.card.mb-3
+						picture(data-ng-if="rec.images&&rec.images.length>0")
+							source(type="image/webp",srcset="/images/"+root+"/{{rec._id+'/'+rec.images[0].webp}}")
+							img.card-img-top.p-2(data-ng-src="/images/"+root+"/{{rec._id+'/'+rec.images[0].filename}}")
 						.text-center(data-ng-if="!rec.images||rec.images.length==0")
 							i.fas.fa-cubes.fa-3x.mt-4
 						.card-body

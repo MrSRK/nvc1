@@ -5,16 +5,16 @@ block content
 		h1
 			span.text-capitalize=root+' '
 			span Edit Page
-	.alert.alert-info(role="alert",data-ng-show="message.info")
-		strong Info: 
+	.alert.py-1.alert-info(role="alert",data-ng-show="message.info")
+		strong.mr-1 Info:
 		span(data-ng-bind="message.info")
-	.alert.alert-success(role="alert",data-ng-show="message.success")
-		strong Success: 
+	.alert.py-1.alert-success(role="alert",data-ng-show="message.success")
+		strong.mr-1 Success:
 		span(data-ng-bind="message.success")
-	.alert.alert-danger(role="alert",data-ng-show="message.danger")
-		strong Danger: 
+	.alert.py-1.alert-danger(role="alert",data-ng-show="message.danger")
+		strong.mr-1 Danger:
 		span(data-ng-bind="message.danger")
-	form.mb-4(data-ng-init="getSingle('"+_id+"')",data-ng-submit="updateSingle('"+_id+"')")
+	form.mb-4(data-ng-init="getSingle('"+_id+"',true)",data-ng-submit="updateSingle('"+_id+"')")
 		.text-right.pt-3
 			button.btn.btn-primary(type='submit',ng-disabled="disabled")
 				i.fas.fa-save.mr-2
@@ -25,16 +25,22 @@ block content
 					input.form-check-input(type='checkbox',id='form-'+name,data-ng-model="data."+name)
 					label.form-check-label.text-capitalize.small.text-secondary(for='form-'+name)=name
 			else if name=='email'
-				.form-group
-					label.text-capitalize.small.text-secondary(for='form-'+name)=name
-					input.form-control(type='email',id='form-'+name,data-ng-model="data."+name)
+				if root=='administrator'
+					.form-group
+						label.text-capitalize.small.text-secondary(for='form-'+name)=name
+						label.form-control(type='email',id='form-'+name,data-ng-bind="data."+name)
+						small.form-text.text-info Email field is locked and cannot be changed
+				else
+					.form-group
+						label.text-capitalize.small.text-secondary(for='form-'+name)=name
+						input.form-control(type='email',id='form-'+name,data-ng-model="data."+name)
 			else if name=='password'
 				.form-group
 					label.text-capitalize.small.text-secondary(for='form-'+name)=name
-					input.form-control(type='password',id='form-'+name,data-ng-model="data."+name,placeholder="Set New Password")
+					input.form-control(type='password',id='form-'+name,data-ng-model="data."+name,placeholder="Reset / Set new Password")
 			else if name=="_id"
 				.form-group
-					label.text-capitalize.small.text-secondary Permalink: 
+					label.text-capitalize.small.text-secondary.mr-1 Permalink:
 					a.small.ml-5(href="#",data-ng-bind="permalink()",target="_blank")
 			else if name=="updatedAt"||name=="createdAt"
 				.form-group
@@ -62,7 +68,9 @@ block content
 								.text-right
 									button.btn.btn-link.btn-sm.text-danger(type="button",data-ng-click="removeImage(image._id)")
 										i.fas.fa-trash-alt
-								img.img-fluid(data-ng-src="/images/"+root+"/"+_id+"/{{image.filename}}")
+								picture
+									source(type="image/webp",srcset="/images/"+root+"/"+_id+"/{{image.webp}}")
+									img.img-fluid(data-ng-src="/images/"+root+"/"+_id+"/{{image.filename}}")
 				else
 					.form-group
 						label.text-capitalize.small.text-secondary(for='form-'+name)=name
@@ -80,18 +88,18 @@ block content
 						.row
 							.col-10
 								.text-left.small(data-ng-if="data."+name+".name")
-									strong Name: 
+									strong.mr-1 Name:
 									sman(data-ng-bind="data."+name+".name")
 								.text-left.small(data-ng-if="data."+name+".color.name")
-									strong Color: 
+									strong.mr-1 Color:
 									sman(data-ng-bind="data."+name+".color.name")
 								.text-left.small(data-ng-if="data."+name+".code")
-									strong Code: 
+									strong.mr-1 Code:
 									sman(data-ng-bind="data."+name+".code")
 							.col-1.text-right
-								img.img-fluid(data-ng-if="data."+name+".images&&data."+name+".images[0]",data-ng-src="/images/"+name+"/{{data."+name+"._id}}/{{data."+name+".images[0].filename}}")
+								img.img-fluid(data-ng-if="data."+name+".images&&data."+name+".images[0]",data-ng-src="/images/"+name+"/{{data."+name+"._id}}/{{data."+name+".images[0].webp}}")
 							.col-1.text-right
-								img.img-fluid(data-ng-if="data."+name+".color&&data."+name+".color.images&&data."+name+".color.images[0]",data-ng-src="/images/color/{{data."+name+".color._id}}/{{data."+name+".color.images[0].filename}}")
+								img.img-fluid(data-ng-if="data."+name+".color&&data."+name+".color.images&&data."+name+".color.images[0]",data-ng-src="/images/color/{{data."+name+".color._id}}/{{data."+name+".color.images[0].webp}}")
 				.form-group(data-ng-if="!data."+name,data-ng-init="loadAside('"+name+"')")
 					label.text-capitalize.font-weight-bold.text-danger(for='form-'+name)=name+" value is empty Set "+name
 					select.form-control(id='form-'+name,data-ng-model="data."+name)

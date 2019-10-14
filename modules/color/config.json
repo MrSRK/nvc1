@@ -2,21 +2,67 @@
     "auth":"administrator",
     "routes":
     {
+        "administrator":[
+            {
+                "__comment":"Administrator Table (View)",
+                "method":"get",
+                "route":"/administrator/[name]",
+                "auth":"administrator",
+                "pug":"administrator/table",
+                "title":"Table"
+            },
+            {
+                "__comment":"Administrator New (View)",
+                "method":"get",
+                "route":"/administrator/[name]/new",
+                "auth":"administrator",
+                "pug":"administrator/new",
+                "title":"New"
+            },
+            {
+                "__comment":"Administrator Edit (View)",
+                "method":"get",
+                "route":"/administrator/[name]/:_id",
+                "auth":"administrator",
+                "pug":"administrator/edit",
+                "title":"Edit"
+            },
+            {
+                "__comment":"Administrator Default 404 (View)",
+                "method":"all",
+                "route":"/administrator/[name]/*",
+                "auth":"guest",
+                "pug":"404",
+                "title":"Error 404"
+            }
+        ],
+        "guest":[
+            {
+                "__comment":"Guest List (View)",
+                "method":"get",
+                "route":"/[name]",
+                "auth":"guest",
+                "pug":"guest/list",
+                "title":"List"
+            },
+            {
+                "__comment":"Guest Show (View)",
+                "method":"get",
+                "route":"/[name]/:_id",
+                "auth":"guest",
+                "pug":"guest/show",
+                "title":"Show"
+            },
+            {
+                "__comment":"Guest Default 404 (View)",
+                "method":"all",
+                "route":"/[name]/*",
+                "auth":"guest",
+                "pug":"404",
+                "title":"Error 404"
+            }
+        ],
         "api":[
-            {
-                "__comment":"Api Administrator signIn (JSON)",
-                "method":"post",
-                "route":"/api/1/[name]/signIn",
-                "auth":"guest",
-                "function":"signIn"
-            },
-            {
-                "__comment":"Api Administrator signUp (JSON)",
-                "method":"post",
-                "route":"/api/1/[name]/signUp",
-                "auth":"guest",
-                "function":"signUp"
-            },
             {
                 "__comment":"Api Guest List (JSON)",
                 "method":"get",
@@ -87,64 +133,6 @@
                 "auth":"guest",
                 "function":"api404"
             }
-        ],
-        "administrator":[
-            {
-                "__comment":"Administrator Table (View)",
-                "method":"get",
-                "route":"/administrator/[name]",
-                "auth":"administrator",
-                "pug":"administrator/table",
-                "title":"Table"
-            },
-            {
-                "__comment":"Administrator signUp (View)",
-                "method":"get",
-                "route":"/administrator/[name]/signUp",
-                "auth":"guest",
-                "pug":"administrator/signUp",
-                "title":"signUp"
-            },
-            {
-                "__comment":"Administrator signIn (View)",
-                "method":"get",
-                "route":"/administrator/[name]/signIn",
-                "auth":"guest",
-                "pug":"administrator/signIn",
-                "title":"signIn"
-            },
-            {
-                "__comment":"Administrator signOut (View)",
-                "method":"get",
-                "route":"/administrator/[name]/signOut",
-                "auth":"guest",
-                "function":"signOut"
-            },
-            {
-                "__comment":"Administrator New (View)",
-                "method":"get",
-                "route":"/administrator/[name]/new",
-                "auth":"administrator",
-                "pug":"administrator/new",
-                "title":"New"
-            },
-            {
-                "__comment":"Administrator Edit (View)",
-                "method":"get",
-                "route":"/administrator/[name]/:_id",
-                "auth":"administrator",
-                "pug":"administrator/edit",
-                "title":"Edit"
-            },
-            {
-                "__comment":"Administrator Default 404 (View)",
-                "method":"all",
-                "route":"/administrator/[name]/*",
-                "auth":"guest",
-                "pug":"404",
-                "title":"Error 404"
-            }
-        ],
-        "guest":[]
+        ]
     }
 }

@@ -5,7 +5,7 @@ app.factory('httpRequestInterceptor',()=>
         request:config=>
         {
             const token=localStorage.getItem('token')
-            if(token)
+            if(typeof token!=undefined&&token)
                 config.headers['Authorization']='Bearer '+token
             return config
         }
@@ -127,12 +127,13 @@ app.controller("page-handler",['$scope','$http','$interval',($scope,$http,$inter
 	/**
 	 * Get Single Record
 	 */
-	$scope.getSingle=_id=>
+	$scope.getSingle=(_id,auth=false)=>
 	{
 		$scope.message.info="Working..."
 		delete $scope.message.success
 		delete $scope.message.danger
-		const url='/api/2/'+$scope.root+'/'+_id
+		authNo=auth?1:2
+		const url='/api/'+authNo+'/'+$scope.root+'/'+_id
 		$http.get(url)
 		.then(response=>
 		{

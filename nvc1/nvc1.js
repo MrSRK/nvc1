@@ -16,7 +16,7 @@ const sass=require('./sass')
 const router=require('./router')
 const view=require('./view')
 /**
- * Set's Environment Variables From .env File 
+ * Set's Environment Variables From .env File
  */
 dotenv.config()
 /**
@@ -30,7 +30,7 @@ exports.run=next=>
 		const app=new express();
 		/**
 		 * Set Error Handler
-		*/ 
+		*/
 		errorhandler.handler((error,handler)=>
 		{
 			if(error)
@@ -43,7 +43,7 @@ exports.run=next=>
 		})
 		/**
 		 * Set Looger
-		*/ 
+		*/
 		logger.setLoger((error,morgan)=>
 		{
 			if(error)
@@ -52,8 +52,8 @@ exports.run=next=>
 			return app.use(morgan)
 		})
 		/**
-		 * 
-		*/ 
+		 *
+		*/
 		bodyParser.setJson((error,parser)=>
 		{
 			if(error)
@@ -70,7 +70,7 @@ exports.run=next=>
 		})
 		/**
 		 * Session Load
-		*/ 
+		*/
 		session((error,s)=>
 		{
 			if(error)
@@ -80,7 +80,7 @@ exports.run=next=>
 		})
 		/**
 		 * Cokkie Load
-		*/ 
+		*/
 		cookie((error,s)=>
 		{
 			if(error)
@@ -138,7 +138,6 @@ exports.run=next=>
 
 		app.use(favicon(path.join(__dirname, '../public/images/', 'favicon.ico')))
 
-		
 		/**
 		 * Routs
 		 */
@@ -146,7 +145,7 @@ exports.run=next=>
 		{
 			if(error)
 				throw(error)
-			return app.use(routs)   
+			return app.use(routs)
 		})
 		/**
 		 * Initialize Pug (jade)

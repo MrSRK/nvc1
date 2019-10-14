@@ -15,5 +15,4 @@ module.exports=next=>
 	{
 		return next(error,null)
 	}
-	
 }

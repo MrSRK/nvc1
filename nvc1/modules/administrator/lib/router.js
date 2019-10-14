@@ -43,7 +43,8 @@ exports.route=(menu)=>
 								menu:menu,
 								root:name,
 								schema:schema,
-								user:key
+								user:key,
+								_id:req.params._id||null
 							})
 						})
 					})

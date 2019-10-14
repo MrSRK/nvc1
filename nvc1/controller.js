@@ -4,6 +4,8 @@ const ObjectId=require('mongoose').Types.ObjectId;
 const fs = require("fs")
 const storage=require('./storage')
 const path=require('path')
+const webp=require('webp-converter')
+const sharp=require('sharp')
 let coreAuthModelName
 /**
  * Authentication middleware function for GUI (Pug) routes
@@ -109,23 +111,23 @@ exports.signIn=(Model,req,res,name,next)=>
 	try
 	{
 		if(!req.body.data||!req.body.data.email)
-			throw({name:"Error",message:"Email or Password not set"})
+			return next({name:"Error",message:"Email or Password not set"})
 		 if(!req.body.data||!req.body.data.password)
-		 	throw({name:"Error",message:"Email or Password not set"})
+		 	return next({name:"Error",message:"Email or Password not set"})
 		const email=req.body.data.email
 		const password=req.body.data.password
 		return Model.findOne({email:email},(error,data)=>
 		{
 			if(error)
-				throw(error)
+				return next(error)
 			if(!data)
-				throw({name:"Error",message:"Incorrect Email or Password"})
-			bcrypt.compare(password,data.password,(error,match)=>
+				return next({name:"Error",message:"Incorrect Email or Password"})
+			return bcrypt.compare(password,data.password,(error,match)=>
 			{
 				if(error)
-					throw(error)
+					return next(error)
 				if(!match)
-					throw({name:"Error",message:"Incorrect Email or Password"})
+					return next({name:"Error",message:"Incorrect Email or Password"})
 				const privateKey=(process.env.JWT_KEY||'10')+name
 				const expires=process.env.JWT_EXPIRES||"1h"
 				const token=jwt.sign(
@@ -139,12 +141,10 @@ exports.signIn=(Model,req,res,name,next)=>
 					expiresIn:expires
 				})
 				req.session&&req.session.user&&req.session.user[coreAuthModelName]
-
 				if(!req.session.user)
 					req.session.user={}
 				req.session.user[name]=data
 				req.session.user[name].token=token
-
 				let r=data.toObject()
 				delete r.password
 				return next(null,{user:r,token:token})
@@ -217,7 +217,7 @@ exports.getListAuth=(Model,req,res,name,next)=>
 		return Model.find(null,'-password',(error,data)=>
 		{
 			if(error)
-				throw(error)
+				return next(error)
 			return next(null,data)
 		})
 	}
@@ -238,11 +238,11 @@ exports.getSingle=(Model,req,res,name,next)=>
 			select='-email -password'
 		let _id=req.params._id
 		if(!ObjectId.isValid(_id))
-			throw({name:'Error',message:'Invalid ID'})
+			return next({name:'Error',message:'Invalid ID'})
 		return Model.findById(_id,select,(error,data)=>
 		{
 			if(error)
-				throw(error)
+				return next(error)
 			return next(null,data)
 		})
 	}
@@ -284,39 +284,63 @@ exports.updateSingleImageAuth=(Model,req,res,name,next)=>
 		return  storage.create('images/'+name+'/'+_id,'image',(error,upload)=>
 		{
 			if(error)
-				throw(error)
+				return next(error)
 			return upload(req,res,error=>
 			{
 				if(error)
-					throw(error)
+					return next(error)
 				return Model.findById(_id,'-password',(error,data)=>
 				{
 					if(error)
-						throw(error)
+						return next(error)
 					var data=data.toObject()
 					if(!data.images)
 						data.images=[]
 					if(req.files&&req.files.image)
 					{
-						data.images[data.images.length]=req.files.image
-						const options=
+						// Convert to webp
+						const webpPathTmp=req.files.image.path.split('.').reverse().splice(1).reverse()+'.webp.tmp'
+						const webpPath=req.files.image.path.split('.').reverse().splice(1).reverse()+'.webp'
+						const webpName=req.files.image.filename.split('.').reverse().splice(1).reverse()+'.webp'
+						return webp.cwebp(req.files.image.path,webpPathTmp,"-q 100",function(status,error)
 						{
-							new:true,
-							select:'-password'
-						}
-						return Model.findByIdAndUpdate(_id,data,options,(error,data)=>
-						{
-							return next(error,data)
+							if(error)
+								return next(error)
+							return sharp(webpPathTmp)
+							.resize(parseInt(process.env.IMAGE_MAX_WIDTH)||800,parseInt(process.env.IMAGE_MAX_HEIGHT)||800,{fit:'inside'})
+							.toFile(webpPath,(error,info)=>
+							{
+								if(error)
+									return next(error)
+								fs.unlink(webpPathTmp,error=>
+								{
+									if(error)
+										console.log(error)
+								})
+								req.files.image.webpPath=webpPath
+								req.files.image.webp=webpName
+								data.images[data.images.length]=req.files.image
+								const options=
+								{
+									new:true,
+									select:'-password'
+								}
+								return Model.findByIdAndUpdate(_id,data,options,(error,data)=>
+								{
+									return next(error,data)
+								})
+							})
 						})
 					}
 					else
-						throw({name:"Errror",message:"Image not set"},null)
+						return next({name:"Errror",message:"Image not set"},null)
 				})
 			})
 		})
 	}
 	catch(error)
 	{
+		console.log(error)
 		return next(error,null)
 	}
 }
@@ -340,10 +364,23 @@ exports.deleteSingleImageAuth=(Model,req,res,name,next)=>
 					if(e&&e._id==_imgId)
 					{
 						data.images.splice(i,1)
-						fs.unlink(e.path,error=>
+						fs.exists(e.path,exists=>
 						{
-							if(error)
-								console.log(error)
+							if(exists)
+								fs.unlink(e.path,error=>
+								{
+									if(error)
+										console.log(error)
+								})
+						})
+						fs.exists(e.webpPath,exists=>
+						{
+							if(exists)
+								fs.unlink(e.webpPath,error=>
+								{
+									if(error)
+										console.log(error)
+								})
 						})
 					}
 				})
@@ -429,7 +466,7 @@ exports.updateSinglePasswordAuth=(Model,req,res,name,next)=>
 			return next({name:'Error',message:'Invalid ID'},null)
 		if(!data.password)
 			return next({name:"Error",message:"Password not set"},null)
-		bcrypt.genSalt(10,(error,salt)=>
+		return bcrypt.genSalt(10,(error,salt)=>
 		{
 			if(error)
 				return next(error,null)
