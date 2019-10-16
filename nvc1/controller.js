@@ -33,7 +33,6 @@ const authAPI=(req,res,next)=>
 {
 	try
 	{
-		console.log('test auth!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!')
 		if(!req.headers||!req.headers.authorization)
 			return res.status(401).json({status:false,error:{name:"Error",message:"Unauthorized"}})
 		const token=req.headers.authorization.split(" ")[1]
@@ -182,7 +181,7 @@ exports.signOut=(Model,req,res,name,next)=>
 		if(req.session&&req.session.user&&req.session.user[name])
 			delete req.session.user[name]
 		 res.redirect(302,'/'+name+'/'+name+'/signIn')
-		 return next(null,null)
+		 return true
 	}
 	catch(error)
 	{

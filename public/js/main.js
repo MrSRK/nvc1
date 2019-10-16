@@ -48,7 +48,6 @@ app.controller("page-handler",['$scope','$http','$interval',($scope,$http,$inter
 			let user=JSON.parse(localStorage.getItem('userTimer'))
 			if(JSON.stringify($scope.user)!=JSON.stringify(user))
 				$scope.user=user
-			console.log($scope.user.exp)
 			if($scope.user.exp--<=1)
 			{
 				this.stop()
@@ -337,7 +336,7 @@ app.controller("page-handler",['$scope','$http','$interval',($scope,$http,$inter
 	}
 	$scope.administratorLogin=_=>
 	{
-		let url='/api/1/administrator/signIn'
+		let url='/api/2/administrator/signIn'
 		$http.post(url,{data:{email:$scope.data.email,password:$scope.data.password}})
 		.then(response=>
 		{
