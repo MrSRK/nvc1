@@ -20,7 +20,7 @@
             {
                 "__comment":"Api Guest List (JSON)",
                 "method":"get",
-                "route":"/api/2/[name]",
+                "route":"/api/1/[name]",
                 "auth":"guest",
                 "function":"getList"
             },

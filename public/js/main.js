@@ -6,7 +6,7 @@ app.factory('httpRequestInterceptor',()=>
         {
             const token=localStorage.getItem('token')
             if(typeof token!=undefined&&token)
-                config.headers['Authorization']='Bearer '+token
+				config.headers['Authorization']='Bearer '+token
             return config
         }
     }
@@ -48,7 +48,13 @@ app.controller("page-handler",['$scope','$http','$interval',($scope,$http,$inter
 			let user=JSON.parse(localStorage.getItem('userTimer'))
 			if(JSON.stringify($scope.user)!=JSON.stringify(user))
 				$scope.user=user
+			console.log($scope.user.exp)
 			if($scope.user.exp--<=1)
+			{
+				this.stop()
+				$scope.signOut()
+			}
+			if(typeof $scope.user.exp===undefined)
 			{
 				this.stop()
 				$scope.signOut()
@@ -394,7 +400,6 @@ app.controller("page-handler",['$scope','$http','$interval',($scope,$http,$inter
 	*/
 	const setMessage=(className,title,description)=>
 	{
-		console.log('Seting message')
 		$scope.msg={
 			show:true,
 			class:className,

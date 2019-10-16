@@ -33,6 +33,7 @@ const authAPI=(req,res,next)=>
 {
 	try
 	{
+		console.log('test auth!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!')
 		if(!req.headers||!req.headers.authorization)
 			return res.status(401).json({status:false,error:{name:"Error",message:"Unauthorized"}})
 		const token=req.headers.authorization.split(" ")[1]
@@ -59,6 +60,7 @@ exports.authFunctionsObject=authModelName=>
 		coreAuthModelName=authModelName
 		let authTable={}
 		authTable['guest']=authGuest
+		authTable['guestApi']=authGuest
 		authTable[authModelName]=authGUI
 		authTable[authModelName+'Api']=authAPI
 		return authTable
