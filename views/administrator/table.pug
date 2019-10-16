@@ -3,15 +3,7 @@ block content
 	include partials/buttonGroup
 	.mt-5(data-ng-init="setRoute('"+root+"')")
 		div(data-ng-init="getTable()")
-			.alert.py-1.alert-info(role="alert",data-ng-show="message.info")
-				strong Info:
-				span(data-ng-bind="message.info")
-			.alert.py-1.alert-success(role="alert",data-ng-show="message.success")
-				strong.mr-1 Success:
-				span.mr-1(data-ng-bind="message.success")
-			.alert.py-1.alert-danger(role="alert",data-ng-show="message.danger")
-				strong Danger:
-				span(data-ng-bind="message.danger")
+			include partials/alerts
 			.row.mb-4.d-none.d-lg-flex
 				.col.col-1
 				.col.col-2.font-weight-bold ID

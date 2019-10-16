@@ -5,15 +5,7 @@ block content
 		.col-12.col-lg-4
 			.my-4(data-ng-init="setRoute('"+root+"')")
 				h1.h2.text-center.pb-5 Administrator Login
-				.alert.py-1.alert-info(role="alert",data-ng-show="message.info")
-					strong.mr-1 Info:
-					span(data-ng-bind="message.info")
-				.alert.py-1.alert-success(role="alert",data-ng-show="message.success")
-					strong.mr-1 Success:
-					span(data-ng-bind="message.success")
-				.alert.py-1.alert-danger(role="alert",data-ng-show="message.danger")
-					strong.mr-1 Danger:
-					span(data-ng-bind="message.danger")
+				include partials/alerts
 				form(data-ng-submit="administratorLogin()")
 					.form-group
 						label.text-capitalize(for='login-email') Email

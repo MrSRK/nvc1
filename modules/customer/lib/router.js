@@ -34,12 +34,6 @@ exports.route=(menu)=>
 				console.log("%s: [%s] %s",r.pug?chalk.red('PUG'):chalk.yellow('API'),chalk.green(r.method),chalk.gray(r.route.replace('[name]',name)))
 				if(r.pug)
 				{
-					console.log(r.method)
-					console.log(r.route)
-					console.log(r.pug)
-					console.log(auth)
-					console.log(r.auth)
-					console.log(auth[r.auth+'Api'])
 					router[r.method](r.route.replace('[name]',name),r.pug?auth[r.auth]:auth[r.auth+'Api'],(req,res)=>
 					{
 						return controller.schema(schema=>

@@ -5,15 +5,7 @@ block content
 		h1
 			span.text-capitalize=root+' '
 			span Insert Page
-	.alert.py-1.alert-info(role="alert",data-ng-show="message.info")
-		strong.mr-1 Info:
-		span(data-ng-bind="message.info")
-	.alertpy-1.alert-success(role="alert",data-ng-show="message.success")
-		strong.mr-1 Success:
-		span(data-ng-bind="message.success")
-	.alert.py-1.alert-danger(role="alert",data-ng-show="message.danger")
-		strong.mr-1 Danger:
-		span(data-ng-bind="message.danger")
+	include partials/alerts
 	form.mb-5(data-ng-submit="insertSingle()")
 		.text-right.pt-3
 			button.btn.btn-primary(type='submit',ng-disabled="disabled")

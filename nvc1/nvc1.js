@@ -135,7 +135,9 @@ exports.run=next=>
 		app.use('/js/lib',express.static(path.join(__dirname,'../node_modules/jquery/dist')))
 		app.use('/webfonts',express.static(path.join(__dirname,'../node_modules/@fortawesome/fontawesome-free/webfonts')))
 		app.use('/favicon.ico',express.static(path.join(__dirname,'../public/images/favicon.ico')))
-
+		/**
+		 * Static manifest
+		 */
 		app.get('/cache.manifest',(req,res)=>
 		{
 			res.append('Content-Type','text/cache-manifest')

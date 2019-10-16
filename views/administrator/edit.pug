@@ -5,15 +5,7 @@ block content
 		h1
 			span.text-capitalize=root+' '
 			span Edit Page
-	.alert.py-1.alert-info(role="alert",data-ng-show="message.info")
-		strong.mr-1 Info:
-		span(data-ng-bind="message.info")
-	.alert.py-1.alert-success(role="alert",data-ng-show="message.success")
-		strong.mr-1 Success:
-		span(data-ng-bind="message.success")
-	.alert.py-1.alert-danger(role="alert",data-ng-show="message.danger")
-		strong.mr-1 Danger:
-		span(data-ng-bind="message.danger")
+	include partials/alerts
 	form.mb-4(data-ng-init="getSingle('"+_id+"',true)",data-ng-submit="updateSingle('"+_id+"')")
 		.text-right.pt-3
 			button.btn.btn-primary(type='submit',ng-disabled="disabled")

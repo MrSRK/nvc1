@@ -73,25 +73,19 @@ app.controller("page-handler",['$scope','$http','$interval',($scope,$http,$inter
 	 */
 	$scope.getTable=_=>
 	{
-		$scope.message.info="Working..."
-		delete $scope.message.success
-		delete $scope.message.danger
+		setMessage('alert-info','Info','Working...')
 		const url='/api/1/'+$scope.root+'/'
 		$http.get(url)
 		.then(response=>
 		{
 			$scope.data=response.data.data
-			$scope.message.info="Operation complete"
-			delete $scope.message.danger
-			delete $scope.message.success
+			setMessage('alert-info','Info','Operation complete')
 			if(response.data.token)
 				parseToken(response.data)
 		},
 		error=>
 		{
-			$scope.message.danger="Operation cannot complete"
-			delete $scope.message.info
-			delete $scope.message.success
+			setMessage('alert-danger','Error','Operation cannot complete')
 			console.log(error)
 			if(error.status==401)
 				window.location.href="/administrator/administrator/signIn"
@@ -102,23 +96,17 @@ app.controller("page-handler",['$scope','$http','$interval',($scope,$http,$inter
 	 */
 	$scope.getList=_=>
 	{
-		$scope.message.info="Working..."
-		delete $scope.message.success
-		delete $scope.message.danger
+		setMessage('alert-info','Info','Working...')
 		const url='/api/2/'+$scope.root+'/'
 		$http.get(url)
 		.then(response=>
 		{
 			$scope.data=response.data.data
-			$scope.message.info="Operation complete"
-			delete $scope.message.danger
-			delete $scope.message.success
+			setMessage('alert-info','Info','Operation complete')
 		},
 		error=>
 		{
-			$scope.message.danger="Operation cannot complete"
-			delete $scope.message.info
-			delete $scope.message.success
+			setMessage('alert-danger','Error','Operation cannot complete')
 			console.log(error)
 			if(error.status==401)
 				window.location.href="/administrator/administrator/signIn"
@@ -129,24 +117,18 @@ app.controller("page-handler",['$scope','$http','$interval',($scope,$http,$inter
 	 */
 	$scope.getSingle=(_id,auth=false)=>
 	{
-		$scope.message.info="Working..."
-		delete $scope.message.success
-		delete $scope.message.danger
+		setMessage('alert-info','Info','Working')
 		authNo=auth?1:2
 		const url='/api/'+authNo+'/'+$scope.root+'/'+_id
 		$http.get(url)
 		.then(response=>
 		{
 			$scope.data=response.data.data
-			$scope.message.info="Operation complete"
-			delete $scope.message.danger
-			delete $scope.message.success
+			setMessage('alert-info','Info','Operation complete')
 		},
 		error=>
 		{
-			$scope.message.danger="Operation cannot complete"
-			delete $scope.message.info
-			delete $scope.message.success
+			setMessage('alert-danger','Error','Operation cannot complete')
 			console.log(error)
 			if(error.status==401)
 				window.location.href="/administrator/administrator/signIn"
@@ -157,9 +139,7 @@ app.controller("page-handler",['$scope','$http','$interval',($scope,$http,$inter
 	 */
 	$scope.updateSingle=_id=>
 	{
-		$scope.message.info="Working..."
-		delete $scope.message.success
-		delete $scope.message.danger
+		setMessage('alert-info','Info','Working')
 		const url='/api/1/'+$scope.root+'/'+_id
 		let data=$scope.data
 		if(data.password=='')
@@ -169,10 +149,7 @@ app.controller("page-handler",['$scope','$http','$interval',($scope,$http,$inter
 		$http.patch(url,data)
 		.then(response=>
 		{
-			$scope.data=response.data.data
-			$scope.message.info="Operation complete"
-			delete $scope.message.danger
-			delete $scope.message.success
+			setMessage('alert-info','Info','Operation complete')
 			$scope.disabled=false
 			//Renew Token
 			if(response.data.token)
@@ -181,9 +158,7 @@ app.controller("page-handler",['$scope','$http','$interval',($scope,$http,$inter
 		},
 		error=>
 		{
-			$scope.message.danger="Operation cannot complete"
-			delete $scope.message.info
-			delete $scope.message.success
+			setMessage('alert-danger','Error','Operation cannot complete')
 			$scope.disabled=false
 			console.log(error)
 			if(error.status==401)
@@ -195,9 +170,7 @@ app.controller("page-handler",['$scope','$http','$interval',($scope,$http,$inter
 	 */
 	$scope.insertSingle=_=>
 	{
-		$scope.message.info="Working..."
-		delete $scope.message.success
-		delete $scope.message.danger
+		setMessage('alert-info','Info','Working...')
 		const url='/api/1/'+$scope.root
 		let data=$scope.data
 		if(data.password=='')
@@ -208,9 +181,7 @@ app.controller("page-handler",['$scope','$http','$interval',($scope,$http,$inter
 		.then(response=>
 		{
 			$scope.data=response.data.data
-			$scope.message.info="Operation complete"
-			delete $scope.message.danger
-			delete $scope.message.success
+			setMessage('alert-info','Info','Operation complete')
 			$scope.disabled=false
 			window.location.href='/administrator/'+$scope.root
 			//Renew Token
@@ -220,9 +191,7 @@ app.controller("page-handler",['$scope','$http','$interval',($scope,$http,$inter
 		},
 		error=>
 		{
-			$scope.message.danger="Operation cannot complete"
-			delete $scope.message.info
-			delete $scope.message.success
+			setMessage('alert-danger','Error','Operation cannot complete')
 			$scope.disabled=false
 			console.log(error)
 			if(error.status==401)
@@ -234,9 +203,7 @@ app.controller("page-handler",['$scope','$http','$interval',($scope,$http,$inter
 	 */
 	$scope.setActiveTable=index=>
 	{
-		$scope.message.info="Working..."
-		delete $scope.message.success
-		delete $scope.message.danger
+		setMessage('alert-info','Info','Working...')
 		let _id=$scope.data[index]._id
 		let url='/api/1/'+ $scope.root+'/'+_id
 		$scope.data[index].disabled=true
@@ -245,18 +212,14 @@ app.controller("page-handler",['$scope','$http','$interval',($scope,$http,$inter
 		{
 			delete $scope.data[index].disabled
 			$scope.data[index].active=response.data.data.active
-			$scope.message.success="Operation completed successfully"
-			delete $scope.message.info
-			delete $scope.message.danger
+			setMessage('alert-success','Success','Operation completed successfully')
 			//Renew Token
 			if(response.data.token)
 				parseToken(response.data)
 		},
 		error=>
 		{
-			$scope.message.danger="Operation cannot complete"
-			delete $scope.message.info
-			delete $scope.message.success
+			setMessage('alert-danger','Error','Operation cannot complete')
 			delete $scope.data[index].disabled
 			console.log(error)
 			if(error.status==401)
@@ -271,9 +234,7 @@ app.controller("page-handler",['$scope','$http','$interval',($scope,$http,$inter
 		let conf=confirm("Are you sure?")
 		if(conf)
 		{
-			$scope.message.info="Working..."
-			delete $scope.message.success
-			delete $scope.message.danger
+			setMessage('alert-info','Info','Working...')
 			let _id=$scope.data[index]._id
 			let url='/api/1/'+ $scope.root+'/'+_id
 			$scope.data[index].disabled=true
@@ -283,26 +244,20 @@ app.controller("page-handler",['$scope','$http','$interval',($scope,$http,$inter
 				if(response.data.status)
 				{
 					$scope.data.splice(index,1)
-					$scope.message.success="Operation completed successfully"
-					delete $scope.message.info
-					delete $scope.message.danger
+					setMessage('alert-success','Success','Operation completed successfully')
 					//Renew Token
 					if(response.data.token)
 						parseToken(response.data)
 				}
 				else
 				{
-					$scope.message.danger="Operation cannot complete"
-					delete $scope.message.info
-					delete $scope.message.success
+					setMessage('alert-danger','Error','Operation cannot complete')
 					delete $scope.data[index].disabled
 				}
 			},
 			error=>
 			{
-				$scope.message.danger="Operation cannot complete"
-				delete $scope.message.info
-				delete $scope.message.success
+				setMessage('alert-danger','Error','Operation cannot complete')
 				delete $scope.data[index].disabled
 				console.log(error)
 				if(error.status==401)
@@ -360,9 +315,7 @@ app.controller("page-handler",['$scope','$http','$interval',($scope,$http,$inter
 		{
 			if(response.data.data.images)
 				$scope.data.images=response.data.data.images
-			$scope.message.success="Operation completed successfully"
-			delete $scope.message.info
-			delete $scope.message.danger
+			setMessage('alert-success','Success','Operation completed successfully')
 			$scope.uploadImageVar={uploading:false,val:100,per:'100%'}
 			//Renew Token
 			if(response.data.token)
@@ -371,9 +324,7 @@ app.controller("page-handler",['$scope','$http','$interval',($scope,$http,$inter
 		error=>
 		{
 			console.log(error)
-			$scope.message.danger="Operation cannot complete"
-			delete $scope.message.info
-			delete $scope.message.success
+			setMessage('alert-danger','Error','Operation cannot complete')
 			if(error.status==401)
 				window.location.href="/administrator/administrator/signIn"
 		})
@@ -387,9 +338,7 @@ app.controller("page-handler",['$scope','$http','$interval',($scope,$http,$inter
 			if(response.data.error)
 			{
 				console.log(response.data.error)
-				$scope.message.danger=response.data.error.message
-				delete $scope.message.info
-				delete $scope.message.success
+				setMessage('alert-error','Error',response.data.error.message)
 			}
 			else
 			{
@@ -401,9 +350,7 @@ app.controller("page-handler",['$scope','$http','$interval',($scope,$http,$inter
 		response=>
 		{
 			console.log(response)
-			$scope.message.danger=response.data.error.message
-			delete $scope.message.info
-			delete $scope.message.success
+			setMessage('alert-error','Error',response.data.error.message)
 			if(response.status==401)
 				window.location.href="/administrator/administrator/signIn"
 		})
@@ -412,27 +359,19 @@ app.controller("page-handler",['$scope','$http','$interval',($scope,$http,$inter
 	{
 		if(!$scope.asideData[model])
 			$scope.asideData[model]=[]
-		$scope.message.info="Working..."
-		delete $scope.message.success
-		delete $scope.message.danger
+		setMessage('alert-info','Info','Working...')
 		const url='/api/1/'+model+'/'
 		$http.get(url)
 		.then(response=>
 		{
-			console.log(response.data.data)
 			$scope.asideData[model]=response.data.data
-			console.log($scope.asideData.color)
-			$scope.message.info="Operation complete"
-			delete $scope.message.danger
-			delete $scope.message.success
+			setMessage('alert-info','Info','Operation complete')
 			if(response.data.token)
 				parseToken(response.data)
 		},
 		error=>
 		{
-			$scope.message.danger="Operation cannot complete"
-			delete $scope.message.info
-			delete $scope.message.success
+			setMessage('alert-danger','Error','Operation cannot complete')
 			console.log(error)
 			if(error.status==401)
 				window.location.href="/administrator/administrator/signIn"
@@ -445,5 +384,22 @@ app.controller("page-handler",['$scope','$http','$interval',($scope,$http,$inter
 	$scope.permalink=_=>
 	{
 		return window.location.href
+	}
+
+
+	/*
+	*
+	* NEW PART
+	*
+	*/
+	const setMessage=(className,title,description)=>
+	{
+		console.log('Seting message')
+		$scope.msg={
+			show:true,
+			class:className,
+			title:title,
+			description:description
+		}
 	}
 }])
