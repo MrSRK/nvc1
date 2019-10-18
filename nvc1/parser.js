@@ -1,5 +1,12 @@
 const bodyParser=require('body-parser')
-exports.setJson=next=>
+/**
+ * Set parser as bodyParser json
+ * @param {Function} next Callback function
+ * @callback function(error,data)
+ * @throws error
+ * @returns {Boolean} Function status
+ */
+const setJson=async(next)=>
 {
 	try
 	{
@@ -10,7 +17,14 @@ exports.setJson=next=>
 		next(error,null)
 	}
 }
-exports.setUrlEncoded=async(next)=>
+/**
+ * Set URL parser as BodyParser urlencoded
+ * @param {Function} next Callback function
+ * @callback function(error,data)
+ * @throws error
+ * @returns {Boolean} Function status
+ */
+const setUrlEncoded=async(next)=>
 {
 	try
 	{
@@ -18,6 +32,8 @@ exports.setUrlEncoded=async(next)=>
 	}
 	catch(error)
 	{
-		next(error,null)
+		next(error)
 	}
 }
+module.exports.setJson=setJson
+module.exports.setUrlEncoded=setUrlEncoded

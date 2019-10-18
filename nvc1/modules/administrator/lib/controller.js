@@ -1,7 +1,12 @@
 const Model=require('./model')
 let coreController=null
-
-exports.setCoreController=controller=>
+/**
+ * Set Core Controller
+ * @param {Object} controller express req Object
+ * @throws error
+ * @returns {boolean} Function status
+ */
+const setCoreController=controller=>
 {
 	try
 	{
@@ -13,7 +18,13 @@ exports.setCoreController=controller=>
 		return false
 	}
 }
-exports.authFunctionsObject=authModelName=>
+/**
+ * Bypass core's funcion Authentication Functions to the current controller / model
+ * @param {String} authModelName express req Object
+ * @throws error
+ * @returns {boolean} Function status
+ */
+const authFunctionsObject=authModelName=>
 {
 	try
 	{
@@ -25,7 +36,14 @@ exports.authFunctionsObject=authModelName=>
 		return false
 	}
 }
-exports.schema=next=>
+/**
+ * Bypass core's funcion schema to the current controller / model
+ * @param {Function} next Callback function
+ * @callback function(error,data)
+ * @throws error
+ * @returns {boolean} Function status
+ */
+const schema=next=>
 {
 	try
 	{
@@ -40,7 +58,14 @@ exports.schema=next=>
 		return next(null)
 	}
 }
-exports.refreshToken=req=>
+/**
+ * Bypass core's funcion Refresh Token to the current controller / model
+ * @param {Function} next Callback function
+ * @callback function(error,data)
+ * @throws error
+ * @returns {boolean} Function status
+ */
+const refreshToken=req=>
 {
 	try
 	{
@@ -51,7 +76,17 @@ exports.refreshToken=req=>
 		return null
 	}
 }
-exports.signIn=(req,res,name,next)=>
+/**
+ * Bypass core's funcion sign In to the current controller / model
+ * @param {Object} req express req Object
+ * @param {Object} res express res Object
+ * @param {String} name authentication model name
+ * @param {Function} next Callback function
+ * @callback function(error,data)
+ * @throws error
+ * @returns {boolean} Function status
+ */
+const signIn=(req,res,name,next)=>
 {
 	try
 	{
@@ -65,7 +100,17 @@ exports.signIn=(req,res,name,next)=>
 		return next(error,null)
 	}
 }
-exports.signUp=(req,res,name,next)=>
+/**
+ * Bypass core's funcion sign Up to the current controller / model
+ * @param {Object} req express req Object
+ * @param {Object} res express res Object
+ * @param {String} name authentication model name
+ * @param {Function} next Callback function
+ * @callback function(error,data)
+ * @throws error
+ * @returns {boolean} Function status
+ */
+const signUp=(req,res,name,next)=>
 {
 	try
 	{
@@ -79,7 +124,17 @@ exports.signUp=(req,res,name,next)=>
 		return next(error,null)
 	}
 }
-exports.signOut=(req,res,name,next)=>
+/**
+ * Bypass core's funcion sign Out to the current controller / model
+ * @param {Object} req express req Object
+ * @param {Object} res express res Object
+ * @param {String} name authentication model name
+ * @param {Function} next Callback function
+ * @callback function(error,data)
+ * @throws error
+ * @returns {boolean} Function status
+ */
+const signOut=(req,res,name,next)=>
 {
 	try
 	{
@@ -93,7 +148,17 @@ exports.signOut=(req,res,name,next)=>
 		return next(error,null)
 	}
 }
-exports.getList=(req,res,name,next)=>
+/**
+ * Bypass core's funcion Get List to the current controller / model
+ * @param {Object} req express req Object
+ * @param {Object} res express res Object
+ * @param {String} name authentication model name
+ * @param {Function} next Callback function
+ * @callback function(error,data)
+ * @throws error
+ * @returns {boolean} Function status
+ */
+const getList=(req,res,name,next)=>
 {
 	try
 	{
@@ -107,7 +172,17 @@ exports.getList=(req,res,name,next)=>
 		return next(error,null)
 	}
 }
-exports.getSingle=(req,res,name,next)=>
+/**
+ * Bypass core's funcion Get Single to the current controller / model
+ * @param {Object} req express req Object
+ * @param {Object} res express res Object
+ * @param {String} name authentication model name
+ * @param {Function} next Callback function
+ * @callback function(error,data)
+ * @throws error
+ * @returns {boolean} Function status
+ */
+const getSingle=(req,res,name,next)=>
 {
 	try
 	{
@@ -121,7 +196,17 @@ exports.getSingle=(req,res,name,next)=>
 		return next(error,null)
 	}
 }
-exports.getListAuth=(req,res,name,next)=>
+/**
+ * Bypass core's funcion Get List (with) authentication to the current controller / model
+ * @param {Object} req express req Object
+ * @param {Object} res express res Object
+ * @param {String} name authentication model name
+ * @param {Function} next Callback function
+ * @callback function(error,data)
+ * @throws error
+ * @returns {boolean} Function status
+ */
+const getListAuth=(req,res,name,next)=>
 {
 	try
 	{
@@ -135,7 +220,17 @@ exports.getListAuth=(req,res,name,next)=>
 		return next(error,null)
 	}
 }
-exports.getSingleAuth=(req,res,name,next)=>
+/**
+ * Bypass core's funcion Get Single (with) authentication to the current controller / model
+ * @param {Object} req express req Object
+ * @param {Object} res express res Object
+ * @param {String} name authentication model name
+ * @param {Function} next Callback function
+ * @callback function(error,data)
+ * @throws error
+ * @returns {boolean} Function status
+ */
+const getSingleAuth=(req,res,name,next)=>
 {
 	try
 	{
@@ -149,21 +244,17 @@ exports.getSingleAuth=(req,res,name,next)=>
 		return next(error,null)
 	}
 }
-exports.setSingleAuth=(req,res,name,next)=>
-{
-	try
-	{
-		return coreController.setSingleAuth(Model,req,res,name,(error,data)=>
-		{
-			return next(error,data)
-		})
-	}
-	catch(error)
-	{
-		return next(error,null)
-	}
-}
-exports.updateSingleAuth=(req,res,name,next)=>
+/**
+ * Bypass core's funcion Update Single (with) authentication to the current controller / model
+ * @param {Object} req express req Object
+ * @param {Object} res express res Object
+ * @param {String} name authentication model name
+ * @param {Function} next Callback function
+ * @callback function(error,data)
+ * @throws error
+ * @returns {boolean} Function status
+ */
+const updateSingleAuth=(req,res,name,next)=>
 {
 	try
 	{
@@ -177,7 +268,17 @@ exports.updateSingleAuth=(req,res,name,next)=>
 		return next(error,null)
 	}
 }
-exports.updateSinglePasswordAuth=(req,res,name,next)=>
+/**
+ * Bypass core's funcion Update Single Password (with) authentication to the current controller / model
+ * @param {Object} req express req Object
+ * @param {Object} res express res Object
+ * @param {String} name authentication model name
+ * @param {Function} next Callback function
+ * @callback function(error,data)
+ * @throws error
+ * @returns {boolean} Function status
+ */
+const updateSinglePasswordAuth=(req,res,name,next)=>
 {
 	try
 	{
@@ -191,7 +292,17 @@ exports.updateSinglePasswordAuth=(req,res,name,next)=>
 		return next(error,null)
 	}
 }
-exports.deleteSingleAuth=(req,res,name,next)=>
+/**
+ * Bypass core's funcion Delete Single (with) authentication to the current controller / model
+ * @param {Object} req express req Object
+ * @param {Object} res express res Object
+ * @param {String} name authentication model name
+ * @param {Function} next Callback function
+ * @callback function(error,data)
+ * @throws error
+ * @returns {boolean} Function status
+ */
+const deleteSingleAuth=(req,res,name,next)=>
 {
 	try
 	{
@@ -205,7 +316,17 @@ exports.deleteSingleAuth=(req,res,name,next)=>
 		return next(error,null)
 	}
 }
-exports.updateSingleImageAuth=(req,res,name,next)=>
+/**
+ * Bypass core's funcion Update Single Image (with) authentication to the current controller / model
+ * @param {Object} req express req Object
+ * @param {Object} res express res Object
+ * @param {String} name authentication model name
+ * @param {Function} next Callback function
+ * @callback function(error,data)
+ * @throws error
+ * @returns {boolean} Function status
+ */
+const updateSingleImageAuth=(req,res,name,next)=>
 {
 	try
 	{
@@ -219,7 +340,17 @@ exports.updateSingleImageAuth=(req,res,name,next)=>
 		return next(error,null)
 	}
 }
-exports.deleteSingleImageAuth=(req,res,name,next)=>
+/**
+ * Bypass core's funcion Delete Single Image (with) authentication to the current controller / model
+ * @param {Object} req express req Object
+ * @param {Object} res express res Object
+ * @param {String} name authentication model name
+ * @param {Function} next Callback function
+ * @callback function(error,data)
+ * @throws error
+ * @returns {boolean} Function status
+ */
+const deleteSingleImageAuth=(req,res,name,next)=>
 {
 	try
 	{
@@ -233,7 +364,37 @@ exports.deleteSingleImageAuth=(req,res,name,next)=>
 		return next(error,null)
 	}
 }
-exports.api404=(req,res,name,next)=>
+/**
+ * Default 404 page controller
+ * @param {Object} req express req Object
+ * @param {Object} res express res Object
+ * @param {String} name authentication model name
+ * @param {Function} next Callback function
+ * @callback function(error,data)
+ * @throws error
+ * @returns {boolean} Function status
+ */
+const api404=(req,res,name,next)=>
 {
 	return next(null,{name:404,message:"Page not Found"})
 }
+/**
+ * Modul's Exports
+ */
+module.exports.setCoreController=setCoreController
+module.exports.authFunctionsObject=authFunctionsObject
+module.exports.schema=schema
+module.exports.refreshToken=refreshToken
+module.exports.signIn=signIn
+module.exports.signUp=signUp
+module.exports.signOut=signOut
+module.exports.getList=getList
+module.exports.getSingle=getSingle
+module.exports.getListAuth=getListAuth
+module.exports.getSingleAuth=getSingleAuth
+module.exports.updateSingleAuth=updateSingleAuth
+module.exports.updateSinglePasswordAuth=updateSinglePasswordAuth
+module.exports.deleteSingleAuth=deleteSingleAuth
+module.exports.updateSingleImageAuth=updateSingleImageAuth
+module.exports.deleteSingleImageAuth=deleteSingleImageAuth
+module.exports.api404=api404

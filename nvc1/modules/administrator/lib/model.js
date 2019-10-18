@@ -1,6 +1,12 @@
 const mongoose=require('mongoose')
 const bcrypt = require('bcrypt-nodejs')
+/**
+ * Set Models Name by directory name
+ */
 const modelName=__dirname.split("\\").reverse()[1]
+/**
+ * Image sub schema
+ */
 const image=mongoose.Schema({
 	fieldname:{type:String,required:true},
 	originalname:{type:String},
@@ -13,6 +19,9 @@ const image=mongoose.Schema({
 	webpPath:{type:String},
 	size:{type:Number},
 })
+/**
+ * model's schema
+ */
 const schema=new mongoose.Schema({
 	active:{type:Boolean,default:true},
 	name:{type:String},
@@ -24,23 +33,25 @@ const schema=new mongoose.Schema({
 	timestamps:true,
 	versionKey:false
 })
+/**
+ * Pre all save executs to convert password to hash
+ */
 schema.pre('save',function save(next)
 {
 	const user=this
 	if(!user.isModified('password'))
 		return next()
-	bcrypt.genSalt(10,(error,salt)=>
+	return bcrypt.genSalt(10,(error,salt)=>
 	{
 		if(error)
 			return next(error)
-		bcrypt.hash(user.password,salt,null,(error,hash)=>
+		return bcrypt.hash(user.password,salt,null,(error,hash)=>
 		{
 			if(error)
 				return next(error)
 			user.password=hash
-			next()
+			return next()
 		})
 	})
 })
-const model=mongoose.model(modelName,schema)
-module.exports=model
+module.exports=mongoose.model(modelName,schema)

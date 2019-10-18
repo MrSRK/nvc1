@@ -1,15 +1,21 @@
 const multer=require('multer')
-const fs = require('fs')
-const path = require('path')
+const fs=require('fs')
+const path=require('path')
 let config={
 	root:process.env.STORAGE_ROOT||'uploads/',
 	subroot:'',
 	name:'file'
 }
 /**
- *
+ * Create a store location for a file
+ * @param {String} subroot Sub-root location (sub - path)
+ * @param {String} name Form file name (incoming)
+ * @param {Function} next Callback function
+ * @callback function(error,data)
+ * @throws error
+ * @returns {Boolean} Function status
  */
-exports.create=(subroot,name,next)=>
+const create=(subroot,name,next)=>
 {
 	try
 	{
@@ -20,16 +26,21 @@ exports.create=(subroot,name,next)=>
 			destination:destination,
 			filename:filename
 		})
-		let image=multer({storage:storage}).single(config.name)
-		return next(null,image)
+		return next(null,multer({storage:storage}).single(config.name))
 	}
 	catch(error)
 	{
-		return next(error,null)
+		return next(error)
 	}
 }
 /**
- *
+ * Create the given destination at file system
+ * @param {Object} req express req object
+ * @param {String} file Form file name (incoming)
+ * @param {Function} next Callback function
+ * @callback function(error,data)
+ * @throws error
+ * @returns {Boolean} Function status
  */
  const destination=(req,file,next)=>
  {
@@ -51,15 +62,18 @@ exports.create=(subroot,name,next)=>
 	}
 	catch(error)
 	{
-		return next(error,null)
+		return next(error)
 	}
  }
- /**
-  *
-  * @param {*} req
-  * @param {*} file
-  * @param {*} next
-  */
+/**
+ * Create the (new) file name for the (incoming) file
+ * @param {Object} req express req object
+ * @param {String} file Form file name (incoming)
+ * @param {Function} next Callback function
+ * @callback function(error,data)
+ * @throws error
+ * @returns {Boolean} Function status
+ */
  const filename=(req,file,next)=>
  {
 	try
@@ -81,3 +95,4 @@ exports.create=(subroot,name,next)=>
 		return next(error,null)
 	}
  }
+ module.exports.create=create

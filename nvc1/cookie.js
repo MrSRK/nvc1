@@ -1,5 +1,12 @@
 const cookieParser=require('cookie-parser')
-module.exports=next=>
+/**
+ * @async
+ * @param {Function} next Callback function
+ * @callback function(error,data)
+ * @throws error
+ * @returns {Boolean} Function status
+ */
+const __construct=async(next)=>
 {
 	try
 	{
@@ -8,11 +15,14 @@ module.exports=next=>
 			secure:true,
 			maxAge:604800000 // 7 days
 		}
-		const c=cookieParser(process.env.COOKIE_SECRET,options)
-		next(null,c)
+		return next(null,cookieParser(process.env.COOKIE_SECRET,options))
 	}
 	catch(error)
 	{
-		next(error,null)
+		return next(error)
 	}
 }
+/**
+ * Exports Module's functions
+ */
+module.exports=__construct

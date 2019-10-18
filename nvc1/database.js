@@ -2,8 +2,12 @@ const mongoose=require('mongoose')
 require('mongoose-schema-jsonschema')(mongoose);
 /**
  * Connect to MongoDB.
-*/
-exports.connect=next=>
+ * @param {Function} next Callback function
+ * @callback function(error,data)
+ * @throws error
+ * @returns {Boolean} Function status
+ */
+const connect=async(next)=>
 {
 	try
 	{
@@ -11,11 +15,12 @@ exports.connect=next=>
 		mongoose.set('useCreateIndex',true)
 		mongoose.set('useNewUrlParser',true)
 		mongoose.connect(process.env.MONGODB_URI)
-		next(null,mongoose)
+		return next(null,mongoose)
 	}
 	catch(error)
 	{
-		next(error,null)
+		return next(error)
 	}
 
 }
+module.exports.connect=connect

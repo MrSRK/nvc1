@@ -1,6 +1,13 @@
 const sass=require('node-sass-middleware')
 const path=require('path')
-module.exports=next=>
+/**
+ * Enable sass module and set publc directory for sass and css files
+ * @param {Function} next Callback function
+ * @callback function(error,data)
+ * @throws error
+ * @returns {Boolean} Function status
+ */
+const __construct=next=>
 {
 	try
 	{
@@ -13,6 +20,7 @@ module.exports=next=>
 	}
 	catch(error)
 	{
-		return next(error,null)
+		return next(error)
 	}
 }
+module.exports=__construct

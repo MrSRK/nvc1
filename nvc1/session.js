@@ -1,7 +1,14 @@
 const session=require('express-session')
 const mongoose=require('mongoose')
 const MongoStore=require('connect-mongo')(session)
-module.exports=next=>
+/**
+ * Collect all routes (from modules) and add return them
+ * @param {Function} next Callback function
+ * @callback function(error,data)
+ * @throws error
+ * @returns {Boolean} Function status
+ */
+const __construct=next=>
 {
 	try
 	{
@@ -18,6 +25,7 @@ module.exports=next=>
 	}
 	catch(error)
 	{
-		next(error,null)
+		next(error)
 	}
 }
+module.exports=__construct

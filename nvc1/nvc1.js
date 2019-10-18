@@ -20,8 +20,12 @@ const view=require('./view')
 dotenv.config()
 /**
  * Initialize all the core function and use them at app
+ * @param {Function} next Callback function
+ * @callback function(error,data)
+ * @throws error
+ * @returns {Boolean} Function status
  */
-exports.run=next=>
+const run=next=>
 {
 	try
 	{
@@ -35,10 +39,8 @@ exports.run=next=>
 			if(error)
 				throw error
 			if(handler)
-			{
-				console.log('%s Module [%s]\tLoad: %s',chalk.green('✓'),chalk.red('Errorhandler'),chalk.green('Successful'))
 				return app.use(handler())
-			}
+			return false
 		})
 		/**
 		 * Set Looger
@@ -47,24 +49,21 @@ exports.run=next=>
 		{
 			if(error)
 				throw error
-			console.log('%s Module [%s]\t\tLoad: %s',chalk.green('✓'),chalk.red('Logger'),chalk.green('Successful'))
 			return app.use(morgan)
 		})
 		/**
-		 *
+		 * Set Parser
 		*/
 		bodyParser.setJson((error,parser)=>
 		{
 			if(error)
 				throw error
-			console.log('%s Module [%s]\tLoad: %s',chalk.green('✓'),chalk.red('parser (json)'),chalk.green('Successful'))
 			return app.use(parser)
 		})
 		bodyParser.setUrlEncoded((error,parser)=>
 		{
 			if(error)
 				throw error
-			console.log('%s Module [%s]\tLoad: %s',chalk.green('✓'),chalk.red('parser (url)'),chalk.green('Successful'))
 			return app.use(parser)
 		})
 		/**
@@ -74,7 +73,6 @@ exports.run=next=>
 		{
 			if(error)
 				throw(error)
-			console.log('%s Module [%s]\t\tLoad: %s',chalk.green('✓'),chalk.red('Session'),chalk.green('Successful'))
 			return app.use(s)
 		})
 		/**
@@ -84,7 +82,6 @@ exports.run=next=>
 		{
 			if(error)
 				throw(error)
-			console.log('%s Module [%s]\t\tLoad: %s',chalk.green('✓'),chalk.red('Cookie'),chalk.green('Successful'))
 			return app.use(s)
 		})
 		/**
@@ -103,7 +100,6 @@ exports.run=next=>
 		app.use(security.xframe('SAMEORIGIN'))
 		app.use(security.xssProtection(true))
 		app.disable('x-powered-by')
-		console.log('%s Module [%s]\t\tLoad: %s',chalk.green('✓'),chalk.red('Security'),chalk.green('Successful'))
 		/**
 		 * Connect to MongoDB
 		*/
@@ -111,7 +107,6 @@ exports.run=next=>
 		{
 			if(error)
 				throw(error)
-			console.log('%s Module [%s]\t\tLoad: %s',chalk.green('✓'),chalk.red('Database'),chalk.green('Successful'))
 		})
 		/**
 		 * Use Sass Module
@@ -120,7 +115,6 @@ exports.run=next=>
 		{
 			if(error)
 				throw(error)
-			console.log('%s Module [%s]\t\tLoad: %s',chalk.green('✓'),chalk.red('Sass'),chalk.green('Successful'))
 			return app.use(s)
 		})
 		console.groupEnd()
@@ -175,15 +169,9 @@ exports.run=next=>
 		 */
 		view((error,views)=>
 		{
-			console.group(chalk.yellow('# Loaading (pug) views direcroties'))
 			if(error)
 				throw(error)
 			app.set('views',views)
-			views.forEach(p=>
-			{
-				console.log('%s Views \t\t\tLoad: %s\t\tFrom: %s',chalk.green('✓'),chalk.green('Successful'),chalk.gray(p))
-			})
-			console.groupEnd()
 			return app.set('view engine','pug')
 		})
 		/**
@@ -198,6 +186,7 @@ exports.run=next=>
 	catch(error)
 	{
 		console.log('%s NVC1 %s',chalk.red('X'),chalk.red('Fatal Error'))
-		return next(error,null)
+		return next(error)
 	}
 }
+exports.run=run

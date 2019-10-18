@@ -4,8 +4,12 @@ const fs = require('fs')
 const path = require('path')
 /**
  * Set loget to console if mode is development or else to access log file at log directory
+ * @param {Function} next Callback function
+ * @callback function(error,data)
+ * @throws error
+ * @returns {Boolean} Function status
  */
-exports.setLoger=next=>
+const setLoger=async(next)=>
 {
 	try
 	{
@@ -24,17 +28,18 @@ exports.setLoger=next=>
 					if(error)
 						throw(error)
 					const accessLogStream=rfs('access.log',options)
-					return next(null,morgan('combined',{stream:accessLogStream})) 
+					return next(null,morgan('combined',{stream:accessLogStream}))
 				})
 			else
 			{
 				const accessLogStream=rfs('access.log',options)
-				return next(null,morgan('combined',{stream:accessLogStream})) 
+				return next(null,morgan('combined',{stream:accessLogStream}))
 			}
 		})
 	}
 	catch(error)
 	{
-		return next(error,null)
+		return next(error)
 	}
 }
+module.exports.setLoger=setLoger

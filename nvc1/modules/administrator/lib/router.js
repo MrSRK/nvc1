@@ -2,7 +2,6 @@ const router=require('express').Router()
 const name=__filename.split('\\').reverse()[2]
 const controller=require('./controller')
 const config=require('../config.json')
-const chalk=require('chalk')
 let auth=[];
 exports.getRouter=_=>
 {
@@ -25,12 +24,10 @@ exports.route=(menu)=>
 {
 	try
 	{
-		console.group(chalk.blue("Routing for "+name))
 		Object.keys(config.routes).forEach(key=>
 		{
 			config.routes[key].forEach(r=>
 			{
-				console.log("%s: [%s] %s",r.pug?chalk.red('PUG'):chalk.yellow('API'),chalk.green(r.method),chalk.gray(r.route.replace('[name]',name)))
 				if(r.pug)
 				{
 					router[r.method](r.route.replace('[name]',name),auth[r.auth],(req,res)=>
@@ -63,7 +60,6 @@ exports.route=(menu)=>
 					})
 			})
 		})
-		console.groupEnd()
 	}
 	catch(error)
 	{

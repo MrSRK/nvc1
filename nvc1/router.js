@@ -6,14 +6,18 @@ const router=express.Router()
 const controller=require('./controller')
 const expressStatusMonitorrequire=require('express-status-monitor')
 const routes=[]
-exports.route=n=>
+/**
+ * Collect all routes (from modules) and add return them
+ * @param {Function} next Callback function
+ * @callback function(error,data)
+ * @throws error
+ * @returns {Boolean} Function status
+ */
+const route=next=>
 {
 	try
 	{
 		const auth=controller.authFunctionsObject('administrator')
-		/**
-		 * Administrator Dashboard Route
-		 */
 		loadNvc1Routers(error=>
 		{
 			if(error)
@@ -26,9 +30,6 @@ exports.route=n=>
 				routes.forEach(r=>{
 					menu[menu.length]=r.name
 				})
-				/**
-				 * Default Pages
-				 */
 				router.get('/',(req,res)=>
 				{
 					return res.status(200).render('home',{
@@ -51,14 +52,6 @@ exports.route=n=>
 						r[r.length]={
 							name:m,
 							path:'/'+m,
-							routines:{
-								list:"GET /"+m+"/",
-								show:"GET /"+m+"/:_id",
-								table:"GET /administrator/"+m+"/",
-								insert:"PUT /administrator/"+m+"/new",
-								update:"PATCH /administrator/"+m+"/:_id",
-								remove:"DELETE /administrator/"+m+"/:_id",
-							}
 						}
 					})
 					return res.status(200).json({status:true,error:null,message:'Welcome to API',routes:r})
@@ -103,14 +96,21 @@ exports.route=n=>
 				})
 			})
 		})
-		return n(null,router)
+		return next(null,router)
 	}
 	catch(error)
 	{
-		return n(error,null)
+		return next(error)
 	}
 }
-const loadRouters=(next)=>
+/**
+ * Collect all routes (from global modules) and add return them
+ * @param {Function} next Callback function
+ * @callback function(error,data)
+ * @throws error
+ * @returns {Boolean} Function status
+ */
+const loadRouters=next=>
 {
 	try
 	{
@@ -122,18 +122,11 @@ const loadRouters=(next)=>
 				{
 					if(error)
 						throw(error)
-					console.group(chalk.yellow('# Loading Express [Mudules] Routers'))
-					if(files.length==0)
-						console.log('%s %s',chalk.gray('-'),chalk.gray('none'))
 					files.forEach(file=>
 					{
 						if(fs.existsSync(nvc1ModulesPath+'\\'+file+'\\index.js'))
-						{
-							console.log('%s Router [%s]\tAdd: %s',chalk.green('✓'),chalk.red(file),chalk.green('Successful'))
 							routes[routes.length]={name:file,path:nvc1ModulesPath+'\\'+file+'\\index.js'}
-						}
 					})
-					console.groupEnd()
 					return next(null)
 				})
 			else
@@ -145,7 +138,14 @@ const loadRouters=(next)=>
 		return next(error)
 	}
 }
-const loadNvc1Routers=(next)=>
+/**
+ * Collect all routes (from nvc1 modules) and add return them
+ * @param {Function} next Callback function
+ * @callback function(error,data)
+ * @throws error
+ * @returns {Boolean} Function status
+ */
+const loadNvc1Routers=next=>
 {
 	try
 	{
@@ -157,18 +157,11 @@ const loadNvc1Routers=(next)=>
 				{
 					if(error)
 						throw(error)
-					console.group(chalk.yellow('# Loading Express [Core] Routers'))
-					if(files.length==0)
-						console.log('%s %s',chalk.gray('-'),chalk.gray('none'))
 					files.forEach(file=>
 					{
 						if(fs.existsSync(nvc1ModulesPath+'\\'+file+'\\index.js'))
-						{
-							console.log('%s Router [%s]\tAdd: %s',chalk.green('✓'),chalk.red(file),chalk.green('Successful'))
 							routes[routes.length]={name:file,path:nvc1ModulesPath+'\\'+file+'\\index.js'}
-						}
 					})
-					console.groupEnd()
 					return next(null)
 				})
 			else
@@ -181,3 +174,4 @@ const loadNvc1Routers=(next)=>
 		return next(error)
 	}
 }
+module.exports.route=route
