@@ -114,6 +114,9 @@ const refreshToken=req=>
 {
 	try
 	{
+		/* Skip token refresh if header authorization not exist */
+		if(!req.headers.authorization)
+			return null
 		const privateKey=(process.env.JWT_KEY||'10')+coreAuthModelName
 		const expires=process.env.JWT_EXPIRES||"1h"
 		const oldToken=req.headers.authorization.split(" ")[1]

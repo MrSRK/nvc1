@@ -1,7 +1,7 @@
 const router=require('./lib/router')
 /**
- *
+ * indexing module functions
  */
-exports.setCoreController=router.setCoreController
-exports.route=router.route
-exports.router=router.getRouter
+module.exports.setCoreController=router.setCoreController
+module.exports.route=router.route
+module.exports.router=router.getRouter

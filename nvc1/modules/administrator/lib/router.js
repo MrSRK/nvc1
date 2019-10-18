@@ -2,8 +2,16 @@ const router=require('express').Router()
 const name=__filename.split('\\').reverse()[2]
 const controller=require('./controller')
 const config=require('../config.json')
+/**
+ * Authorization functions array
+ */
 let auth=[];
-exports.getRouter=_=>
+/**
+ * Return Module's express router
+ * @throws error
+ * @returns {Object} Express Router
+ */
+const getRouter=()=>
 {
 	try
 	{
@@ -15,12 +23,32 @@ exports.getRouter=_=>
 		return null
 	}
 }
-exports.setCoreController=coreController=>
+/**
+ * Set Core (default) controller Object to this Controller
+ * @param {Object} coreController
+ * @throws error
+ * @returns {Boolean} Function status
+ */
+const setCoreController=coreController=>
 {
-	controller.setCoreController(coreController)
-	auth=controller.authFunctionsObject(config.auth)
+	try
+	{
+		controller.setCoreController(coreController)
+		auth=controller.authFunctionsObject(config.auth)
+		return true
+	}
+	catch(error)
+	{
+		console.log(error)
+		return false
+	}
 }
-exports.route=(menu)=>
+/**
+ * Route all Routes (module configuration json) to this router
+ * @param {Array} menu Navigation menu array
+ * @throws error
+ */
+const route=menu=>
 {
 	try
 	{
@@ -29,7 +57,6 @@ exports.route=(menu)=>
 			config.routes[key].forEach(r=>
 			{
 				if(r.pug)
-				{
 					router[r.method](r.route.replace('[name]',name),auth[r.auth],(req,res)=>
 					{
 						return controller.schema(schema=>
@@ -44,7 +71,6 @@ exports.route=(menu)=>
 							})
 						})
 					})
-				}
 				else
 					router[r.method](r.route.replace('[name]',name),auth[r.auth+'Api'],(req,res)=>
 					{
@@ -66,3 +92,7 @@ exports.route=(menu)=>
 		console.log(error)
 	}
 }
+
+module.exports.getRouter=getRouter
+module.exports.setCoreController=setCoreController
+module.exports.route=route

@@ -44,7 +44,7 @@ block content
 					input.form-control(type='date',id='form-'+name,data-ng-model="data."+name)
 			else if field.type=='array'
 				if(name=='images')
-					input#from-image.d-none(type='file',onchange="angular.element(this).scope().insertImage('"+_id+"')")
+					input#from-image.d-none(type='file',onchange="angular.element(this).scope().insertImage('"+_id+"')",accept=".png,.jpg,.webp")
 					.mx-3.mb-3
 						.row.text-left
 							.col-12.mb-2
